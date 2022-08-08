@@ -38,8 +38,8 @@ CREATE TABLE categories (
 
 CREATE TABLE potholes (
         pothole_id SERIAL,
-        location varchar(40),
-        name varchar(40),
+        pothole_location varchar(40),
+        pothole_name varchar(40),
         account_id int,
         image_id int,
         category_id int,

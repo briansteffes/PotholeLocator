@@ -70,6 +70,7 @@ public class User {
       String[] roles = authorities.split(",");
       for(String role : roles) {
          String authority = role.contains("ROLE_") ? role : "ROLE_" + role;
+         // TODO: ASK ANTHONY ABOUT ERROR
          this.authorities.add(new Authority(authority));
       }
    }
