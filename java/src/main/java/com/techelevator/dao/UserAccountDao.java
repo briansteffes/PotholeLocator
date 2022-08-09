@@ -8,7 +8,8 @@ public interface UserAccountDao {
 
     UserAccount getUserAccountByAccountId(int accountId);
     List<UserAccount> getAllUserAccounts();
+    UserAccount createUserAccount(UserAccount userAccount);
     UserAccount updateUserAccount(UserAccount userAccount);
-    boolean deleteUserAccount(int userAccountId);
+    void deleteUserAccount(int userAccountId);
 
 }
