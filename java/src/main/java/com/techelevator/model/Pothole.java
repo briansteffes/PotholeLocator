@@ -6,10 +6,8 @@ public class Pothole {
 
     private int potholeId;
 
-    //private String potholeLocation;
+    private String potholeLocation;
 
-    private double latitude;
-    private double longitude;
     private String potholeName;
     private int accountId;
     private int statusId;
@@ -27,28 +25,12 @@ public class Pothole {
     }
 
 
-    /*public String getPotholeLocation() {
+    public String getPotholeLocation() {
         return potholeLocation;
     }
 
     public void setPotholeLocation(String potholeLocation) {
         this.potholeLocation = potholeLocation;
-    }*/
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     public String getPotholeName() {
