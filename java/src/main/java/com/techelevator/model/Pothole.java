@@ -5,9 +5,12 @@ import java.time.LocalDateTime;
 public class Pothole {
 
     private int potholeId;
+
     private String potholeLocation;
+
     private String potholeName;
     private int accountId;
+    private int statusId;
     private int imageId;
     private int categoryId;
     private boolean active;
@@ -20,6 +23,7 @@ public class Pothole {
     public void setPotholeId(int potholeId) {
         this.potholeId = potholeId;
     }
+
 
     public String getPotholeLocation() {
         return potholeLocation;
@@ -43,6 +47,14 @@ public class Pothole {
 
     public void setAccountId(int accountId) {
         this.accountId = accountId;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
     public int getImageId() {
