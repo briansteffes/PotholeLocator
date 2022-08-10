@@ -24,12 +24,40 @@
         v-model="user.password"
         required
       />
+       <label for="confirmPassword" class="sr-only">Confirm Password</label>
       <input
         type="password"
         id="confirmPassword"
         class="form-control"
         placeholder="Confirm Password"
         v-model="user.confirmPassword"
+        required
+      />
+     <label for="fullName" class="sr-only">Full Name</label>
+        <input
+        type="fullName"
+        id="fullName"
+        class="form-control"
+        placeholder="Full Name"
+        v-model="user.fullName"
+        required
+      />
+       <label for="email" class="sr-only">Email</label>
+        <input
+        type="email"
+        id="email"
+        class="form-control"
+        placeholder="Email"
+        v-model="user.email"
+        required
+      />
+       <label for="phoneNumber" class="sr-only">Phone Number</label>
+        <input
+        type="phoneNumber"
+        id="phoneNumber"
+        class="form-control"
+        placeholder="Phone Number"
+        v-model="user.phoneNumber"
         required
       />
       <router-link :to="{ name: 'login' }">Have an account?</router-link>
