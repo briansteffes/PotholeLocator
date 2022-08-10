@@ -98,13 +98,13 @@ public class JdbcPotholeDao implements PotholeDao {
         Integer imageId = jdbcTemplate.queryForObject(sql, Integer.class, image.getImageName(), image.getImageType(),
                 image.getImageData());
 
-        String sqlTwo = "INSERT INTO potholes(pothole_location, pothole_name, account_id, " +
-                "image_id, category_id, active) " +
-                "VALUES(?, ?, ?, ?, ?, ?) RETURNING pothole_id;";
+        String sqlTwo = "INSERT INTO potholes(lat, long, pothole_name, account_id, " +
+                "image_id, category_id, status_id, active) " +
+                "VALUES(?, ?, ?, ?, ?, ?, ?, ?) RETURNING pothole_id;";
 
-        Integer potholeId = jdbcTemplate.queryForObject(sqlTwo, Integer.class, pothole.getPotholeLocation(),
-                pothole.getPotholeName(), pothole.getAccountId(), imageId, pothole.getCategoryId(),
-                pothole.getActive());
+        Integer potholeId = jdbcTemplate.queryForObject(sqlTwo, Integer.class, pothole.getPotholeLat(),
+                pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId(), imageId, pothole.getCategoryId(),
+                pothole.getStatusId(), pothole.getActive());
 
         return getPotholeById(potholeId);
     }
@@ -115,7 +115,7 @@ public class JdbcPotholeDao implements PotholeDao {
                 "SET pothole_location = ?, pothole_name = ?, account_id = ?, image_id = ?, category_id = ?, active = ?" +
                 "WHERE pothole_id = ?;";
 
-        jdbcTemplate.update(sql, pothole.getPotholeLocation(), pothole.getPotholeName(), pothole.getAccountId(),
+        jdbcTemplate.update(sql, pothole.getPotholeLat(), pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId(),
                 pothole.getImageId(), pothole.getCategoryId(), pothole.getActive(), pothole.getPotholeId());
 
         return getPotholeById(pothole.getPotholeId());
@@ -131,7 +131,8 @@ public class JdbcPotholeDao implements PotholeDao {
         Pothole pothole = new Pothole();
 
         pothole.setPotholeId(sqlRowSet.getInt("pothole_id"));
-        pothole.setPotholeLocation(sqlRowSet.getString("pothole_location"));
+        pothole.setPotholeLat(sqlRowSet.getBigDecimal("lat"));
+        pothole.setPotholeLong(sqlRowSet.getBigDecimal("long"));
         pothole.setPotholeName(sqlRowSet.getString("pothole_name"));
         pothole.setAccountId(sqlRowSet.getInt("account_id"));
         pothole.setImageId(sqlRowSet.getInt("image_id"));
