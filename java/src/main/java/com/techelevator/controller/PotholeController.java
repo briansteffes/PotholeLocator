@@ -66,7 +66,7 @@ public class PotholeController {
     }
 
     @PostMapping("/report")
-    @PreAuthorize("hasRole('USER', 'EMPLOYEE')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EMPLOYEE')")
     public void addReport(@RequestBody Pothole pothole, Image image) {
         Pothole newPothole = potholeDao.createPothole(pothole, image);
     }
