@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pothole/")
+@RequestMapping("/pothole")
 //@PreAuthorize("isAuthenticated()"
 public class PotholeController {
 
