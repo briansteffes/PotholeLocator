@@ -32,6 +32,42 @@
         v-model="user.confirmPassword"
         required
       />
+      <label for="first-name" class="sr-only">First Name</label>
+      <input
+        type="first-name"
+        id="first-name"
+        class="form-control"
+        placeholder="First Name"
+        v-model="user.firstName"
+        required
+      />
+      <label for="last-name" class="sr-only">Last Name</label>
+      <input
+        type="last-name"
+        id="last-name"
+        class="form-control"
+        placeholder="Last Name"
+        v-model="user.lastName"
+        required
+      />
+      <label for="email" class="sr-only">Email</label>
+      <input
+        type="email"
+        id="email"
+        class="form-control"
+        placeholder="Email"
+        v-model="user.email"
+        required
+      />
+      <label for="phone" class="sr-only">Phone</label>
+      <input
+        type="phone"
+        id="phone"
+        class="form-control"
+        placeholder="Phone"
+        v-model="user.phone"
+        required
+      />
       <router-link :to="{ name: 'login' }">Have an account?</router-link>
       <button class="btn btn-lg btn-primary btn-block" type="submit">
         Create Account
