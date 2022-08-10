@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +26,6 @@ public class JdbcPotholeDao implements PotholeDao {
         List<Pothole> potholes = new ArrayList<>();
         String sql = "SELECT * FROM potholes;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-        // TODO: ASK ANTHONY ABOUT FILTERING SQL STATEMENTS BY ACTIVE POTHOLES
         while (results.next()) {
             potholes.add(mapRowToPothole(results));
         }
@@ -93,11 +92,8 @@ public class JdbcPotholeDao implements PotholeDao {
 
     @Override
     public Pothole createPothole(Pothole pothole, Image image) {
-
-        // TODO: NEED TO ADD IMAGE TO THE DATABASE
         String sql = "INSERT INTO images(image_name, image_type, image_data) " +
                 "VALUES(?, ?, ?) RETURNING image_id;";
-
 
         Integer imageId = jdbcTemplate.queryForObject(sql, Integer.class, image.getImageName(), image.getImageType(),
                 image.getImageData());
@@ -142,7 +138,7 @@ public class JdbcPotholeDao implements PotholeDao {
         pothole.setCategoryId(sqlRowSet.getInt("category_id"));
         pothole.setActive(sqlRowSet.getBoolean("active"));
         // TODO: CHECK ON THIS METHOD
-        pothole.setUploadTime(LocalDateTime.parse(sqlRowSet.getString("upload_time")));
+        pothole.setUploadTime(Timestamp.valueOf(sqlRowSet.getString("upload_time")));
 
         return pothole;
     }
