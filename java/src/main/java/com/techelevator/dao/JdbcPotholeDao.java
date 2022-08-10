@@ -136,8 +136,8 @@ public class JdbcPotholeDao implements PotholeDao {
         pothole.setAccountId(sqlRowSet.getInt("account_id"));
         pothole.setImageId(sqlRowSet.getInt("image_id"));
         pothole.setCategoryId(sqlRowSet.getInt("category_id"));
+        pothole.setStatusId(sqlRowSet.getInt("status_id"));
         pothole.setActive(sqlRowSet.getBoolean("active"));
-        // TODO: CHECK ON THIS METHOD
         pothole.setUploadTime(Timestamp.valueOf(sqlRowSet.getString("upload_time")));
 
         return pothole;
