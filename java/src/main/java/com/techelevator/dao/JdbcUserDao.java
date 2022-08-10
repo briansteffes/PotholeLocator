@@ -24,7 +24,7 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getUsers() {
         List<User> users = new ArrayList<>();
         String sql = "select * from users";
 
@@ -52,7 +52,7 @@ public class JdbcUserDao implements UserDao {
     public User getUserByUsername(String username) {
         if (username == null) throw new IllegalArgumentException("Username cannot be null");
 
-        for (User user : this.findAll()) {
+        for (User user : this.getUsers()) {
             if (user.getUsername().equalsIgnoreCase(username)) {
                 return user;
             }

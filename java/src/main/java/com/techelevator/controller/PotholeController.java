@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pothole")
-@PreAuthorize("isAuthorized()")
+@RequestMapping("/pothole/")
+//@PreAuthorize("isAuthenticated()"
 public class PotholeController {
 
     private final PotholeDao potholeDao;
@@ -29,14 +29,14 @@ public class PotholeController {
 //        this.userDao = userDao;
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     @PreAuthorize("permitAll")
     public List<Pothole> getAllPotholes() {
         return potholeDao.getPotholes();
     }
 
     @GetMapping("/{user}")
-    @PreAuthorize("hasRole('USER', 'EMPLOYEE')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EMPLOYEE')")
     public List<Pothole> getPotholeByUser(@PathVariable User user) {
         return potholeDao.getPotholesByUser(user);
     }
