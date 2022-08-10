@@ -74,3 +74,10 @@ export default {
   }
 };
 </script>
+
+<style>
+template {
+
+background-image: url("https://unsplash.com/photos/1NRkKOzoj-M") ;
+}
+</style>
