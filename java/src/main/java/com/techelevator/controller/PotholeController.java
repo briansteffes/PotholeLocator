@@ -14,29 +14,29 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pothole")
-@PreAuthorize("isAuthorized()")
+//@PreAuthorize("isAuthenticated()"
 public class PotholeController {
 
-    private PotholeDao potholeDao;
-    private UserAccountDao userAccountDao;
-    private UserDao userDao;
-    private Pothole pothole;
+    private final PotholeDao potholeDao;
+//    private final UserAccountDao userAccountDao;
+//    private final UserDao userDao;
+//    private Pothole pothole;
 
     public PotholeController(PotholeDao potholeDao, UserAccountDao userAccountDao,
                              UserDao userDao) {
         this.potholeDao = potholeDao;
-        this.userAccountDao = userAccountDao;
-        this.userDao = userDao;
+//        this.userAccountDao = userAccountDao;
+//        this.userDao = userDao;
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     @PreAuthorize("permitAll")
     public List<Pothole> getAllPotholes() {
         return potholeDao.getPotholes();
     }
 
     @GetMapping("/{user}")
-    @PreAuthorize("hasRole('USER', 'EMPLOYEE')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EMPLOYEE')")
     public List<Pothole> getPotholeByUser(@PathVariable User user) {
         return potholeDao.getPotholesByUser(user);
     }
@@ -74,8 +74,7 @@ public class PotholeController {
     @PutMapping("/update")
     @PreAuthorize("hasRole('EMPLOYEE')")
     public Pothole updateReport(@PathVariable Pothole pothole) {
-        Pothole updatedPothole = potholeDao.updatePothole(pothole);
-        return updatedPothole;
+        return potholeDao.updatePothole(pothole);
     }
 
     @PutMapping("/review/delete/{potholeId}")
