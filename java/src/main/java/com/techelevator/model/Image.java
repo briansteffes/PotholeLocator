@@ -4,8 +4,17 @@ public class Image {
     private int imageId;
     private String imageName;
     private String imageType;
-    // TODO: ASK ANTHONY ABOUT @LOB
+
     private byte[] imageData;
+
+    public Image(int imageId, String imageName, String imageType, byte[] imageData) {
+        this.imageId = imageId;
+        this.imageName = imageName;
+        this.imageType = imageType;
+        this.imageData = imageData;
+    }
+
+    public Image() {}
 
     public int getImageId() {
         return imageId;
