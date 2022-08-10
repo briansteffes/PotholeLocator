@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,10 +16,10 @@ import java.util.List;
 public class JdbcPotholeDaoTests extends BaseDaoTests {
 
     private JdbcPotholeDao sut;
-    private static final Pothole POTHOLE_1 = new Pothole(1, "33.6609 °N, 95.5555° W", "Test 1", 1, 1, 1, 1, true, Timestamp.valueOf("2022-08-09 05:13:20"));
-    private static final Pothole POTHOLE_2 = new Pothole(2, "34.6609 °N, 96.5555° W", "Test 2", 2, 2, 1, 1, true, Timestamp.valueOf("2022-08-09 05:13:21"));
-    private static final Pothole POTHOLE_3 = new Pothole(3, "35.6609 °N, 97.5555° W", "Test 3", 3, 3, 2, 1, true, Timestamp.valueOf("2022-08-09 05:13:22"));
-    private static final Pothole POTHOLE_4 = new Pothole(4, "36.6609 °N, 98.5555° W", "Test 4", 3, 4, 2, 1, false, Timestamp.valueOf("2022-08-09 05:13:23"));
+    private static final Pothole POTHOLE_1 = new Pothole(1, BigDecimal.valueOf(41.40338), BigDecimal.valueOf(2.17403), "Test 1", 1, 1, 1, 1, true, Timestamp.valueOf("2022-08-09 05:13:20"));
+    private static final Pothole POTHOLE_2 = new Pothole(2, BigDecimal.valueOf(42.40338), BigDecimal.valueOf(2.17403), "Test 2", 2, 2, 1, 1, true, Timestamp.valueOf("2022-08-09 05:13:21"));
+    private static final Pothole POTHOLE_3 = new Pothole(3, BigDecimal.valueOf(43.40338), BigDecimal.valueOf(2.27403), "Test 3", 3, 3, 2, 1, true, Timestamp.valueOf("2022-08-09 05:13:22"));
+    private static final Pothole POTHOLE_4 = new Pothole(4, BigDecimal.valueOf(44.40338), BigDecimal.valueOf(3.17403), "Test 4", 3, 4, 2, 1, false, Timestamp.valueOf("2022-08-09 05:13:23"));
 
     private Pothole testPothole;
     private Image testImage;
@@ -27,7 +28,7 @@ public class JdbcPotholeDaoTests extends BaseDaoTests {
     public void setup() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         sut = new JdbcPotholeDao(jdbcTemplate);
-        testPothole = new Pothole(5, "37.6609 °N, 99.5555° W", "Test 5", 2, 5, 2, 1, false, Timestamp.valueOf(LocalDateTime.now()));
+        testPothole = new Pothole(5, BigDecimal.valueOf(46.40338), BigDecimal.valueOf(2.17403), "Test 5", 2, 5, 2, 1, false, Timestamp.valueOf(LocalDateTime.now()));
         testImage = new Image(5, "testImage5", ".jpg", new byte[10]);
     }
 
@@ -65,7 +66,8 @@ public class JdbcPotholeDaoTests extends BaseDaoTests {
 
     private void assertPotholesMatch(Pothole expected, Pothole actual) {
         Assert.assertEquals(expected.getPotholeId(), actual.getPotholeId());
-        Assert.assertEquals(expected.getPotholeLocation(), actual.getPotholeLocation());
+        Assert.assertEquals(expected.getPotholeLat(), actual.getPotholeLat());
+        Assert.assertEquals(expected.getPotholeLong(), actual.getPotholeLong());
         Assert.assertEquals(expected.getPotholeName(), actual.getPotholeName());
         Assert.assertEquals(expected.getAccountId(), actual.getAccountId());
         Assert.assertEquals(expected.getImageId(), actual.getImageId());
