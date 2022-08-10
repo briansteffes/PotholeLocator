@@ -30,16 +30,23 @@ public class PotholeController {
     }
 
     @GetMapping("")
-    @PreAuthorize("permitAll")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public List<Pothole> getAllPotholes() {
         return potholeDao.getPotholes();
     }
 
-    @GetMapping("/{user}")
+    @GetMapping("/public")
+    @PreAuthorize("permitAll")
+    public List<Pothole> getAllPotholesPublic() {
+        return potholeDao.getPotholesPublic();
+    }
+
+    @GetMapping("/user/{user}")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EMPLOYEE')")
     public List<Pothole> getPotholeByUser(@PathVariable User user) {
         return potholeDao.getPotholesByUser(user);
     }
+
 
     @GetMapping("/{potholeId}")
     @PreAuthorize("permitAll")
@@ -47,11 +54,13 @@ public class PotholeController {
         return potholeDao.getPotholeById(potholeId);
     }
 
+    /*
     @GetMapping("/{potholeName}")
     @PreAuthorize("permitAll")
     public Pothole getPotholeById(@PathVariable String potholeName) {
         return potholeDao.getPotholeByName(potholeName);
     }
+
 
     @GetMapping("/{category}")
     @PreAuthorize("permitAll")
@@ -64,23 +73,30 @@ public class PotholeController {
     public Pothole getPotholesByLocation(@PathVariable String location) {
         return potholeDao.getPotholeByLocation(location);
     }
+     */
 
+    // TODO add in image parameter
     @PostMapping("/report")
-    @PreAuthorize("hasRole('USER', 'EMPLOYEE')")
-    public void addReport(@RequestBody Pothole pothole, Image image) {
-        Pothole newPothole = potholeDao.createPothole(pothole, image);
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE')")
+    public void addReport(@RequestBody Pothole pothole) {
+        Pothole newPothole = potholeDao.createPothole(pothole);
     }
 
-    @PutMapping("/update")
-    @PreAuthorize("hasRole('EMPLOYEE')")
-    public Pothole updateReport(@PathVariable Pothole pothole) {
+    @PutMapping("/{potholeId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public Pothole updateReport(@RequestBody Pothole pothole, @PathVariable int potholeId) {
         return potholeDao.updatePothole(pothole);
     }
 
-    @PutMapping("/review/delete/{potholeId}")
-    @PreAuthorize("hasRole('EMPLOYEE')")
-    public boolean markForDelete(@PathVariable int potholeId) {
-        // Review this.
-        return false;
+    @PutMapping("/delete/{potholeId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public Pothole markForDelete(@RequestBody Pothole pothole, @PathVariable int potholeId) {
+        return potholeDao.markForDelete(pothole);
+    }
+
+    @DeleteMapping("/{potholeId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public void deletePothole(@PathVariable int potholeId) {
+        potholeDao.deletePothole(potholeId);
     }
 }
