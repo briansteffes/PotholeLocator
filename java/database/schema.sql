@@ -44,7 +44,8 @@ CREATE TABLE categories (
 
 CREATE TABLE potholes (
         pothole_id SERIAL,
-        pothole_location varchar(40),
+        lat decimal(8,6),
+        long decimal(9,6),
         pothole_name varchar(40),
         account_id int,
         image_id int,

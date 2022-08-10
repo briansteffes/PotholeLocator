@@ -1,5 +1,6 @@
 package com.techelevator.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -7,8 +8,8 @@ public class Pothole {
 
     private int potholeId;
 
-    private String potholeLocation;
-
+    private BigDecimal potholeLat;
+    private BigDecimal potholeLong;
     private String potholeName;
     private int accountId;
     private int imageId;
@@ -17,10 +18,11 @@ public class Pothole {
     private boolean active;
     private Timestamp uploadTime;
 
-    public Pothole(int potholeId, String potholeLocation, String potholeName, int accountId, int imageId, int categoryId,
+    public Pothole(int potholeId, BigDecimal potholeLat, BigDecimal potholeLong, String potholeName, int accountId, int imageId, int categoryId,
                    int statusId, boolean active, Timestamp uploadTime) {
         this.potholeId = potholeId;
-        this.potholeLocation = potholeLocation;
+        this.potholeLat = potholeLat;
+        this.potholeLong = potholeLong;
         this.potholeName = potholeName;
         this.accountId = accountId;
         this.imageId = imageId;
@@ -39,12 +41,20 @@ public class Pothole {
         this.potholeId = potholeId;
     }
 
-    public String getPotholeLocation() {
-        return potholeLocation;
+    public BigDecimal getPotholeLat() {
+        return potholeLat;
     }
 
-    public void setPotholeLocation(String potholeLocation) {
-        this.potholeLocation = potholeLocation;
+    public void setPotholeLat(BigDecimal potholeLat) {
+        this.potholeLat = potholeLat;
+    }
+
+    public BigDecimal getPotholeLong() {
+        return potholeLong;
+    }
+
+    public void setPotholeLong(BigDecimal potholeLong) {
+        this.potholeLong = potholeLong;
     }
 
     public String getPotholeName() {
