@@ -35,6 +35,7 @@ public class PotholeController {
         return potholeDao.getPotholes();
     }
 
+    // @Todo: how can we restrict this to the user that is logged in? Or would that be something on the  front end?
     @GetMapping("/{user}")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EMPLOYEE')")
     public List<Pothole> getPotholeByUser(@PathVariable User user) {
@@ -66,7 +67,7 @@ public class PotholeController {
     }
 
     @PostMapping("/report")
-    @PreAuthorize("hasRole('USER', 'EMPLOYEE')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EMPLOYEE')")
     public void addReport(@RequestBody Pothole pothole, Image image) {
         Pothole newPothole = potholeDao.createPothole(pothole, image);
     }

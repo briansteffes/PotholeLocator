@@ -41,7 +41,7 @@ public class JdbcUserDao implements UserDao {
     public List<User> filterUsers(String filter) {
         List<User> users = new ArrayList<>();
         String sql = "select * from users where role = ?;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, filter);
         while(results.next()) {
             users.add(mapRowToUser(results));
         }
