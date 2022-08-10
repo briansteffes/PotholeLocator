@@ -13,10 +13,12 @@ public class Pothole {
     private int accountId;
     private int imageId;
     private int categoryId;
+    private int statusId;
     private boolean active;
     private Timestamp uploadTime;
 
-    public Pothole(int potholeId, String potholeLocation, String potholeName, int accountId, int imageId, int categoryId, boolean active, Timestamp uploadTime) {
+    public Pothole(int potholeId, String potholeLocation, String potholeName, int accountId, int imageId, int categoryId,
+                   int statusId, boolean active, Timestamp uploadTime) {
         this.potholeId = potholeId;
         this.potholeLocation = potholeLocation;
         this.potholeName = potholeName;
@@ -75,6 +77,14 @@ public class Pothole {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
     public boolean getActive() {
