@@ -1,5 +1,6 @@
 package com.techelevator.model;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Pothole {
@@ -10,11 +11,23 @@ public class Pothole {
 
     private String potholeName;
     private int accountId;
-    private int statusId;
     private int imageId;
     private int categoryId;
     private boolean active;
-    private LocalDateTime uploadTime;
+    private Timestamp uploadTime;
+
+    public Pothole(int potholeId, String potholeLocation, String potholeName, int accountId, int imageId, int categoryId, boolean active, Timestamp uploadTime) {
+        this.potholeId = potholeId;
+        this.potholeLocation = potholeLocation;
+        this.potholeName = potholeName;
+        this.accountId = accountId;
+        this.imageId = imageId;
+        this.categoryId = categoryId;
+        this.active = active;
+        this.uploadTime = uploadTime;
+    }
+
+    public Pothole() {}
 
     public int getPotholeId() {
         return potholeId;
@@ -23,7 +36,6 @@ public class Pothole {
     public void setPotholeId(int potholeId) {
         this.potholeId = potholeId;
     }
-
 
     public String getPotholeLocation() {
         return potholeLocation;
@@ -47,14 +59,6 @@ public class Pothole {
 
     public void setAccountId(int accountId) {
         this.accountId = accountId;
-    }
-
-    public int getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
     }
 
     public int getImageId() {
@@ -81,11 +85,11 @@ public class Pothole {
         this.active = active;
     }
 
-    public LocalDateTime getUploadTime() {
+    public Timestamp getUploadTime() {
         return uploadTime;
     }
 
-    public void setUploadTime(LocalDateTime uploadTime) {
+    public void setUploadTime(Timestamp uploadTime) {
         this.uploadTime = uploadTime;
     }
 }
