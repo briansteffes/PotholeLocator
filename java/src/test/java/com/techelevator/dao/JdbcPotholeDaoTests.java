@@ -15,10 +15,10 @@ import java.util.List;
 public class JdbcPotholeDaoTests extends BaseDaoTests {
 
     private JdbcPotholeDao sut;
-    private static final Pothole POTHOLE_1 = new Pothole(1, "33.6609 °N, 95.5555° W", "Test 1", 1, 1, 1, true, Timestamp.valueOf("2022-08-09 05:13:20"));
-    private static final Pothole POTHOLE_2 = new Pothole(2, "34.6609 °N, 96.5555° W", "Test 2", 2, 2, 1, true, Timestamp.valueOf("2022-08-09 05:13:21"));
-    private static final Pothole POTHOLE_3 = new Pothole(3, "35.6609 °N, 97.5555° W", "Test 3", 3, 3, 2, true, Timestamp.valueOf("2022-08-09 05:13:22"));
-    private static final Pothole POTHOLE_4 = new Pothole(4, "36.6609 °N, 98.5555° W", "Test 4", 3, 4, 2, false, Timestamp.valueOf("2022-08-09 05:13:23"));
+    private static final Pothole POTHOLE_1 = new Pothole(1, "33.6609 °N, 95.5555° W", "Test 1", 1, 1, 1, 1, true, Timestamp.valueOf("2022-08-09 05:13:20"));
+    private static final Pothole POTHOLE_2 = new Pothole(2, "34.6609 °N, 96.5555° W", "Test 2", 2, 2, 1, 1, true, Timestamp.valueOf("2022-08-09 05:13:21"));
+    private static final Pothole POTHOLE_3 = new Pothole(3, "35.6609 °N, 97.5555° W", "Test 3", 3, 3, 2, 1, true, Timestamp.valueOf("2022-08-09 05:13:22"));
+    private static final Pothole POTHOLE_4 = new Pothole(4, "36.6609 °N, 98.5555° W", "Test 4", 3, 4, 2, 1, false, Timestamp.valueOf("2022-08-09 05:13:23"));
 
     private Pothole testPothole;
     private Image testImage;
@@ -27,7 +27,7 @@ public class JdbcPotholeDaoTests extends BaseDaoTests {
     public void setup() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         sut = new JdbcPotholeDao(jdbcTemplate);
-        testPothole = new Pothole(5, "37.6609 °N, 99.5555° W", "Test 5", 2, 5, 2, false, Timestamp.valueOf(LocalDateTime.now()));
+        testPothole = new Pothole(5, "37.6609 °N, 99.5555° W", "Test 5", 2, 5, 2, 1, false, Timestamp.valueOf(LocalDateTime.now()));
         testImage = new Image(5, "testImage5", ".jpg", new byte[10]);
     }
 
@@ -71,6 +71,7 @@ public class JdbcPotholeDaoTests extends BaseDaoTests {
         Assert.assertEquals(expected.getImageId(), actual.getImageId());
         Assert.assertEquals(expected.getCategoryId(), actual.getCategoryId());
         Assert.assertEquals(expected.getActive(), actual.getActive());
+        Assert.assertEquals(expected.getStatusId(), actual.getStatusId());
         Assert.assertTrue(expected.getUploadTime().toLocalDateTime().compareTo(actual.getUploadTime().toLocalDateTime()) < 1);
     }
 }

@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS potholes, categories, images, user_accounts, users;
+DROP TABLE IF EXISTS potholes, categories, statuses, images, user_accounts, users;
 
 CREATE TABLE users (
 	user_id SERIAL,
@@ -30,6 +30,12 @@ CREATE TABLE images (
         CONSTRAINT PK_image_id PRIMARY KEY (image_id)
 );
 
+CREATE TABLE statuses (
+        status_id serial NOT NULL,
+        status_desc varchar(20),
+        CONSTRAINT PK_status_id PRIMARY KEY (status_id)
+);
+
 CREATE TABLE categories (
         category_id serial NOT NULL,
 	category_desc varchar(10) NOT NULL,
@@ -43,12 +49,14 @@ CREATE TABLE potholes (
         account_id int,
         image_id int,
         category_id int,
+        status_id int,
         active boolean,
         upload_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT PK_pothole_id PRIMARY KEY (pothole_id),
         CONSTRAINT FK_account_id FOREIGN KEY (account_id) REFERENCES user_accounts(account_id),
-        CONSTRAINT image_id FOREIGN KEY (image_id) REFERENCES images(image_id),
-        CONSTRAINT category_id FOREIGN KEY (category_id) REFERENCES categories(category_id)
+        CONSTRAINT FK_image_id FOREIGN KEY (image_id) REFERENCES images(image_id),
+        CONSTRAINT FK_category_id FOREIGN KEY (category_id) REFERENCES categories(category_id),
+        CONSTRAINT FK_status_id FOREIGN KEY (status_id) REFERENCES statuses(status_id)
 );
 
 COMMIT TRANSACTION;
