@@ -13,18 +13,21 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/pothole")
+//@PreAuthorize("isAuthenticated()"
 public class PotholeController {
 
     private final PotholeDao potholeDao;
-    private final UserAccountDao userAccountDao;
+//    private final UserAccountDao userAccountDao;
 //    private final UserDao userDao;
 //    private Pothole pothole;
 
-    public PotholeController(PotholeDao potholeDao, UserAccountDao userAccountDao) {
+    public PotholeController(PotholeDao potholeDao, UserAccountDao userAccountDao,
+                             UserDao userDao) {
         this.potholeDao = potholeDao;
-        this.userAccountDao = userAccountDao;
+//        this.userAccountDao = userAccountDao;
 //        this.userDao = userDao;
     }
 
@@ -33,45 +36,65 @@ public class PotholeController {
         return potholeDao.getPotholes();
     }
 
-    // @Todo: how can we restrict this to the user that is logged in? Or would that be something on the  front end?
-    @GetMapping("/user")
+    @GetMapping("/public")
+    public List<Pothole> getAllPotholesPublic() {
+        return potholeDao.getPotholesPublic();
+    }
+
+    @GetMapping("/user/")
     public List<Pothole> getPotholeByUser(Principal principal) {
         return potholeDao.getPotholesByUsername(principal.getName());
     }
+
 
     @GetMapping("/{potholeId}")
     public Pothole getPotholeById(@PathVariable int potholeId) {
         return potholeDao.getPotholeById(potholeId);
     }
 
-    @GetMapping("/filter/{potholeName}")
+    /*
+    @GetMapping("/{potholeName}")
+    @PreAuthorize("permitAll")
     public Pothole getPotholeById(@PathVariable String potholeName) {
         return potholeDao.getPotholeByName(potholeName);
     }
 
-    @GetMapping("/category/{category}")
+
+    @GetMapping("/{category}")
+    @PreAuthorize("permitAll")
     public List<Pothole> getPotholesByCategory(@PathVariable Category category) {
         return potholeDao.getPotholesByCategory(category);
     }
 
-    @GetMapping("/location/{location}")
+    @GetMapping("/{location}")
+    @PreAuthorize("permitAll")
     public Pothole getPotholesByLocation(@PathVariable String location) {
         return potholeDao.getPotholeByLocation(location);
     }
+     */
 
+    // TODO add in image parameter
     @PostMapping("/report")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE')")
     public void addReport(@RequestBody Pothole pothole) {
         Pothole newPothole = potholeDao.createPothole(pothole);
     }
 
-    @PutMapping("/update")
-    public Pothole updateReport(@RequestBody Pothole pothole) {
+    @PutMapping("/{potholeId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public Pothole updateReport(@RequestBody Pothole pothole, @PathVariable int potholeId) {
         return potholeDao.updatePothole(pothole);
     }
 
-    @PutMapping("/review/delete/{potholeId}")
-    public boolean markForDelete(@PathVariable int potholeId) {
-        // Review this.
-        return false;
+    @PutMapping("/delete/{potholeId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public Pothole markForDelete(@RequestBody Pothole pothole, @PathVariable int potholeId) {
+        return potholeDao.markForDelete(pothole);
+    }
+
+    @DeleteMapping("/{potholeId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public void deletePothole(@PathVariable int potholeId) {
+        potholeDao.deletePothole(potholeId);
     }
 }
