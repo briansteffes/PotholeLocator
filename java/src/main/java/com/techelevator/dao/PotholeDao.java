@@ -9,12 +9,25 @@ import java.util.List;
 
 public interface PotholeDao {
     List<Pothole> getPotholes();
-    List<Pothole> getPotholesByUser(User user);
+
+    List<Pothole> getPotholesPublic();
+
+    List<Pothole> getPotholesByUsername(String username);
+
     Pothole getPotholeById(int potholeId);
+
     Pothole getPotholeByName(String potholeName);
+
     List<Pothole> getPotholesByCategory(Category category);
+
     Pothole getPotholeByLocation(String location);
-    Pothole createPothole(Pothole pothole, Image image);
+
+    // TODO: Add in image parameter
+    Pothole createPothole(Pothole pothole);
+
     Pothole updatePothole(Pothole pothole);
+
+    Pothole markForDelete(Pothole pothole);
+
     void deletePothole(int potholeId);
 }

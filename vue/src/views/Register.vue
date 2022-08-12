@@ -24,12 +24,47 @@
         v-model="user.password"
         required
       />
+       <label for="confirmPassword" class="sr-only">Confirm Password</label>
       <input
         type="password"
         id="confirmPassword"
         class="form-control"
         placeholder="Confirm Password"
         v-model="user.confirmPassword"
+        required
+      />
+      <label for="first-name" class="sr-only">First Name</label>
+      <input
+        id="first-name"
+        class="form-control"
+        placeholder="First Name"
+        v-model="user.firstName"
+        required
+      />
+      <label for="last-name" class="sr-only">Last Name</label>
+      <input
+        id="last-name"
+        class="form-control"
+        placeholder="Last Name"
+        v-model="user.lastName"
+        required
+      />
+      <label for="email" class="sr-only">Email</label>
+      <input
+        type="email"
+        id="email"
+        class="form-control"
+        placeholder="Email"
+        v-model="user.email"
+        required
+      />
+
+       <label for="phoneNumber" class="sr-only">Phone Number</label>
+        <input
+        id="phoneNumber"
+        class="form-control"
+        placeholder="Phone Number"
+        v-model="user.phoneNumber"
         required
       />
       <router-link :to="{ name: 'login' }">Have an account?</router-link>
@@ -52,6 +87,8 @@ export default {
         password: '',
         confirmPassword: '',
         role: 'user',
+        firstName: '',
+        lastName: ''
       },
       registrationErrors: false,
       registrationErrorMsg: 'There were problems registering this user.',
@@ -59,14 +96,14 @@ export default {
   },
   methods: {
     register() {
-      if (this.user.password != this.user.confirmPassword) {
+      if (this.user.password !== this.user.confirmPassword) {
         this.registrationErrors = true;
         this.registrationErrorMsg = 'Password & Confirm Password do not match.';
       } else {
         authService
           .register(this.user)
           .then((response) => {
-            if (response.status == 201) {
+            if (response.status === 201) {
               this.$router.push({
                 path: '/login',
                 query: { registration: 'success' },

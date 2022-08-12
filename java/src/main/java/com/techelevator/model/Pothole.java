@@ -1,17 +1,37 @@
 package com.techelevator.model;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Pothole {
 
     private int potholeId;
-    private String potholeLocation;
+
+    private BigDecimal potholeLat;
+    private BigDecimal potholeLong;
     private String potholeName;
     private int accountId;
     private int imageId;
     private int categoryId;
+    private int statusId;
     private boolean active;
-    private LocalDateTime uploadTime;
+    private Timestamp uploadTime;
+
+    public Pothole(int potholeId, BigDecimal potholeLat, BigDecimal potholeLong, String potholeName, int accountId, int imageId, int categoryId,
+                   int statusId, boolean active, Timestamp uploadTime) {
+        this.potholeId = potholeId;
+        this.potholeLat = potholeLat;
+        this.potholeLong = potholeLong;
+        this.potholeName = potholeName;
+        this.accountId = accountId;
+        this.imageId = imageId;
+        this.categoryId = categoryId;
+        this.active = active;
+        this.uploadTime = uploadTime;
+    }
+
+    public Pothole() {}
 
     public int getPotholeId() {
         return potholeId;
@@ -21,12 +41,20 @@ public class Pothole {
         this.potholeId = potholeId;
     }
 
-    public String getPotholeLocation() {
-        return potholeLocation;
+    public BigDecimal getPotholeLat() {
+        return potholeLat;
     }
 
-    public void setPotholeLocation(String potholeLocation) {
-        this.potholeLocation = potholeLocation;
+    public void setPotholeLat(BigDecimal potholeLat) {
+        this.potholeLat = potholeLat;
+    }
+
+    public BigDecimal getPotholeLong() {
+        return potholeLong;
+    }
+
+    public void setPotholeLong(BigDecimal potholeLong) {
+        this.potholeLong = potholeLong;
     }
 
     public String getPotholeName() {
@@ -61,6 +89,14 @@ public class Pothole {
         this.categoryId = categoryId;
     }
 
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+
     public boolean getActive() {
         return active;
     }
@@ -69,11 +105,11 @@ public class Pothole {
         this.active = active;
     }
 
-    public LocalDateTime getUploadTime() {
+    public Timestamp getUploadTime() {
         return uploadTime;
     }
 
-    public void setUploadTime(LocalDateTime uploadTime) {
+    public void setUploadTime(Timestamp uploadTime) {
         this.uploadTime = uploadTime;
     }
 }

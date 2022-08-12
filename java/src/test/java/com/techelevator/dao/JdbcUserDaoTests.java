@@ -25,35 +25,35 @@ public class JdbcUserDaoTests extends BaseDaoTests {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void findIdByUsername_given_null_throws_exception() {
-        sut.findIdByUsername(null);
+    public void getUserIdByUsername_given_null_throws_exception() {
+        sut.getUserIdByUsername(null);
     }
 
     @Test(expected = UsernameNotFoundException.class)
-    public void findIdByUsername_given_invalid_username_throws_exception() {
-        sut.findIdByUsername("invalid");
+    public void getUserIdByUsername_given_invalid_username_throws_exception() {
+        sut.getUserIdByUsername("invalid");
     }
 
     @Test
-    public void findIdByUsername_given_valid_user_returns_user_id() {
-        int actualUserId = sut.findIdByUsername(USER_1.getUsername());
+    public void getUserIdByUsername_given_valid_user_returns_user_id() {
+        int actualUserId = sut.getUserIdByUsername(USER_1.getUsername());
 
         Assert.assertEquals(USER_1.getId(), actualUserId);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void findByUsername_given_null_throws_exception() {
-        sut.findByUsername(null);
+    public void getUserByUsername_given_null_throws_exception() {
+        sut.getUserByUsername(null);
     }
 
     @Test(expected = UsernameNotFoundException.class)
-    public void findByUsername_given_invalid_username_throws_exception() {
-        sut.findByUsername("invalid");
+    public void getUserByUsername_given_invalid_username_throws_exception() {
+        sut.getUserByUsername("invalid");
     }
 
     @Test
-    public void findByUsername_given_valid_user_returns_user() {
-        User actualUser = sut.findByUsername(USER_1.getUsername());
+    public void getUserByUsername_given_valid_user_returns_user() {
+        User actualUser = sut.getUserByUsername(USER_1.getUsername());
 
         Assert.assertEquals(USER_1, actualUser);
     }
@@ -71,8 +71,8 @@ public class JdbcUserDaoTests extends BaseDaoTests {
     }
 
     @Test
-    public void findAll_returns_all_users() {
-        List<User> users = sut.findAll();
+    public void getUsers_returns_all_users() {
+        List<User> users = sut.getUsers();
 
         Assert.assertNotNull(users);
         Assert.assertEquals(3, users.size());
@@ -104,7 +104,7 @@ public class JdbcUserDaoTests extends BaseDaoTests {
 
         Assert.assertTrue(userWasCreated);
 
-        User actualUser = sut.findByUsername(newUser.getUsername());
+        User actualUser = sut.getUserByUsername(newUser.getUsername());
         newUser.setId(actualUser.getId());
 
         actualUser.setPassword(newUser.getPassword()); // reset password back to unhashed password for testing
