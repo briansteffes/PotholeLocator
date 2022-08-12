@@ -10,8 +10,10 @@ import com.techelevator.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/pothole")
 //@PreAuthorize("isAuthenticated()"
@@ -30,26 +32,22 @@ public class PotholeController {
     }
 
     @GetMapping("")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public List<Pothole> getAllPotholes() {
         return potholeDao.getPotholes();
     }
 
     @GetMapping("/public")
-    @PreAuthorize("permitAll")
     public List<Pothole> getAllPotholesPublic() {
         return potholeDao.getPotholesPublic();
     }
 
-    @GetMapping("/user/{user}")
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EMPLOYEE')")
-    public List<Pothole> getPotholeByUser(@PathVariable User user) {
-        return potholeDao.getPotholesByUser(user);
+    @GetMapping("/user/")
+    public List<Pothole> getPotholeByUser(Principal principal) {
+        return potholeDao.getPotholesByUsername(principal.getName());
     }
 
 
     @GetMapping("/{potholeId}")
-    @PreAuthorize("permitAll")
     public Pothole getPotholeById(@PathVariable int potholeId) {
         return potholeDao.getPotholeById(potholeId);
     }
