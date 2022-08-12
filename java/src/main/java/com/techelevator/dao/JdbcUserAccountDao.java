@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.UserAccount;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Component
 public class JdbcUserAccountDao implements UserAccountDao {
