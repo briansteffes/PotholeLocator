@@ -18,14 +18,13 @@ import java.util.List;
 public class PotholeController {
 
     private final PotholeDao potholeDao;
-//    private final UserAccountDao userAccountDao;
+    private final UserAccountDao userAccountDao;
 //    private final UserDao userDao;
 //    private Pothole pothole;
 
-    public PotholeController(PotholeDao potholeDao, UserAccountDao userAccountDao,
-                             UserDao userDao) {
+    public PotholeController(PotholeDao potholeDao, UserAccountDao userAccountDao) {
         this.potholeDao = potholeDao;
-//        this.userAccountDao = userAccountDao;
+        this.userAccountDao = userAccountDao;
 //        this.userDao = userDao;
     }
 
@@ -68,13 +67,13 @@ public class PotholeController {
 
     @PostMapping("/report")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EMPLOYEE')")
-    public void addReport(@RequestBody Pothole pothole, Image image) {
-        Pothole newPothole = potholeDao.createPothole(pothole, image);
+    public void addReport(@RequestBody Pothole pothole) {
+        Pothole newPothole = potholeDao.createPothole(pothole);
     }
 
     @PutMapping("/update")
     @PreAuthorize("hasRole('EMPLOYEE')")
-    public Pothole updateReport(@PathVariable Pothole pothole) {
+    public Pothole updateReport(@RequestBody Pothole pothole) {
         return potholeDao.updatePothole(pothole);
     }
 
