@@ -44,13 +44,13 @@ public class JdbcPotholeDao implements PotholeDao {
     }
 
     @Override
-    public List<Pothole> getPotholesByUser(User user) {
+    public List<Pothole> getPotholesByUsername(String username) {
         List<Pothole> potholes = new ArrayList<>();
         String sql = "SELECT * FROM potholes p " +
             "JOIN user_accounts ua ON p.account_id = ua.account_id " +
             "JOIN users u ON u.user_id = ua.user_id " +
-            "WHERE u.user_id = ?;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user.getId());
+            "WHERE u.username = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
         while (results.next()) {
             potholes.add(mapRowToPothole(results));
         }
