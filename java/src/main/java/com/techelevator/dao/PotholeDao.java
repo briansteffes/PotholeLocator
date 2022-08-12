@@ -12,7 +12,7 @@ public interface PotholeDao {
 
     List<Pothole> getPotholesPublic();
 
-    List<Pothole> getPotholesByUser(User user);
+    List<Pothole> getPotholesByUsername(String username);
 
     Pothole getPotholeById(int potholeId);
 
