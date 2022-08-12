@@ -33,10 +33,8 @@
         v-model="user.confirmPassword"
         required
       />
-<<<<<<< HEAD
       <label for="first-name" class="sr-only">First Name</label>
       <input
-        type="first-name"
         id="first-name"
         class="form-control"
         placeholder="First Name"
@@ -45,7 +43,6 @@
       />
       <label for="last-name" class="sr-only">Last Name</label>
       <input
-        type="last-name"
         id="last-name"
         class="form-control"
         placeholder="Last Name"
@@ -54,19 +51,6 @@
       />
       <label for="email" class="sr-only">Email</label>
       <input
-=======
-     <label for="fullName" class="sr-only">Full Name</label>
-        <input
-        type="fullName"
-        id="fullName"
-        class="form-control"
-        placeholder="Full Name"
-        v-model="user.fullName"
-        required
-      />
-       <label for="email" class="sr-only">Email</label>
-        <input
->>>>>>> b127687d23bed60688e6408bcc397a09f2706ba5
         type="email"
         id="email"
         class="form-control"
@@ -74,23 +58,13 @@
         v-model="user.email"
         required
       />
-<<<<<<< HEAD
-      <label for="phone" class="sr-only">Phone</label>
-      <input
-        type="phone"
-        id="phone"
-        class="form-control"
-        placeholder="Phone"
-        v-model="user.phone"
-=======
+
        <label for="phoneNumber" class="sr-only">Phone Number</label>
         <input
-        type="phoneNumber"
         id="phoneNumber"
         class="form-control"
         placeholder="Phone Number"
         v-model="user.phoneNumber"
->>>>>>> b127687d23bed60688e6408bcc397a09f2706ba5
         required
       />
       <router-link :to="{ name: 'login' }">Have an account?</router-link>
@@ -113,6 +87,8 @@ export default {
         password: '',
         confirmPassword: '',
         role: 'user',
+        firstName: '',
+        lastName: ''
       },
       registrationErrors: false,
       registrationErrorMsg: 'There were problems registering this user.',
@@ -120,14 +96,14 @@ export default {
   },
   methods: {
     register() {
-      if (this.user.password != this.user.confirmPassword) {
+      if (this.user.password !== this.user.confirmPassword) {
         this.registrationErrors = true;
         this.registrationErrorMsg = 'Password & Confirm Password do not match.';
       } else {
         authService
           .register(this.user)
           .then((response) => {
-            if (response.status == 201) {
+            if (response.status === 201) {
               this.$router.push({
                 path: '/login',
                 query: { registration: 'success' },
