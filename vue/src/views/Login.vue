@@ -12,27 +12,33 @@
         role="alert"
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
-      <label for="username" class="sr-only">Username</label>
-      <input
-        type="text"
-        id="username"
-        class="form-control"
-        placeholder="Username"
-        v-model="user.username"
-        required
-        autofocus
-      />
-      <label for="password" class="sr-only">Password</label>
-      <input
-        type="password"
-        id="password"
-        class="form-control"
-        placeholder="Password"
-        v-model="user.password"
-        required
-      />
-      <router-link :to="{ name: 'register' }">Need an account?</router-link>
-      <button type="submit">Sign in</button>
+      <div>
+        <input
+          type="text"
+          id="username"
+          class="form-control"
+          placeholder="Username"
+          v-model="user.username"
+          required
+          autofocus
+        />
+      </div>
+      <div>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          placeholder="Password"
+          v-model="user.password"
+          required
+        />
+      </div>
+      <div>
+        <router-link :to="{ name: 'register' }">Need an account?</router-link>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </div>
     </form>
   </div>
 </template>
@@ -76,8 +82,41 @@ export default {
 </script>
 
 <style>
-template {
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Racing+Sans+One&display=swap');
 
-background-image: url("https://unsplash.com/photos/1NRkKOzoj-M") ;
+* {
+  background: #00123d;
+}
+
+h1 {
+  font-family: Racing Sans One;
+  color: #edd83d;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
+  margin: auto;
+  width: 500px;
+}
+
+.form-control {
+  border: 2px solid #5C8DFF;
+  border-radius: 40px;
+  margin-bottom: 25px;
+  padding-left: 15px;
+  font-style: oblique;
+}
+
+.btn-primary {
+  width: 500px;
+  font-family: Montserrat;
+  font-weight: 900;
+  background: #0043e0;
+  letter-spacing: 2px;
+  border: 2px solid #5C8DFF;
+  border-radius: 40px;
+  margin-top: 25px;
 }
 </style>

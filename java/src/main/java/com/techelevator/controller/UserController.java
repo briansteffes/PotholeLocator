@@ -45,5 +45,4 @@ public class UserController {
         return userDao.filterUsers(role);
     }
 
-
 }
