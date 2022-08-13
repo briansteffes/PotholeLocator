@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Report</h1>
+        <h1>Submit Claim</h1>
         <report-form />
     </div>
 </template>
