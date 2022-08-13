@@ -1,18 +1,12 @@
 package com.techelevator.dao;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
-import org.springframework.test.context.TestPropertySource;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -33,8 +27,6 @@ public class TestingDatabaseConfig {
             Objects.requireNonNullElse(System.getenv("DB_NAME"), "final_capstone");
     private static final String DB_USER =
             Objects.requireNonNullElse(System.getenv("DB_USER"), "postgres");
-
-
     // TODO: wire database password variable from the "application-test.properties"
 //    @Value("${spring.datasource.password}")
 //    private static String dbPassword;
