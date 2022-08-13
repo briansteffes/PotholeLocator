@@ -5,72 +5,92 @@
       <div class="alert alert-danger" role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
-      <label for="username" class="sr-only">Username</label>
-      <input
-        type="text"
-        id="username"
-        class="form-control"
-        placeholder="Username"
-        v-model="user.username"
-        required
-        autofocus
-      />
-      <label for="password" class="sr-only">Password</label>
-      <input
-        type="password"
-        id="password"
-        class="form-control"
-        placeholder="Password"
-        v-model="user.password"
-        required
-      />
-       <label for="confirmPassword" class="sr-only">Confirm Password</label>
-      <input
-        type="password"
-        id="confirmPassword"
-        class="form-control"
-        placeholder="Confirm Password"
-        v-model="user.confirmPassword"
-        required
-      />
-      <label for="first-name" class="sr-only">First Name</label>
-      <input
-        id="first-name"
-        class="form-control"
-        placeholder="First Name"
-        v-model="user.firstName"
-        required
-      />
-      <label for="last-name" class="sr-only">Last Name</label>
-      <input
-        id="last-name"
-        class="form-control"
-        placeholder="Last Name"
-        v-model="user.lastName"
-        required
-      />
-      <label for="email" class="sr-only">Email</label>
-      <input
-        type="email"
-        id="email"
-        class="form-control"
-        placeholder="Email"
-        v-model="user.email"
-        required
-      />
-
-       <label for="phoneNumber" class="sr-only">Phone Number</label>
+      <div>
+        <label for="username" class="sr-only">Username</label>
         <input
-        id="phoneNumber"
-        class="form-control"
-        placeholder="Phone Number"
-        v-model="user.phoneNumber"
-        required
-      />
-      <router-link :to="{ name: 'login' }">Have an account?</router-link>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">
-        Create Account
-      </button>
+          type="text"
+          id="username"
+          class="form-control"
+          placeholder="Username"
+          v-model="user.username"
+          required
+          autofocus
+        />
+      </div>
+      <div>
+        <label for="password" class="sr-only">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          placeholder="Password"
+          v-model="user.password"
+          required
+        />
+      </div>
+      <div>
+        <label for="confirmPassword" class="sr-only">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          class="form-control"
+          placeholder="Confirm Password"
+          v-model="user.confirmPassword"
+          required
+        />
+      </div>
+
+
+      <!-- Split below into CreateAccount -->
+      <div>
+        <label for="first-name" class="sr-only">First Name</label>
+        <input
+          id="first-name"
+          class="form-control"
+          placeholder="First Name"
+          v-model="user.firstName"
+          required
+        />
+      </div>
+      <div>
+        <label for="last-name" class="sr-only">Last Name</label>
+        <input
+          id="last-name"
+          class="form-control"
+          placeholder="Last Name"
+          v-model="user.lastName"
+          required
+        />
+      </div>
+      <div>
+        <label for="email" class="sr-only">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          placeholder="Email"
+          v-model="user.email"
+          required
+        />
+      </div>
+      <div>
+        <label for="phoneNumber" class="sr-only">Phone Number</label>
+          <input
+          id="phoneNumber"
+          class="form-control"
+          placeholder="Phone Number"
+          v-model="user.phoneNumber"
+          required
+        />
+      </div>
+      <div>
+        <router-link :to="{ name: 'login' }">Have an account?</router-link>
+      </div>
+      <div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">
+          Create Account
+        </button>  
+      </div>      
     </form>
   </div>
 </template>
