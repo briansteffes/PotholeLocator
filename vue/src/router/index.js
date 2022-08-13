@@ -5,6 +5,9 @@ import Login from '../views/Login.vue'
 import Logout from '../views/Logout.vue'
 import Register from '../views/Register.vue'
 import store from '../store/index'
+import ViewPothole from '../views/ViewPothole.vue'
+import ReportPothole from '../views/ReportPothole.vue'
+import SubmitClaim from '../views/SubmitClaim.vue'
 
 Vue.use(Router)
 
@@ -49,6 +52,30 @@ const router = new Router({
       path: "/register",
       name: "register",
       component: Register,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
+      path: "/view-pothole",
+      name: "ViewPothole",
+      component: ViewPothole,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
+      path: "/report-pothole",
+      name: "ReportPothole",
+      component: ReportPothole,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
+      path: "/submit-claim",
+      name: "SubmitClaim",
+      component: SubmitClaim,
       meta: {
         requiresAuth: false
       }
