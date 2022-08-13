@@ -132,8 +132,7 @@ export default {
       registrationErrorMsg: 'There were problems registering this user.',
       accountCreationErrors: false,
       accountCreationErrorMsg: 'There were problems creating an account for this user.',
-      firstPage: true,
-      formComplete: false
+      firstPage: true
     };
   },
   methods: {
@@ -147,25 +146,12 @@ export default {
         this.accountCreationErrorMsg = 'There were problems creating an account for this user.';
       }
     },
-    checkRegistrationForm() {
-      if (this.user.username !== '' && this.user.password !== '' && this.user.confirmPassword !== '') {
-        this.formComplete = true;
-      } else {
-        this.formComplete = false;
-      }
-    },
     flipPage() {
-      this.checkRegistrationForm();
-      if (this.formComplete === false) {
+      if (this.user.password !== this.user.confirmPassword) {
         this.registrationErrors = true;
-        this.registrationErrorMsg = 'Please fill out all fields.';
+        this.registrationErrorMsg = 'Password & Confirm Password do not match.';
       } else {
-        if (this.user.password !== this.user.confirmPassword) {
-          this.registrationErrors = true;
-          this.registrationErrorMsg = 'Password & Confirm Password do not match.';
-        } else {
-          this.register();
-        }
+        this.register();
       }
     },
     register() {
@@ -187,10 +173,8 @@ export default {
       return true;
     },
     createAccountInfo() {
-      if (this.userAccount.userId === '' || this.userAccount.firstName === '' || this.userAccount.lastName === '' || this.userAccount.email === '' || this.userAccount.phone === '') {
-        this.accountCreationErrors = true;
-        this.accountCreationErrorMsg = 'Please fill out all fields.';
-      } else if (!this.registrationErrors) {
+      this.isPhoneNumberValid();
+      if (!this.registrationErrors) {
         accountService
         .createAccount(this.userAccount)
         .then((response) => {
