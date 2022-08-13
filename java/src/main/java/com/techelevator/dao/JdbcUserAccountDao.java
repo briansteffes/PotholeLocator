@@ -44,10 +44,10 @@ public class JdbcUserAccountDao implements UserAccountDao {
 
     @Override
     public UserAccount createUserAccount(UserAccount userAccount) {
-        String sql = "INSERT INTO user_accounts(user_id, f_name, l_name, email, phone, flagged) " +
-                "VALUES(?, ?, ?, ?, ?, ?) RETURNING account_id;";
+        String sql = "INSERT INTO user_accounts(user_id, f_name, l_name, email, phone) " +
+                "VALUES(?, ?, ?, ?, ?) RETURNING account_id;";
         Integer accountId = jdbcTemplate.queryForObject(sql, Integer.class, userAccount.getUserId(),
-                userAccount.getFirstName(), userAccount.getLastName(), userAccount.getEmail(), userAccount.getPhone(), userAccount.isFlagged());
+                userAccount.getFirstName(), userAccount.getLastName(), userAccount.getEmail(), userAccount.getPhone());
 
         return getUserAccountByAccountId(accountId);
     }
