@@ -1,6 +1,6 @@
 <template>
   <div id="register" class="text-center">
-    <form class="form-register" v-if="firstPage">
+    <form class="form-register" v-if="firstPage" @submit.prevent="flipPage">
       <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
       <div class="alert alert-danger" role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
@@ -40,7 +40,7 @@
         />
       </div>
       <div>
-        <button class="btn btn-lg btn-primary btn-block" @click.prevent="flipPage">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">
           Continue
         </button>  
       </div>
@@ -48,7 +48,7 @@
         <router-link :to="{ name: 'login' }">Have an account?</router-link>
       </div>  
     </form>
-    <form class="form-register" v-if="!firstPage">
+    <form class="form-register" v-if="!firstPage" @submit.prevent="createAccountInfo">
       <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
       <div class="alert alert-danger" role="alert" v-if="accountCreationErrors">
         {{ accountCreationErrorMsg }}
@@ -87,16 +87,19 @@
       <div>
         <label for="phone" class="sr-only">Phone Number</label>
           <input
-          type="number"
+          type="text"
+          pattern="[0-9]+"
+          maxlength="10"
           id="phone"
           class="form-control"
           placeholder="Phone Number"
           v-model="userAccount.phone"
+          v-on:change="isPhoneNumberValid"
           required
         />
       </div>
       <div>
-        <button class="btn btn-lg btn-primary btn-block" @click.prevent="createAccountInfo">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">
           Submit
         </button>  
       </div>            
@@ -134,7 +137,17 @@ export default {
     };
   },
   methods: {
-    checkForm() {
+    isPhoneNumberValid() {
+      const phoneRe = /[0-9]+/;
+      if (!phoneRe.test(this.userAccount.phone)) {
+        this.accountCreationErrors = true;
+        this.accountCreationErrorMsg = 'Please enter only 10 digits for your phone number.';
+      } else {
+        this.accountCreationErrors = false;
+        this.accountCreationErrorMsg = 'There were problems creating an account for this user.';
+      }
+    },
+    checkRegistrationForm() {
       if (this.user.username !== '' && this.user.password !== '' && this.user.confirmPassword !== '') {
         this.formComplete = true;
       } else {
@@ -142,7 +155,7 @@ export default {
       }
     },
     flipPage() {
-      this.checkForm();
+      this.checkRegistrationForm();
       if (this.formComplete === false) {
         this.registrationErrors = true;
         this.registrationErrorMsg = 'Please fill out all fields.';
@@ -174,7 +187,11 @@ export default {
       return true;
     },
     createAccountInfo() {
-      accountService
+      if (this.userAccount.userId === '' || this.userAccount.firstName === '' || this.userAccount.lastName === '' || this.userAccount.email === '' || this.userAccount.phone === '') {
+        this.accountCreationErrors = true;
+        this.accountCreationErrorMsg = 'Please fill out all fields.';
+      } else if (!this.registrationErrors) {
+        accountService
         .createAccount(this.userAccount)
         .then((response) => {
           if (response.status === 201) {
@@ -191,6 +208,7 @@ export default {
             this.accountCreationErrorMsg = 'Bad Request: Account Registration Error';
           }
         });
+      }
     },
     clearErrors() {
       this.registrationErrors = false;
