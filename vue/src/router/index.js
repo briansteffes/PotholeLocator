@@ -69,7 +69,7 @@ const router = new Router({
       name: "ReportPothole",
       component: ReportPothole,
       meta: {
-        requiresAuth: false
+        requiresAuth: true
       }
     },
     {
@@ -77,7 +77,7 @@ const router = new Router({
       name: "SubmitClaim",
       component: SubmitClaim,
       meta: {
-        requiresAuth: false
+        requiresAuth: true
       }
     }
   ]

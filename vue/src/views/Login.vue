@@ -13,7 +13,6 @@
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
       <div>
-        <label for="username" class="sr-only">Username</label>
         <input
           type="text"
           id="username"
@@ -25,7 +24,6 @@
         />
       </div>
       <div>
-        <label for="password" class="sr-only">Password</label>
         <input
           type="password"
           id="password"
@@ -39,7 +37,7 @@
         <router-link :to="{ name: 'register' }">Need an account?</router-link>
       </div>
       <div>
-        <button type="submit">Sign in</button>
+        <button type="submit" class="btn btn-primary">Sign in</button>
       </div>
     </form>
   </div>
@@ -84,8 +82,41 @@ export default {
 </script>
 
 <style>
-template {
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Racing+Sans+One&display=swap');
 
-background-image: url("https://unsplash.com/photos/1NRkKOzoj-M") ;
+* {
+  background: #00123d;
+}
+
+h1 {
+  font-family: Racing Sans One;
+  color: #edd83d;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
+  margin: auto;
+  width: 500px;
+}
+
+.form-control {
+  border: 2px solid #5C8DFF;
+  border-radius: 40px;
+  margin-bottom: 25px;
+  padding-left: 15px;
+  font-style: oblique;
+}
+
+.btn-primary {
+  width: 500px;
+  font-family: Montserrat;
+  font-weight: 900;
+  background: #0043e0;
+  letter-spacing: 2px;
+  border: 2px solid #5C8DFF;
+  border-radius: 40px;
+  margin-top: 25px;
 }
 </style>

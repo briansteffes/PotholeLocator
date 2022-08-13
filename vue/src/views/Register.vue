@@ -6,7 +6,6 @@
         {{ registrationErrorMsg }}
       </div>
       <div>
-        <label for="username" class="sr-only">Username</label>
         <input
           type="text"
           id="username"
@@ -18,7 +17,6 @@
         />
       </div>
       <div>
-        <label for="password" class="sr-only">Password</label>
         <input
           type="password"
           id="password"
@@ -29,7 +27,6 @@
         />
       </div>
       <div>
-        <label for="confirmPassword" class="sr-only">Confirm Password</label>
         <input
           type="password"
           id="confirmPassword"
@@ -54,7 +51,6 @@
         {{ accountCreationErrorMsg }}
       </div>
       <div>
-        <label for="first-name" class="sr-only">First Name</label>
         <input
           id="first-name"
           class="form-control"
@@ -64,7 +60,6 @@
         />
       </div>
       <div>
-        <label for="last-name" class="sr-only">Last Name</label>
         <input
           id="last-name"
           class="form-control"
@@ -74,7 +69,6 @@
         />
       </div>
       <div>
-        <label for="email" class="sr-only">Email</label>
         <input
           type="email"
           id="email"
@@ -85,7 +79,6 @@
         />
       </div>
       <div>
-        <label for="phone" class="sr-only">Phone Number</label>
           <input
           type="text"
           pattern="[0-9]+"
