@@ -16,7 +16,7 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("/pothole")
-//@PreAuthorize("isAuthenticated()"
+//@PreAuthorize("isAuthenticated()")
 public class PotholeController {
 
     private final PotholeDao potholeDao;
