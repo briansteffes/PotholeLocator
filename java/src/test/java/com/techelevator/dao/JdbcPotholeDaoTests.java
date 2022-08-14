@@ -74,7 +74,6 @@ public class JdbcPotholeDaoTests extends BaseDaoTests {
         Assert.assertEquals(expected.getCategoryId(), actual.getCategoryId());
         Assert.assertEquals(expected.getActive(), actual.getActive());
         Assert.assertEquals(expected.getStatusId(), actual.getStatusId());
-//        Assert.assertEquals(expected.getUploadTime(), actual.getUploadTime());
         Assert.assertTrue(expected.getUploadTime().toLocalDateTime().compareTo(actual.getUploadTime().toLocalDateTime()) < 1);
     }
 }
