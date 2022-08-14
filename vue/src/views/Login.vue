@@ -12,32 +12,34 @@
         role="alert"
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
-      <div>
-        <input
-          type="text"
-          id="username"
-          class="form-control"
-          placeholder="Username"
-          v-model="user.username"
-          required
-          autofocus
-        />
-      </div>
-      <div>
-        <input
-          type="password"
-          id="password"
-          class="form-control"
-          placeholder="Password"
-          v-model="user.password"
-          required
-        />
+      <div class="login">
+        <div>
+          <input
+            type="text"
+            id="username"
+            class="form-control"
+            placeholder="Username"
+            v-model="user.username"
+            required
+            autofocus
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            placeholder="Password"
+            v-model="user.password"
+            required
+          />
+        </div>
       </div>
       <div>
         <router-link :to="{ name: 'register' }">Need an account?</router-link>
       </div>
       <div>
-        <button type="submit" class="btn btn-primary">Sign in</button>
+        <button type="submit" class="btn btn-primary">log in</button>
       </div>
     </form>
   </div>
@@ -96,7 +98,7 @@ h1 {
 .login {
   display: flex;
   flex-direction: column;
-  padding-top: 100px;
+  padding-top: 75px;
   margin: auto;
   width: 500px;
 }
@@ -106,7 +108,6 @@ h1 {
   border-radius: 40px;
   margin-bottom: 25px;
   padding-left: 15px;
-  font-style: oblique;
 }
 
 .btn-primary {
@@ -118,5 +119,18 @@ h1 {
   border: 2px solid #5C8DFF;
   border-radius: 40px;
   margin-top: 25px;
+}
+
+::-webkit-input-placeholder {
+   font-style: italic;
+}
+:-moz-placeholder {
+   font-style: italic;  
+}
+::-moz-placeholder {
+   font-style: italic;  
+}
+:-ms-input-placeholder {  
+   font-style: italic; 
 }
 </style>
