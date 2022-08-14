@@ -1,13 +1,13 @@
 <template>
   <div class="home">
     <h1>Recent Potholes Reported in Paris, Texas</h1>
-    <div>
+    <div class="button-container menu-button">
       <router-link :to="{ name: 'ViewPothole' }">View All Potholes</router-link>
     </div>
-    <div>
+    <div class="button-container menu-button">
       <router-link :to="{ name: 'ReportPothole' }">Report a Pothole</router-link>  
     </div>
-    <div>
+    <div class="button-container submit-button">
       <router-link :to="{ name: 'SubmitClaim' }">Submit a Damage Claim</router-link>
     </div>
   </div>
@@ -18,3 +18,47 @@ export default {
   name: "home"
 };
 </script>
+
+<style scoped>
+
+  .home {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .menu-button {
+    background-color: #0d6efd;
+  }
+
+  .menu-button a {
+    color: #fffffe;
+    background-color: #0d6efd;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .button-container {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    margin: 1em;
+    padding: 1em;
+    text-align: center;
+    width: 24em;
+    border-radius: 3em;
+  }
+
+  .submit-button {
+    background-color: rgba(64, 249, 155);
+  }
+
+  .submit-button a {
+    color: #00123d;
+    background-color: rgba(64, 249, 155);
+  }
+
+</style>
