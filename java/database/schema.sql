@@ -23,7 +23,7 @@ CREATE TABLE user_accounts (
 );
 
 CREATE TABLE images (
-        image_id SERIAL,
+        image_id SERIAL not null,
         image_name varchar(40),
         image_type varchar(40),
         image_data bytea,
