@@ -20,18 +20,16 @@ public class TestingDatabaseConfig {
     // To use an existing PostgreSQL database, set the following environment variables.
     // Otherwise, a temporary database will be created on the local machine.
     private static final String DB_HOST =
-            Objects.requireNonNullElse(System.getenv("DB_HOST"), "spot-hole-dev-test-db.cqmldehdzadg.us-west-1.rds.amazonaws.com");
+            Objects.requireNonNullElse(System.getenv("DB_HOST"), "localhost");
     private static final String DB_PORT =
             Objects.requireNonNullElse(System.getenv("DB_PORT"), "5432");
     private static final String DB_NAME =
-            Objects.requireNonNullElse(System.getenv("DB_NAME"), "final_capstone");
+            Objects.requireNonNullElse(System.getenv("DB_NAME"), "final_capstone_test");
     private static final String DB_USER =
             Objects.requireNonNullElse(System.getenv("DB_USER"), "postgres");
-    // TODO: wire database password variable from the "application-test.properties"
-//    @Value("${spring.datasource.password}")
-//    private static String dbPassword;
     private static final String DB_PASSWORD =
-            Objects.requireNonNullElse(System.getenv("DB_PASSWORD"), "ea2-GfBC9Z.h-sV-uYua");
+            Objects.requireNonNullElse(System.getenv("DB_PASSWORD"), "postgres1");
+
 
 
     private SingleConnectionDataSource adminDataSource;
