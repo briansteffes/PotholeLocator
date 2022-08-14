@@ -2,21 +2,11 @@
   <div id="pothole-list">
       <br>
       <h2>Filter</h2>
-      <table id="filter">
-        <tbody>
-            <tr>
-                <td>
-                    <input type="text" id="potholeNameFilter" v-model="filter.potholeName" placeholder="Name" />
-                </td>
-                <td>
-                    <input type="text" id="potholeLatFilter" v-model="filter.potholeLat" placeholder="Lat" />
-                </td>
-                <td>
-                    <input type="text" id="potholeLongFilter" v-model="filter.potholeLong" placeholder="Long" />
-                </td>
-            </tr>
-        </tbody>
-      </table>
+      <div id="filter">
+        <input type="text" id="potholeNameFilter" v-model="filter.potholeName" placeholder="Name" />
+        <input type="text" id="potholeLatFilter" v-model="filter.potholeLat" placeholder="Lat" />
+        <input type="text" id="potholeLongFilter" v-model="filter.potholeLong" placeholder="Long" />
+      </div>
     <div id="pothole-container">
         <div v-for="pothole in filteredList" v-bind:key="pothole.id">
             <div class="pothole-info">
@@ -183,7 +173,8 @@ input {
 }
 
 #filter {
-    width: 24em;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .pothole-table {
