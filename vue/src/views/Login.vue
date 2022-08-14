@@ -37,7 +37,7 @@
         <router-link :to="{ name: 'register' }">Need an account?</router-link>
       </div>
       <div>
-        <button type="submit" class="btn btn-primary">Sign in</button>
+        <button type="submit" class="btn btn-primary">log in</button>
       </div>
     </form>
   </div>
@@ -106,7 +106,6 @@ h1 {
   border-radius: 40px;
   margin-bottom: 25px;
   padding-left: 15px;
-  font-style: oblique;
 }
 
 .btn-primary {
@@ -118,5 +117,18 @@ h1 {
   border: 2px solid #5C8DFF;
   border-radius: 40px;
   margin-top: 25px;
+}
+
+::-webkit-input-placeholder {
+   font-style: italic;
+}
+:-moz-placeholder {
+   font-style: italic;  
+}
+::-moz-placeholder {
+   font-style: italic;  
+}
+:-ms-input-placeholder {  
+   font-style: italic; 
 }
 </style>
