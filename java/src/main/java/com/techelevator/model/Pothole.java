@@ -29,6 +29,7 @@ public class Pothole {
         this.categoryId = categoryId;
         this.active = active;
         this.uploadTime = uploadTime;
+        this.statusId = statusId;
     }
 
     public Pothole() {}

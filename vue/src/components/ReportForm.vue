@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="report">
         <p class="status-message error" v-show="errorMsg !== ''">{{errorMsg}}</p>
         <form @submit.prevent="submitPothole">
             <div>
@@ -102,10 +102,16 @@ export default {
     background-color: #fffffe;
     border: 1px solid #fffffe;
     border-radius: .3em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+form, button {
+    width: 28em;
 }
 
 p {
     color: #fffffe;
+    font-family: 'Montserrat', sans-serif;
 }
 
 </style>
