@@ -6,8 +6,8 @@ export default {
         return axios.get('/pothole');
     },
 
-    createPothole() {
-        return axios.post('/pothole/report')
+    createPothole(pothole) {
+        return axios.post('/pothole/report' + pothole);
     },
 
     list(pothole) {

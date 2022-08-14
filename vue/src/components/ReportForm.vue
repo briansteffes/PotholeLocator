@@ -1,5 +1,6 @@
 <template>
     <div>
+        <p class="status-message error" v-show="errorMsg !== ''">{{errorMsg}}</p>
         <form @submit.prevent="submitPothole">
             <div>
                 <input
@@ -35,7 +36,7 @@
                 />
             </div>
             <div>
-                <button @click.prevent="uploadImage">Attach Photo</button>
+                <button @click.prevent="uploadImage" class="photo-button">Attach Photo</button>
             </div>
             <div>
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -45,6 +46,7 @@
 </template>
 
 <script>
+import potholeService from '../services/PotholeService';
 export default {
     name: "report-form",
     // components: {
@@ -64,11 +66,46 @@ export default {
     methods: {
         uploadImage() {
             console.log('test!');
+        },
+        submitPothole() {
+            potholeService
+            .createPothole(this.pothole)
+            .then(response => {
+                if (response.status === 201) {
+                    this.$router.push({
+                    path: '/view-pothole',
+                    query: { registration: 'success' },
+                    });
+                }
+            })
+            .catch(error => {
+                this.handleErrorResponse(error, "adding");
+            })
+        },
+        handleErrorResponse(error, verb) {
+        if (error.response) {
+            this.errorMsg = `Error ${verb} card. Response received was ${error.response.statusText}.`;
+        } else if (error.request) {
+            this.errorMsg = `Error ${verb} card. Server could not be reached.`;
+        } else {
+            this.errorMsg = `Error ${verb} card. Request could not be created.`;
         }
+    }
     }
 }
 </script>
 
-<style>
+<style scoped>
+
+.photo-button {
+    color: #0d6efd;
+    background-color: #fffffe;
+    border: 1px solid #fffffe;
+    border-radius: .3em;
+}
+
+p {
+    color: #fffffe;
+}
 
 </style>
