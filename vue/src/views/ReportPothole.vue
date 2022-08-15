@@ -1,7 +1,6 @@
 <template>
     <div>
-        <h1>Report</h1>
-        <report-form />
+      <report-form />
     </div>
 </template>
 
@@ -14,5 +13,4 @@ export default {
 </script>
 
 <style>
-
 </style>

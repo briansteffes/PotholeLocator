@@ -1,5 +1,4 @@
 <template>
-
   <pothole-list />
 </template>
 
