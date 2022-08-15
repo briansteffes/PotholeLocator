@@ -79,7 +79,7 @@ public class PotholeController {
     @PostMapping("/report")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE')")
     public void addReport(@RequestBody Pothole pothole) {
-        Pothole newPothole = potholeDao.createPothole(pothole);
+        potholeDao.createPothole(pothole);
     }
 
     @PutMapping("/{potholeId}")
