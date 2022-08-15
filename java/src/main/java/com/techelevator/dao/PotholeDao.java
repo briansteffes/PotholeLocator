@@ -22,7 +22,7 @@ public interface PotholeDao {
     Pothole getPotholeByLocation(String location);
 
     // TODO: Add in image parameter
-    Pothole createPothole(Pothole pothole);
+    void createPothole(Pothole pothole);
 
     void updatePothole(Pothole pothole);
 
