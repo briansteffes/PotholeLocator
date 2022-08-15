@@ -1,16 +1,16 @@
 INSERT INTO user_accounts(user_id, f_name, l_name, email, phone)
 VALUES((SELECT user_id FROM users WHERE username = 'paris_resident'), 'Amanda', 'Yellow', 'paris@gmail.com', 1112223333);
 
-INSERT INTO images (image_name, image_type, image_data)
-VALUES('bad_pothole', '.jpg', pg_read_binary_file('C:\Users\Student\Pictures\potholes\bad_pothole.jpg'));
-INSERT INTO images (image_name, image_type, image_data)
-VALUES('uhh_pothole', '.jpg', pg_read_binary_file('C:\Users\Student\Pictures\potholes\uhh_pothole.jpg'));
-INSERT INTO images (image_name, image_type, image_data)
-VALUES('ugly_pothole', '.jpg', pg_read_binary_file('C:\Users\Student\Pictures\potholes\ugly_pothole.jpg'));
-INSERT INTO images (image_name, image_type, image_data)
-VALUES('yikes_pothole', '.jpg', pg_read_binary_file('C:\Users\Student\Pictures\potholes\yikes_pothole.jpg'));
-INSERT INTO images (image_name, image_type, image_data)
-VALUES('minor_pothole', '.jpg', pg_read_binary_file('C:\Users\Student\Pictures\potholes\uhh_pothole.jpg'));
+INSERT INTO images (image_name, image_type)
+VALUES('bad_pothole', '.jpg');
+INSERT INTO images (image_name, image_type)
+VALUES('uhh_pothole', '.jpg');
+INSERT INTO images (image_name, image_type)
+VALUES('ugly_pothole', '.jpg');
+INSERT INTO images (image_name, image_type)
+VALUES('yikes_pothole', '.jpg');
+INSERT INTO images (image_name, image_type)
+VALUES('minor_pothole', '.jpg');
 
 INSERT INTO categories(category_desc) VALUES('Major');
 INSERT INTO categories(category_desc) VALUES('Minor');
