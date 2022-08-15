@@ -8,7 +8,7 @@
         <input type="text" id="potholeLongFilter" v-model="filter.potholeLong" placeholder="Long" />
       </div>
     <div id="pothole-container">
-        <div v-for="pothole in filteredList" v-bind:key="pothole.potholeName">
+        <div v-for="pothole in filteredList" v-bind:key="pothole.uploadTime">
             <div class="pothole-info">
                 <h2>{{pothole.potholeName}}</h2>
                 <img src="https://media.istockphoto.com/photos/pot-hole-picture-id174662203?k=20&m=174662203&s=612x612&w=0&h=pcvejYWQ1S43k-VG4J5x36ikro37hRzQS-Ms7Lmgwkw=">
@@ -19,7 +19,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Lat:</p></td><td><p>{{pothole.potholeLat}}</p></td>
+                        <td class="right-align"><p>Lat:</p></td><td><p>{{pothole.potholeLat}}</p></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -27,7 +27,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Long:</p></td><td><p>{{pothole.potholeLong}}</p></td>
+                        <td class="right-align"><p>Long:</p></td><td><p>{{pothole.potholeLong}}</p></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -35,7 +35,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Active:</p></td><td><p>{{pothole.active}}</p></td>
+                        <td class="right-align"><p>Active:</p></td><td><p>{{pothole.active}}</p></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -43,7 +43,7 @@
                         </td>
                     </tr>
                                         <tr>
-                        <td><p>Category:</p></td><td><p>{{pothole.category}}</p></td>
+                        <td class="right-align"><p>Category:</p></td><td><p>{{pothole.category}}</p></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -51,7 +51,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Status:</p></td><td><p>{{pothole.status}}</p></td>
+                        <td class="right-align"><p>Status:</p></td><td><p>{{pothole.status}}</p></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -59,7 +59,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Reported on:</p></td><td><p>{{formatTime(pothole.uploadTime)}}</p></td>
+                        <td class="right-align"><p>Reported on:</p></td><td><p>{{formatTime(pothole.uploadTime)}}</p></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -67,7 +67,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Reported by:</p></td><td><p>{{pothole.username}}</p></td>
+                        <td class="right-align"><p>Reported by:</p></td><td><p>{{pothole.username}}</p></td>
                     </tr>
                 </table>
             </div>
@@ -216,6 +216,10 @@ input {
 
 hr {
     margin: 0;
+}
+
+.right-align {
+    text-align: right;
 }
 
 </style>

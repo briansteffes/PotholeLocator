@@ -5,6 +5,7 @@ import com.techelevator.dao.UserAccountDao;
 import com.techelevator.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.techelevator.model.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,6 +74,7 @@ public class PotholeController {
 
 
     // TODO add in image parameter
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/report")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE')")
     public void addReport(@RequestBody Pothole pothole) {
