@@ -1,12 +1,15 @@
 <template>
   <div id="pothole-list">
-      <br>
-      <h2>Filter</h2>
-      <div id="filter">
-        <input type="text" id="potholeNameFilter" v-model="filter.potholeName" placeholder="Name" />
-        <input type="text" id="potholeLatFilter" v-model="filter.potholeLat" placeholder="Lat" />
-        <input type="text" id="potholeLongFilter" v-model="filter.potholeLong" placeholder="Long" />
-      </div>
+    <br>
+    <h2>Filter</h2>
+    <div id="filter">
+      <input type="text" id="potholeNameFilter" v-model="filter.potholeName" placeholder="Name" />
+      <input type="text" id="potholeLatFilter" v-model="filter.potholeLat" placeholder="Lat" />
+      <input type="text" id="potholeLongFilter" v-model="filter.potholeLong" placeholder="Long" />
+    </div>
+    <div id="container">
+      <div id="mapContainer"></div>
+    </div>
     <div id="pothole-container">
         <div v-for="pothole in filteredList" v-bind:key="pothole.potholeName">
             <div class="pothole-info">
@@ -78,6 +81,8 @@
 
 <script>
 import potholeService from '../services/PotholeService';
+import "leaflet/dist/leaflet.css"
+import L from "leaflet"
 // import PotholeDetails from '@/components/PotholeDetails';
 
 export default {
@@ -94,10 +99,23 @@ export default {
                 potholeName: '',
                 potholeLat: '',
                 potholeLong: ''
-            }
+            },
+            map_center: [33.66099201430402, -95.5567548693612]
         };
     },
     methods: {
+        setupLeafletMap: function () {
+          const mapDiv = L.map("mapContainer").setView(this.map_center, 13);
+          L.tileLayer(
+            "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+            {
+              attribution: 'Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
+              maxZoom: 18,
+              id: "mapbox/streets-v11",
+              accessToken: "pk.eyJ1IjoiYnJhaW4tc3RlZmZlcyIsImEiOiJjbDZxb2I4ZGEwZm1iM3FweTR2eTI0a2pmIn0.Ypd_EaTjrLDBEifw3QL1YQ"
+            }
+          ).addTo(mapDiv)
+        },
         formatTime(time) {
             const year = time.substring(0, 4);
             const month = time.substring(5, 7);
@@ -118,6 +136,9 @@ export default {
                     }
                 });
         }
+    },
+    mounted() {
+      this.setupLeafletMap();
     },
     created() {
         this.retrievePotholes();
@@ -149,6 +170,7 @@ export default {
         }
     }
 }
+
 </script>
 
 <style scoped>
@@ -216,6 +238,11 @@ input {
 
 hr {
     margin: 0;
+}
+
+#mapContainer {
+  width: 80vw;
+  height: 100vh;
 }
 
 </style>
