@@ -2,6 +2,7 @@ package com.techelevator.controller;
 
 import com.techelevator.dao.UserAccountDao;
 import com.techelevator.dao.UserDao;
+import com.techelevator.model.User;
 import com.techelevator.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,12 @@ public class UserAccountController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createUserAccount(@RequestBody UserAccount userAccount) {
         userAccountDao.createUserAccount(userAccount);
+    }
+
+    @GetMapping("/access/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserAccount getUserAccountFromUserId(@PathVariable int id) {
+        return userAccountDao.getUserAccountByUserId(id);
     }
 
 }

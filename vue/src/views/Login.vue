@@ -77,7 +77,7 @@ export default {
           if (response.status === 401) {
             this.invalidCredentials = true;
           }
-        });
+        });              
     }
   }
 };

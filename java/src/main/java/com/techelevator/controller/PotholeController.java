@@ -3,11 +3,8 @@ package com.techelevator.controller;
 import com.techelevator.dao.PotholeDao;
 import com.techelevator.dao.UserAccountDao;
 import com.techelevator.dao.UserDao;
-import com.techelevator.model.Category;
-import com.techelevator.model.Image;
-import com.techelevator.model.Pothole;
-import com.techelevator.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.techelevator.model.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,15 +24,20 @@ public class PotholeController {
         this.potholeDao = potholeDao;
     }
 
+//    @GetMapping("")
+//    public List<Pothole> getAllPotholes() {
+//        return potholeDao.getPotholes();
+//    }
+
     @GetMapping("")
-    public List<Pothole> getAllPotholes() {
-        return potholeDao.getPotholes();
+    public List<PotholeDTO> getAllPotholeDTOs() {
+        return potholeDao.getPotholeDTOs();
     }
 
-    @GetMapping("/public")
-    public List<Pothole> getAllPotholesPublic() {
-        return potholeDao.getPotholesPublic();
-    }
+//    @GetMapping("/public")
+//    public List<Pothole> getAllPotholesPublic() {
+//        return potholeDao.getPotholesPublic();
+//    }
 
     @GetMapping("/user/")
     public List<Pothole> getPotholeByUser(Principal principal) {

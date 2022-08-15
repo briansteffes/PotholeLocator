@@ -7,15 +7,15 @@ export default {
     },
 
     createPothole(pothole) {
-        return axios.post('/pothole/report' + pothole);
+        return axios.post('/pothole/report', pothole);
     },
 
     list(pothole) {
-        return axios.get('/pothole/' + pothole.Id);
+        return axios.get('/pothole/', pothole.Id);
     },
 
     listLocation(location) {
-        return axios.get('/pothole/' + location);
+        return axios.get('/pothole/', location);
     },
 
     // listReport(report) {
