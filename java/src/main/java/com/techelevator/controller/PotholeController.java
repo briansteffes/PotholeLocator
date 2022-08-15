@@ -3,6 +3,7 @@ package com.techelevator.controller;
 import com.techelevator.dao.PotholeDao;
 import com.techelevator.dao.UserAccountDao;
 import com.techelevator.dao.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.techelevator.model.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +18,10 @@ import java.util.List;
 public class PotholeController {
 
     private final PotholeDao potholeDao;
-//    private final UserAccountDao userAccountDao;
-//    private final UserDao userDao;
-//    private Pothole pothole;
 
-    public PotholeController(PotholeDao potholeDao, UserAccountDao userAccountDao,
-                             UserDao userDao) {
+    @Autowired
+    public PotholeController(PotholeDao potholeDao) {
         this.potholeDao = potholeDao;
-//        this.userAccountDao = userAccountDao;
-//        this.userDao = userDao;
     }
 
 //    @GetMapping("")
@@ -75,6 +71,7 @@ public class PotholeController {
     }
      */
 
+
     // TODO add in image parameter
     @PostMapping("/report")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE')")
@@ -85,7 +82,8 @@ public class PotholeController {
     @PutMapping("/{potholeId}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public Pothole updateReport(@RequestBody Pothole pothole, @PathVariable int potholeId) {
-        return potholeDao.updatePothole(pothole);
+        potholeDao.updatePothole(pothole);
+        return getPotholeById(potholeId);
     }
 
     @PutMapping("/delete/{potholeId}")
