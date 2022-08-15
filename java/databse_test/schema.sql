@@ -12,6 +12,7 @@ drop table if exists pothole_measurements;
 drop table if exists pothole_categories;
 drop table if exists pothole_service_statuses;
 drop table if exists pothole_images;
+drop table if exists pothole_severity_levels;
 
 create table users (
     user_id serial constraint user_pk primary key,
@@ -121,7 +122,9 @@ create table pothole_severity_levels (
     pothole_id int not null references potholes(pothole_id),
     severity_level_id int not null references severity_levels(level_id),
     severity_updated timestamp not null default current_timestamp
-)
+);
+
+commit transaction;
 
 
 
