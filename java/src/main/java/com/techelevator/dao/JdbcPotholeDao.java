@@ -2,10 +2,12 @@ package com.techelevator.dao;
 
 import com.techelevator.model.Category;
 import com.techelevator.model.Pothole;
+import com.techelevator.model.PotholeDTO;
 import com.techelevator.model.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+import org.springframework.util.SerializationUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -23,7 +25,15 @@ public class JdbcPotholeDao implements PotholeDao {
     @Override
     public List<Pothole> getPotholes() {
         List<Pothole> potholes = new ArrayList<>();
-        String sql = "SELECT * FROM potholes;";
+        String sql = "SELECT lat\n" +
+                "long\n" +
+                "pothole_name\n" +
+                "account_id\n" +
+                "image_id\n" +
+                "category_id\n" +
+                "status_id\n" +
+                "active\n" +
+                "upload_time FROM potholes;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while (results.next()) {
             potholes.add(mapRowToPothole(results));
@@ -32,16 +42,32 @@ public class JdbcPotholeDao implements PotholeDao {
     }
 
     @Override
-    public List<Pothole> getPotholesPublic() {
-        List<Pothole> potholes = new ArrayList<>();
-        String sql =
-            "SELECT pothole_id, lat, long, pothole_name, image_id, category_id FROM potholes;";
+    public List<PotholeDTO> getPotholeDTOs() {
+        List<PotholeDTO> potholeDTOs = new ArrayList<>();
+        String sql = "SELECT p.lat, p.long, p.pothole_name, u.username, i.image_data, c.category_desc, s.status_desc, p.active, p.upload_time FROM potholes p " +
+                "JOIN user_accounts a ON p.account_id = a.account_id " +
+                "JOIN users u ON a.user_id = u.user_id " +
+                "JOIN images i ON p.image_id = i.image_id " +
+                "JOIN statuses s ON p.status_id = s.status_id " +
+                "JOIN categories c ON p.category_id = c.category_id;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while (results.next()) {
-            potholes.add(mapRowToPotholePublic(results));
+            potholeDTOs.add(mapRowToPotholeDTO(results));
         }
-        return potholes;
+        return potholeDTOs;
     }
+
+//    @Override
+//    public List<Pothole> getPotholesPublic() {
+//        List<Pothole> potholes = new ArrayList<>();
+//        String sql =
+//            "SELECT pothole_id, lat, long, pothole_name, image_id, category_id FROM potholes;";
+//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+//        while (results.next()) {
+//            potholes.add(mapRowToPotholePublic(results));
+//        }
+//        return potholes;
+//    }
 
     @Override
     public List<Pothole> getPotholesByUsername(String username) {
@@ -102,7 +128,7 @@ public class JdbcPotholeDao implements PotholeDao {
     }
 
     @Override
-    public Pothole createPothole(Pothole pothole) {
+    public void createPothole(Pothole pothole) {
         // TODO: Implement this
         /*
         String sql = "INSERT INTO images(image_name, image_type, image_data) " +
@@ -112,16 +138,22 @@ public class JdbcPotholeDao implements PotholeDao {
                 image.getImageData());
          */
 
-        String sqlTwo = "INSERT INTO potholes(lat, long, pothole_name, account_id, " +
-            "image_id, category_id, status_id, active) " +
-            "VALUES(?, ?, ?, ?, ?, ?, ?, ?) RETURNING pothole_id;";
+//        String sqlTwo = "INSERT INTO potholes(lat, long, pothole_name, account_id, " +
+//            "image_id, category_id, status_id, active) " +
+//            "VALUES(?, ?, ?, ?, ?, ?, ?, ?) RETURNING pothole_id;";
+//
+//        Integer potholeId =
+//            jdbcTemplate.queryForObject(sqlTwo, Integer.class, pothole.getPotholeLat(),
+//                pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId(), pothole.getImageId(), pothole.getCategoryId(),
+//                pothole.getStatusId(), pothole.getActive());
+
+        String sqlTwo = "INSERT INTO potholes(lat, long, pothole_name, account_id) " +
+                "VALUES(?, ?, ?, ?) RETURNING pothole_id;";
 
         Integer potholeId =
-            jdbcTemplate.queryForObject(sqlTwo, Integer.class, pothole.getPotholeLat(),
-                pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId(), 1, pothole.getCategoryId(),
-                pothole.getStatusId(), pothole.getActive());
+                jdbcTemplate.queryForObject(sqlTwo, Integer.class, pothole.getPotholeLat(),
+                        pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId());
 
-        return getPotholeById(potholeId);
     }
 
     @Override
@@ -178,17 +210,33 @@ public class JdbcPotholeDao implements PotholeDao {
         return pothole;
     }
 
-    private Pothole mapRowToPotholePublic(SqlRowSet sqlRowSet) {
-        Pothole pothole = new Pothole();
+    private PotholeDTO mapRowToPotholeDTO(SqlRowSet sqlRowSet) {
+        PotholeDTO potholeDTO = new PotholeDTO();
 
-        pothole.setPotholeId(sqlRowSet.getInt("pothole_id"));
-        pothole.setPotholeLat(sqlRowSet.getBigDecimal("lat"));
-        pothole.setPotholeLong(sqlRowSet.getBigDecimal("long"));
-        pothole.setPotholeName(sqlRowSet.getString("pothole_name"));
-        pothole.setImageId(sqlRowSet.getInt("image_id"));
-        pothole.setCategoryId(sqlRowSet.getInt("category_id"));
+        potholeDTO.setPotholeLat(sqlRowSet.getBigDecimal("lat"));
+        potholeDTO.setPotholeLong(sqlRowSet.getBigDecimal("long"));
+        potholeDTO.setPotholeName(sqlRowSet.getString("pothole_name"));
+        potholeDTO.setUsername(sqlRowSet.getString("username"));
+        potholeDTO.setImageData(SerializationUtils.serialize(sqlRowSet.getObject("image_data")));
+        potholeDTO.setCategory(sqlRowSet.getString("category_desc"));
+        potholeDTO.setStatus(sqlRowSet.getString("status_desc"));
+        potholeDTO.setActive(sqlRowSet.getBoolean("active"));
+        potholeDTO.setUploadTime(sqlRowSet.getTimestamp("upload_time"));
 
-        return pothole;
+        return potholeDTO;
     }
+
+//    private Pothole mapRowToPotholePublic(SqlRowSet sqlRowSet) {
+//        Pothole pothole = new Pothole();
+//
+//        pothole.setPotholeId(sqlRowSet.getInt("pothole_id"));
+//        pothole.setPotholeLat(sqlRowSet.getBigDecimal("lat"));
+//        pothole.setPotholeLong(sqlRowSet.getBigDecimal("long"));
+//        pothole.setPotholeName(sqlRowSet.getString("pothole_name"));
+//        pothole.setImageId(sqlRowSet.getInt("image_id"));
+//        pothole.setCategoryId(sqlRowSet.getInt("category_id"));
+//
+//        return pothole;
+//    }
 
 }

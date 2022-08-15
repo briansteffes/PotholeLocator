@@ -3,10 +3,7 @@ package com.techelevator.controller;
 import com.techelevator.dao.PotholeDao;
 import com.techelevator.dao.UserAccountDao;
 import com.techelevator.dao.UserDao;
-import com.techelevator.model.Category;
-import com.techelevator.model.Image;
-import com.techelevator.model.Pothole;
-import com.techelevator.model.User;
+import com.techelevator.model.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,15 +28,20 @@ public class PotholeController {
 //        this.userDao = userDao;
     }
 
+//    @GetMapping("")
+//    public List<Pothole> getAllPotholes() {
+//        return potholeDao.getPotholes();
+//    }
+
     @GetMapping("")
-    public List<Pothole> getAllPotholes() {
-        return potholeDao.getPotholes();
+    public List<PotholeDTO> getAllPotholeDTOs() {
+        return potholeDao.getPotholeDTOs();
     }
 
-    @GetMapping("/public")
-    public List<Pothole> getAllPotholesPublic() {
-        return potholeDao.getPotholesPublic();
-    }
+//    @GetMapping("/public")
+//    public List<Pothole> getAllPotholesPublic() {
+//        return potholeDao.getPotholesPublic();
+//    }
 
     @GetMapping("/user/")
     public List<Pothole> getPotholeByUser(Principal principal) {
@@ -77,7 +79,7 @@ public class PotholeController {
     @PostMapping("/report")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE')")
     public void addReport(@RequestBody Pothole pothole) {
-        Pothole newPothole = potholeDao.createPothole(pothole);
+        potholeDao.createPothole(pothole);
     }
 
     @PutMapping("/{potholeId}")

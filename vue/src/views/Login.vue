@@ -77,15 +77,13 @@ export default {
           if (response.status === 401) {
             this.invalidCredentials = true;
           }
-        });
+        });              
     }
   }
 };
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Racing+Sans+One&display=swap');
-
 * {
   background: #00123d;
 }

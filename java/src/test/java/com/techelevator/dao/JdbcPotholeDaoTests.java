@@ -60,8 +60,8 @@ public class JdbcPotholeDaoTests extends BaseDaoTests {
 
     @Test
     public void createPothole_returns_pothole_with_id_and_expected_values() {
-        Pothole actualPothole = sut.createPothole(testPothole);
-        assertPotholesMatch(testPothole, actualPothole);
+        sut.createPothole(testPothole);
+        assertPotholesMatch(testPothole, sut.getPotholeById(5));
     }
 
     private void assertPotholesMatch(Pothole expected, Pothole actual) {

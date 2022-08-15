@@ -12,12 +12,4 @@
 </template>
 
 <style>
-.logo img {
-  display: block;
-  margin-left: auto; 
-  margin-right: auto;
-  margin-top: 25px;
-  margin-bottom: 25px;
-  width: 250px;
-}
 </style>

@@ -1,12 +1,12 @@
 <template>
     <div>
-        <h1>Report</h1>
-        <report-form />
+      <report-form />
     </div>
 </template>
 
 <script>
 import ReportForm from '../components/ReportForm.vue'
+
 export default {
   components: { ReportForm },
 
@@ -14,5 +14,4 @@ export default {
 </script>
 
 <style>
-
 </style>
