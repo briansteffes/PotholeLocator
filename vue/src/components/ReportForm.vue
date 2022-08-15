@@ -57,53 +57,74 @@
 </template>
 
 <script>
-import potholeService from "../services/PotholeService";
+import potholeService from '../services/PotholeService';
+import accountService from '../services/AccountService';
 export default {
-  name: "report-form",
-  // components: {
+    name: "report-form",
+    // components: {
+        
+    // },
+    data() {
+        return {
+            pothole: {
+                potholeName: '',
+                potholeLat: '',
+                potholeLong: '',
+                accountId: ''
+            },
+            isLoading: true,
+            errorMsg: ""
+        };
+    },
+    methods: {
+        uploadImage() {
+            console.log('test!');
+        },
+        submitPothole() {
+            if (this.$store.state.userAccount.accountId === undefined) {
+                accountService.getAccount(this.$store.state.user.id)
+                .then(response => {
+                    if (response.status === 200) {
+                        console.log(this.pothole);
+                        this.pothole.accountId = response.data.accountId;
+                        this.$store.commit("SET_USER_ACCOUNT", response.data);
+                    }
+                })
+                .catch(error => {
+                    this.handleErrorResponse(error, "adding");
+                })
+            } else {
+                this.pothole.accountId = this.$store.state.userAccount.accountId;
+            }
+            
+            console.log(this.$store.state.userAccount.accountId);
+            console.log(this.pothole.accountId);
 
-  // },
-  data() {
-    return {
-      pothole: {
-        potholeName: "",
-        potholeLat: "",
-        potholeLong: "",
-      },
-      isLoading: true,
-      errorMsg: "",
-    };
-  },
-  methods: {
-    uploadImage() {
-      console.log("test!");
-    },
-    submitPothole() {
-      potholeService
-        .createPothole(this.pothole)
-        .then((response) => {
-          if (response.status === 201) {
-            this.$router.push({
-              path: "/view-pothole",
-              query: { registration: "success" },
-            });
-          }
-        })
-        .catch((error) => {
-          this.handleErrorResponse(error, "adding");
-        });
-    },
-    handleErrorResponse(error, verb) {
-      if (error.response) {
-        this.errorMsg = `Error ${verb} card. Response received was ${error.response.statusText}.`;
-      } else if (error.request) {
-        this.errorMsg = `Error ${verb} card. Server could not be reached.`;
-      } else {
-        this.errorMsg = `Error ${verb} card. Request could not be created.`;
-      }
-    },
-  },
-};
+            potholeService
+            .createPothole(this.pothole)
+            .then(response => {
+                if (response.status === 201) {
+                    this.$router.push({
+                    path: '/view-pothole',
+                    query: { registration: 'success' },
+                    });
+                }
+            })
+            .catch(error => {
+                this.handleErrorResponse(error, "adding");
+            })
+        },
+        handleErrorResponse(error, verb) {
+        if (error.response) {
+            this.errorMsg = `Error ${verb} card. Response received was ${error.response.statusText}.`;
+        } else if (error.request) {
+            this.errorMsg = `Error ${verb} card. Server could not be reached.`;
+        } else {
+            this.errorMsg = `Error ${verb} card. Request could not be created.`;
+        }
+    }
+    }
+}
 </script>
 
 <style scoped>

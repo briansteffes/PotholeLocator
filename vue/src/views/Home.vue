@@ -41,7 +41,7 @@ export default {
     background-color: #0d6efd;
   }
 
-  .menu-button a {
+  a .menu-button {
     color: #fffffe;
     background-color: #0d6efd;
   }
@@ -64,7 +64,7 @@ export default {
     background-color: rgba(64, 249, 155);
   }
 
-  .submit-button a {
+  a .submit-button {
     color: #00123d;
     background-color: rgba(64, 249, 155);
   }
