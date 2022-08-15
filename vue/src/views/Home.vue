@@ -1,14 +1,16 @@
 <template>
   <div class="home">
     <h1>Recent Potholes Reported in Paris, Texas</h1>
-    <div class="button-container menu-button">
-      <router-link :to="{ name: 'ViewPothole' }">View All Potholes</router-link>
-    </div>
-    <div class="button-container menu-button">
-      <router-link :to="{ name: 'ReportPothole' }">Report a Pothole</router-link>  
-    </div>
-    <div class="button-container submit-button">
-      <router-link :to="{ name: 'SubmitClaim' }">Submit a Damage Claim</router-link>
+    <div class="nav">
+      <div class="button-container menu-button">
+        <router-link :to="{ name: 'ViewPothole' }">View All Potholes</router-link>
+      </div>
+      <div class="button-container menu-button">
+        <router-link :to="{ name: 'ReportPothole' }">Report a Pothole</router-link>  
+      </div>
+      <div class="button-container submit-button">
+        <router-link :to="{ name: 'SubmitClaim' }">Submit a Damage Claim</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -20,13 +22,19 @@ export default {
 </script>
 
 <style scoped>
-
   .home {
     display: flex;
     flex-direction: column;
     text-align: center;
     align-items: center;
     justify-content: center;
+    padding-top: 1em;
+  }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    padding-top: 3em;
   }
   
   .menu-button {
