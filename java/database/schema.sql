@@ -18,7 +18,7 @@ CREATE TABLE user_accounts (
         email varchar(70) NOT NULL UNIQUE,
         phone bigint NOT NULL UNIQUE,
         flagged boolean NOT NULL DEFAULT FALSE,
-        CONSTRAINT PK_account_id PRIMARY KEY (account_id),
+        CONSTRAIT PK_account_id PRIMARY KEY (account_id),
         CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 

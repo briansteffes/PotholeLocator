@@ -3,6 +3,7 @@ package com.techelevator.controller;
 import com.techelevator.dao.PotholeDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,15 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 @PreAuthorize("isAuthenticated()")
-
-
-
 public class UserController {
 
     private final UserDao userDao;
 
+    @Autowired
     public UserController(UserDao userDao, PotholeDao potholeDao) {
         this.userDao = userDao;
     }

@@ -7,6 +7,7 @@ import com.techelevator.model.Category;
 import com.techelevator.model.Image;
 import com.techelevator.model.Pothole;
 import com.techelevator.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,20 +16,15 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/pothole")
+@RequestMapping("/api/v1/pothole")
 //@PreAuthorize("isAuthenticated()")
 public class PotholeController {
 
     private final PotholeDao potholeDao;
-//    private final UserAccountDao userAccountDao;
-//    private final UserDao userDao;
-//    private Pothole pothole;
 
-    public PotholeController(PotholeDao potholeDao, UserAccountDao userAccountDao,
-                             UserDao userDao) {
+    @Autowired
+    public PotholeController(PotholeDao potholeDao) {
         this.potholeDao = potholeDao;
-//        this.userAccountDao = userAccountDao;
-//        this.userDao = userDao;
     }
 
     @GetMapping("")
