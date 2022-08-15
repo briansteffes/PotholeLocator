@@ -20,6 +20,7 @@ export default new Vuex.Store({
   state: {
     token: currentToken || '',
     user: currentUser || {},
+    userAccount: {},
     potholes: []
   },
   mutations: {
@@ -31,6 +32,10 @@ export default new Vuex.Store({
     SET_USER(state, user) {
       state.user = user;
       localStorage.setItem('user',JSON.stringify(user));
+    },
+    SET_USER_ACCOUNT(state, userAccount) {
+      state.userAccount = userAccount;
+      localStorage.setItem('userAccount', JSON.stringify(userAccount));
     },
     LOGOUT(state) {
       localStorage.removeItem('token');

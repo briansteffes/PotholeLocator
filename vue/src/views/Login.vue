@@ -47,6 +47,7 @@
 
 <script>
 import authService from "../services/AuthService";
+import accountService from '../services/AccountService';
 
 export default {
   name: "login",
@@ -68,6 +69,9 @@ export default {
           if (response.status == 200) {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
             this.$store.commit("SET_USER", response.data.user);
+            // FIX THIS WITH ERROR HANDLING
+            const account = accountService.getAccount(response.data.user.id);
+            this.$store.commit("SET_USER_ACCOUNT", account.data);
             this.$router.push("/");
           }
         })
@@ -77,7 +81,7 @@ export default {
           if (response.status === 401) {
             this.invalidCredentials = true;
           }
-        });
+        });          
     }
   }
 };

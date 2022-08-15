@@ -58,6 +58,7 @@ export default {
                 potholeName: '',
                 potholeLat: '',
                 potholeLong: '',
+                accountId: this.$store.state.userAccount.accountId
             },
             isLoading: true,
             errorMsg: ""

@@ -8,14 +8,11 @@
         <input type="text" id="potholeLongFilter" v-model="filter.potholeLong" placeholder="Long" />
       </div>
     <div id="pothole-container">
-        <div v-for="pothole in filteredList" v-bind:key="pothole.id">
+        <div v-for="pothole in filteredList" v-bind:key="pothole.potholeName">
             <div class="pothole-info">
                 <h2>{{pothole.potholeName}}</h2>
                 <img src="https://media.istockphoto.com/photos/pot-hole-picture-id174662203?k=20&m=174662203&s=612x612&w=0&h=pcvejYWQ1S43k-VG4J5x36ikro37hRzQS-Ms7Lmgwkw=">
                 <table class="pothole-table">
-                    <tr>
-                        <td><p>Image ID:</p></td><td><p>{{pothole.imageId}}</p></td>
-                    </tr>
                     <tr>
                         <td colspan="2">
                             <hr>
@@ -45,6 +42,22 @@
                             <hr>
                         </td>
                     </tr>
+                                        <tr>
+                        <td><p>Category:</p></td><td><p>{{pothole.category}}</p></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p>Status:</p></td><td><p>{{pothole.status}}</p></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <hr>
+                        </td>
+                    </tr>
                     <tr>
                         <td><p>Reported on:</p></td><td><p>{{formatTime(pothole.uploadTime)}}</p></td>
                     </tr>
@@ -54,7 +67,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Reported by:</p></td><td><p>{{pothole.accountId}}</p></td>
+                        <td><p>Reported by:</p></td><td><p>{{pothole.username}}</p></td>
                     </tr>
                 </table>
             </div>
@@ -108,6 +121,7 @@ export default {
     },
     created() {
         this.retrievePotholes();
+        console.log(this.$store.state.potholes);
     },
     computed: {
         filteredList() {

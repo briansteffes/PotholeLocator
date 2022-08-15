@@ -1,5 +1,6 @@
 package com.techelevator.dao;
 
+import com.techelevator.model.User;
 import com.techelevator.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,6 +26,17 @@ public class JdbcUserAccountDao implements UserAccountDao {
         UserAccount userAccount = null;
         String sql = "SELECT * FROM user_accounts WHERE account_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
+        if (results.next()) {
+            userAccount = mapRowToUserAccount(results);
+        }
+        return userAccount;
+    }
+
+    @Override
+    public UserAccount getUserAccountByUserId(int userId) {
+        UserAccount userAccount = null;
+        String sql = "SELECT * FROM user_accounts WHERE user_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
         if (results.next()) {
             userAccount = mapRowToUserAccount(results);
         }
