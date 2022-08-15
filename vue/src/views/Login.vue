@@ -1,7 +1,7 @@
 <template>
   <div id="login" class="text-center">
     <form class="form-signin" @submit.prevent="login">
-      <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
+      <h1>Please Sign In</h1>
       <div
         class="alert alert-danger"
         role="alert"
@@ -13,7 +13,8 @@
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
       <div class="login">
-        <div>
+        <div class="icon">
+          <span class="material-symbols-rounded">account_circle</span>
           <input
             type="text"
             id="username"
@@ -24,7 +25,8 @@
             autofocus
           />
         </div>
-        <div>
+        <div class="icon">
+          <span class="material-symbols-rounded">lock</span>
           <input
             type="password"
             id="password"
@@ -38,16 +40,16 @@
       <div>
         <router-link :to="{ name: 'register' }">Need an account?</router-link>
       </div>
-      <div>
-        <button type="submit" class="btn btn-primary">log in</button>
+      <div class="button">
+        <button type="submit" class="btn btn-primary btn-lg btn-lg">log in</button>
       </div>
     </form>
   </div>
 </template>
-
+ 
 <script>
 import authService from "../services/AuthService";
-
+ 
 export default {
   name: "login",
   components: {},
@@ -73,7 +75,7 @@ export default {
         })
         .catch(error => {
           const response = error.response;
-
+ 
           if (response.status === 401) {
             this.invalidCredentials = true;
           }
@@ -82,58 +84,28 @@ export default {
   }
 };
 </script>
-
-<style>
-* {
-  background: #00123d;
-}
-
-h1 {
-  font-family: Racing Sans One;
-  color: #edd83d;
+ 
+<style scoped>
+#login {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3em;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 .login {
-  display: flex;
-  flex-direction: column;
-  padding-top: 75px;
+  padding-top: 2em;
   margin: auto;
-  width: 500px;
+  width: 24em;
 }
-
-a {
-  font-family: 'Montserrat', sans-serif;
-}
-
+ 
 .form-control {
-  border: 2px solid #5C8DFF;
-  font-family: 'Montserrat', sans-serif;
-  border-radius: 40px;
-  margin-bottom: 25px;
-  padding-left: 15px;
+  padding-left: 3.25em;
 }
 
-.btn-primary {
-  width: 500px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 900;
-  background: #0043e0;
-  letter-spacing: 2px;
-  border: 2px solid #5C8DFF;
-  border-radius: 40px;
-  margin-top: 25px;
-}
-
-::-webkit-input-placeholder {
-   font-style: italic;
-}
-:-moz-placeholder {
-   font-style: italic;  
-}
-::-moz-placeholder {
-   font-style: italic;  
-}
-:-ms-input-placeholder {  
-   font-style: italic; 
+.button {
+  margin-top: 2em;
 }
 </style>
