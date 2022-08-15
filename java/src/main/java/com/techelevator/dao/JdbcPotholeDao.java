@@ -130,14 +130,21 @@ public class JdbcPotholeDao implements PotholeDao {
                 image.getImageData());
          */
 
-        String sqlTwo = "INSERT INTO potholes(lat, long, pothole_name, account_id, " +
-            "image_id, category_id, status_id, active) " +
-            "VALUES(?, ?, ?, ?, ?, ?, ?, ?) RETURNING pothole_id;";
+//        String sqlTwo = "INSERT INTO potholes(lat, long, pothole_name, account_id, " +
+//            "image_id, category_id, status_id, active) " +
+//            "VALUES(?, ?, ?, ?, ?, ?, ?, ?) RETURNING pothole_id;";
+//
+//        Integer potholeId =
+//            jdbcTemplate.queryForObject(sqlTwo, Integer.class, pothole.getPotholeLat(),
+//                pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId(), pothole.getImageId(), pothole.getCategoryId(),
+//                pothole.getStatusId(), pothole.getActive());
+
+        String sqlTwo = "INSERT INTO potholes(lat, long, pothole_name, account_id) " +
+                "VALUES(?, ?, ?, ?) RETURNING pothole_id;";
 
         Integer potholeId =
-            jdbcTemplate.queryForObject(sqlTwo, Integer.class, pothole.getPotholeLat(),
-                pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId(), 1, pothole.getCategoryId(),
-                pothole.getStatusId(), pothole.getActive());
+                jdbcTemplate.queryForObject(sqlTwo, Integer.class, pothole.getPotholeLat(),
+                        pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId());
 
         return getPotholeById(potholeId);
     }

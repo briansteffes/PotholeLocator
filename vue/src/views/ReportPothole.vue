@@ -7,6 +7,7 @@
 
 <script>
 import ReportForm from '../components/ReportForm.vue'
+
 export default {
   components: { ReportForm },
 
