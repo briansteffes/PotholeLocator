@@ -55,7 +55,7 @@ public class AuthenticationController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value = "register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public User register(@Valid @RequestBody RegisterUserDTO newUser) {
         User user = new User();
         try {
