@@ -153,11 +153,6 @@ export default {
 
 <style scoped>
 
-* {
-    font-family: 'Montserrat', sans-serif;
-    color: #fffffe;
-}
-
 h2, p {
     margin: 0;
 }

@@ -1,48 +1,59 @@
 <template>
-    <div id="report">
-        <p class="status-message error" v-show="errorMsg !== ''">{{errorMsg}}</p>
-        <form @submit.prevent="submitPothole">
-            <div>
-                <input
-                type="text"
-                id="potholeName"
-                class="form-control"
-                placeholder="Name"
-                v-model="pothole.potholeName"
-                required
-                autofocus
-                />
-            </div>
-            <div>
-                <input
-                type="text"
-                id="potholeLat"
-                class="form-control"
-                placeholder="Latitude"
-                v-model="pothole.potholeLat"
-                required
-                autofocus
-                />
-            </div>
-            <div>
-                <input
-                type="text"
-                id="potholeLong"
-                class="form-control"
-                placeholder="Longitude"
-                v-model="pothole.potholeLong"
-                required
-                autofocus
-                />
-            </div>
-            <div>
-                <button @click.prevent="uploadImage" class="photo-button">Attach Photo</button>
-            </div>
-            <div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </form>
-    </div>
+  <div id="report">
+    <h1>Report a Pothole</h1>
+    <p class="status-message error" v-show="errorMsg !== ''">{{ errorMsg }}</p>
+    <form @submit.prevent="submitPothole">
+      <div class="reportform">
+        <div>
+          <input
+            type="text"
+            id="potholeName"
+            class="form-control input"
+            placeholder="Name"
+            v-model="pothole.potholeName"
+            required
+            autofocus
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            id="potholeLat"
+            class="form-control input"
+            placeholder="Latitude"
+            v-model="pothole.potholeLat"
+            required
+            autofocus
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            id="potholeLong"
+            class="form-control input"
+            placeholder="Longitude"
+            v-model="pothole.potholeLong"
+            required
+            autofocus
+          />
+        </div>
+        <!-- <div>
+                  <button @click.prevent="uploadImage" class="photo-button">Attach Photo</button>
+              </div> -->
+        <div>
+          <label for="formFileLg" class="form-label">Attach a photo</label>
+          <input
+            class="form-control form-control-lg"
+            id="formFileLg"
+            type="file"
+          />
+        </div>
+      <div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -59,11 +70,7 @@ export default {
                 potholeName: '',
                 potholeLat: '',
                 potholeLong: '',
-                accountId: '',
-                imageId: '',
-                categoryId: '',
-                statusId: '',
-                active: true
+                accountId: ''
             },
             isLoading: true,
             errorMsg: ""
@@ -121,7 +128,38 @@ export default {
 </script>
 
 <style scoped>
+#report {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1em;
+}
 
+.reportform {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 3em;
+  width: 24em;
+}
+
+.form-label {
+  color: #fefefe;
+  font-family: "Montserrat", sans-serif;
+}
+
+.form-control {
+  border-radius: 2em;
+}
+
+.input {
+  height: 3em;
+}
+
+/*
 .photo-button {
     color: #0d6efd;
     background-color: #fffffe;
@@ -129,14 +167,5 @@ export default {
     border-radius: .3em;
     font-family: 'Montserrat', sans-serif;
 }
-
-form, button {
-    width: 28em;
-}
-
-p {
-    color: #fffffe;
-    font-family: 'Montserrat', sans-serif;
-}
-
+*/
 </style>
