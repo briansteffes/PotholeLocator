@@ -125,7 +125,7 @@ public class JdbcPotholeDao implements PotholeDao {
     }
 
     @Override
-    public Pothole updatePothole(Pothole pothole) {
+    public void updatePothole(Pothole pothole) {
         String sql = "UPDATE potholes " +
             "SET lat = ?, long = ?, pothole_name = ?, account_id = ?, image_id = ?, " +
             "category_id = ?, status_id = ?, active = ? " +
@@ -135,8 +135,6 @@ public class JdbcPotholeDao implements PotholeDao {
             pothole.getImageId(), pothole.getCategoryId(), pothole.getStatusId(),
             pothole.getActive(),
             pothole.getPotholeId());
-
-        return getPotholeById(pothole.getPotholeId());
     }
 
     @Override

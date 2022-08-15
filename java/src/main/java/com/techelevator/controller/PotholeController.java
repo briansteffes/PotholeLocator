@@ -16,7 +16,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/pothole")
+@RequestMapping("/pothole")
 //@PreAuthorize("isAuthenticated()")
 public class PotholeController {
 
@@ -69,17 +69,19 @@ public class PotholeController {
     }
      */
 
+
     // TODO add in image parameter
     @PostMapping("/report")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE')")
     public void addReport(@RequestBody Pothole pothole) {
-        Pothole newPothole = potholeDao.createPothole(pothole);
+        potholeDao.createPothole(pothole);
     }
 
     @PutMapping("/{potholeId}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public Pothole updateReport(@RequestBody Pothole pothole, @PathVariable int potholeId) {
-        return potholeDao.updatePothole(pothole);
+        potholeDao.updatePothole(pothole);
+        return getPotholeById(potholeId);
     }
 
     @PutMapping("/delete/{potholeId}")

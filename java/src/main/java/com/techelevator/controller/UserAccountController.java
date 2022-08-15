@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/account")
+@RequestMapping("/account")
 public class UserAccountController {
     private final UserAccountDao userAccountDao;
     private final UserDao userDao;

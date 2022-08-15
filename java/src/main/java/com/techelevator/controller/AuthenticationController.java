@@ -37,7 +37,7 @@ public class AuthenticationController {
         this.userDao = userDao;
     }
 
-    @RequestMapping(value = "/api/v1/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginDTO loginDto) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -55,7 +55,7 @@ public class AuthenticationController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value = "api/v1/register", method = RequestMethod.POST)
+    @RequestMapping(value = "register", method = RequestMethod.POST)
     public User register(@Valid @RequestBody RegisterUserDTO newUser) {
         User user = new User();
         try {
