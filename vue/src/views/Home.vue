@@ -16,8 +16,39 @@
 </template>
 
 <script>
+import accountService from '../services/AccountService';
+
 export default {
-  name: "home"
+  name: "home",
+  data() {
+    return {
+      errorMsg: ""
+    };
+  },
+  methods: {
+    handleErrorResponse(error, verb) {
+      if (error.response) {
+        this.errorMsg = `Error ${verb} card. Response received was ${error.response.statusText}.`;
+      } else if (error.request) {
+        this.errorMsg = `Error ${verb} card. Server could not be reached.`;
+      } else {
+        this.errorMsg = `Error ${verb} card. Request could not be created.`;
+      }
+    }
+  },
+  created() {
+    if (this.$store.state.userAccount.accountId === undefined) {
+      accountService.getAccount(this.$store.state.user.id)
+      .then(response => {
+        if (response.status === 200) {
+          this.$store.commit("SET_USER_ACCOUNT", response.data);
+        }
+      })
+      .catch(error => {
+        this.handleErrorResponse(error, "adding");
+      })
+    }
+  }
 };
 </script>
 

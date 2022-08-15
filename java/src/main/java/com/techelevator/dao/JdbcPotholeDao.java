@@ -25,7 +25,15 @@ public class JdbcPotholeDao implements PotholeDao {
     @Override
     public List<Pothole> getPotholes() {
         List<Pothole> potholes = new ArrayList<>();
-        String sql = "SELECT * FROM potholes;";
+        String sql = "SELECT lat\n" +
+                "long\n" +
+                "pothole_name\n" +
+                "account_id\n" +
+                "image_id\n" +
+                "category_id\n" +
+                "status_id\n" +
+                "active\n" +
+                "upload_time FROM potholes;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while (results.next()) {
             potholes.add(mapRowToPothole(results));
@@ -120,7 +128,7 @@ public class JdbcPotholeDao implements PotholeDao {
     }
 
     @Override
-    public Pothole createPothole(Pothole pothole) {
+    public void createPothole(Pothole pothole) {
         // TODO: Implement this
         /*
         String sql = "INSERT INTO images(image_name, image_type, image_data) " +
@@ -146,11 +154,10 @@ public class JdbcPotholeDao implements PotholeDao {
                 jdbcTemplate.queryForObject(sqlTwo, Integer.class, pothole.getPotholeLat(),
                         pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId());
 
-        return getPotholeById(potholeId);
     }
 
     @Override
-    public Pothole updatePothole(Pothole pothole) {
+    public void updatePothole(Pothole pothole) {
         String sql = "UPDATE potholes " +
             "SET lat = ?, long = ?, pothole_name = ?, account_id = ?, image_id = ?, " +
             "category_id = ?, status_id = ?, active = ? " +
@@ -160,8 +167,6 @@ public class JdbcPotholeDao implements PotholeDao {
             pothole.getImageId(), pothole.getCategoryId(), pothole.getStatusId(),
             pothole.getActive(),
             pothole.getPotholeId());
-
-        return getPotholeById(pothole.getPotholeId());
     }
 
     @Override

@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS potholes, categories, statuses, images, user_accounts, users;
+DROP TABLE IF EXISTS potholes, categories, statuses, images, user_accounts, users CASCADE;
 
 CREATE TABLE users (
 	user_id SERIAL,
@@ -18,7 +18,7 @@ CREATE TABLE user_accounts (
         email varchar(70) NOT NULL UNIQUE,
         phone bigint NOT NULL UNIQUE,
         flagged boolean NOT NULL DEFAULT FALSE,
-        CONSTRAINT PK_account_id PRIMARY KEY (account_id),
+        CONSTRAIT PK_account_id PRIMARY KEY (account_id),
         CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
@@ -42,15 +42,33 @@ CREATE TABLE categories (
 	CONSTRAINT PK_category_id PRIMARY KEY (category_id)
 );
 
+INSERT INTO images (image_name, image_type)
+VALUES('bad_pothole', '.jpg');
+INSERT INTO images (image_name, image_type)
+VALUES('uhh_pothole', '.jpg');
+INSERT INTO images (image_name, image_type)
+VALUES('ugly_pothole', '.jpg');
+INSERT INTO images (image_name, image_type)
+VALUES('yikes_pothole', '.jpg');
+INSERT INTO images (image_name, image_type)
+VALUES('minor_pothole', '.jpg');
+
+INSERT INTO categories(category_desc) VALUES('Major');
+INSERT INTO categories(category_desc) VALUES('Minor');
+
+INSERT INTO statuses(status_desc) VALUES('Reported');
+INSERT INTO statuses(status_desc) VALUES('Inspected');
+INSERT INTO statuses(status_desc) VALUES('Repaired');
+
 CREATE TABLE potholes (
         pothole_id SERIAL,
         lat decimal(8,6),
         long decimal(9,6),
         pothole_name varchar(40),
         account_id int,
-        image_id int DEFAULT null,
-        category_id int DEFAULT null,
-        status_id int DEFAULT null,
+        image_id int DEFAULT 1,
+        category_id int DEFAULT 1,
+        status_id int DEFAULT 1,
         active boolean DEFAULT true,
         upload_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT PK_pothole_id PRIMARY KEY (pothole_id),
