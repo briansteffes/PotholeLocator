@@ -84,8 +84,6 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Racing+Sans+One&display=swap');
-
 * {
   background: #00123d;
 }
@@ -103,8 +101,13 @@ h1 {
   width: 500px;
 }
 
+a {
+  font-family: 'Montserrat', sans-serif;
+}
+
 .form-control {
   border: 2px solid #5C8DFF;
+  font-family: 'Montserrat', sans-serif;
   border-radius: 40px;
   margin-bottom: 25px;
   padding-left: 15px;
@@ -112,7 +115,7 @@ h1 {
 
 .btn-primary {
   width: 500px;
-  font-family: Montserrat;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 900;
   background: #0043e0;
   letter-spacing: 2px;

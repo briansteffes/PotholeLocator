@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div id="pothole-list">
       <br>
-      <h2>Search</h2>
-      <table id="search">
+      <h2>Filter</h2>
+      <table id="filter">
         <tbody>
             <tr>
                 <td>
@@ -15,23 +15,61 @@
                     <input type="text" id="potholeLongFilter" v-model="filter.potholeLong" placeholder="Long" />
                 </td>
             </tr>
-            <tr v-for="pothole in filteredList" v-bind:key="pothole.id">
-                <td v-bind:id="pothole.id" v-bind:value="pothole.id"  v-on:change="handleCheck($event, pothole.id)" v-bind:checked="selectedPotholeIDs.includes(pothole.id)">{{ pothole.potholeName }}</td>
-                <td>{{ pothole.potholeLat }}</td>
-                <td>{{ pothole.potholeLong }}</td>
-            </tr>
         </tbody>
       </table>
-      <br>
-      <div v-for="pothole in this.$store.state.potholes" v-bind:key="pothole.id">
-            <h2>{{pothole.potholeName}}</h2>
-            <p>Lat: {{pothole.potholeLat}}</p>
-            <p>Long: {{pothole.potholeLong}}</p>
-            <p>Account ID: {{pothole.accountId}}</p>
-            <p>Image ID: {{pothole.imageId}}</p>
-            <p>Active: {{pothole.active}}</p>
-            <p>Reported On: {{formatTime(pothole.uploadTime)}}</p>
-      </div>
+    <div id="pothole-container">
+        <div v-for="pothole in filteredList" v-bind:key="pothole.id">
+            <div class="pothole-info">
+                <h2>{{pothole.potholeName}}</h2>
+                <img src="https://media.istockphoto.com/photos/pot-hole-picture-id174662203?k=20&m=174662203&s=612x612&w=0&h=pcvejYWQ1S43k-VG4J5x36ikro37hRzQS-Ms7Lmgwkw=">
+                <table class="pothole-table">
+                    <tr>
+                        <td><p>Image ID:</p></td><td><p>{{pothole.imageId}}</p></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p>Lat:</p></td><td><p>{{pothole.potholeLat}}</p></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p>Long:</p></td><td><p>{{pothole.potholeLong}}</p></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p>Active:</p></td><td><p>{{pothole.active}}</p></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p>Reported on:</p></td><td><p>{{formatTime(pothole.uploadTime)}}</p></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p>Reported by:</p></td><td><p>{{pothole.accountId}}</p></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -111,8 +149,68 @@ export default {
 
 <style scoped>
 
-*{
-    color: #fffffe;
+h2, p {
+    margin: 0;
+}
+
+input {
+    background-color: #fffffe;
+    border-radius: 40px;
+    margin: .5em;
+    padding-left: 15px;
+}
+
+input {
+    color: #0a0a0a;
+}
+
+::placeholder {
+    color: #aaaaaa;
+}
+
+#pothole-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+#filter {
+    width: 24em;
+}
+
+.pothole-table {
+    text-align: left;
+}
+
+.pothole-table td {
+    padding: 5px 10px;
+}
+
+.pothole-info {
+    border: 2px solid #0d6efd;
+    border-radius: 20px;
+    padding: 1em;
+    margin: 1em;
+}
+
+.pothole-info img {
+    margin: 10px 0 20px 0;
+    object-fit: cover;
+    width: 200px;
+    border-radius: 3px;
+}
+
+#pothole-container {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+hr {
+    margin: 0;
 }
 
 </style>
