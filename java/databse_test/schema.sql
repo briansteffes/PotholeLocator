@@ -51,6 +51,7 @@ create table potholes (
     is_filled boolean not null default false,
     is_within_city_jurisdiction boolean not null default true,
     pothole_confirmed_timestamp timestamp not null default current_timestamp,
+    -- @TODO Constraint that if is_filled then resolved timestamp must not be null
     pothole_resolved_timestamp timestamp
 );
 
@@ -98,6 +99,7 @@ create table pothole_measurements (
 
 create table pothole_categories (
     pothole_category_id serial constraint pothole_category_pk primary key,
+    categorizer_id int not null references user_accounts(account_id),
     pothole_id int not null references potholes(pothole_id),
     category_id int not null references categories(category_id),
     categorization_timestamp timestamp not null,
