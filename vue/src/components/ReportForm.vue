@@ -97,11 +97,11 @@ export default {
         },
         handleErrorResponse(error, verb) {
         if (error.response) {
-            this.errorMsg = `Error ${verb} card. Response received was ${error.response.statusText}.`;
+            this.errorMsg = `Error ${verb} pothole. Response received was ${error.response.statusText}.`;
         } else if (error.request) {
-            this.errorMsg = `Error ${verb} card. Server could not be reached.`;
+            this.errorMsg = `Error ${verb} pothole. Server could not be reached.`;
         } else {
-            this.errorMsg = `Error ${verb} card. Request could not be created.`;
+            this.errorMsg = `Error ${verb} pothole. Request could not be created.`;
         }
     }
     }

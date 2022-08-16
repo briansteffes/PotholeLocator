@@ -11,12 +11,20 @@ export default {
     },
 
     list(pothole) {
-        return axios.get('/pothole/', pothole.Id);
+        return axios.get(`/pothole/${pothole.Id}`);
     },
 
-    listLocation(location) {
-        return axios.get('/pothole/', location);
+    // listLocation(location) {
+    //     return axios.get('/pothole/', location);
+    // },
+
+    updatePothole(pothole) {
+        return axios.put(`/pothole/${pothole.potholeId}`, pothole);
     },
+
+    deletePotholeById(potholeId) {
+        return axios.delete(`/pothole/${potholeId}`);
+    }
 
     // listReport(report) {
     //     return axios.get('/pothole/' + report);

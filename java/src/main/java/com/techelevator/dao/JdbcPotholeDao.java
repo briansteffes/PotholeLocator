@@ -3,7 +3,6 @@ package com.techelevator.dao;
 import com.techelevator.model.Category;
 import com.techelevator.model.Pothole;
 import com.techelevator.model.PotholeDTO;
-import com.techelevator.model.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -25,14 +24,7 @@ public class JdbcPotholeDao implements PotholeDao {
     @Override
     public List<Pothole> getPotholes() {
         List<Pothole> potholes = new ArrayList<>();
-        String sql = "SELECT lat\n" +
-                "long\n" +
-                "pothole_name\n" +
-                "account_id\n" +
-                "image_id\n" +
-                "category_id\n" +
-                "status_id\n" +
-                "active\n" +
+        String sql = "SELECT lat, long, pothole_name, account_id, image_id, category_id, status_id, active, " +
                 "upload_time FROM potholes;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while (results.next()) {
@@ -44,7 +36,8 @@ public class JdbcPotholeDao implements PotholeDao {
     @Override
     public List<PotholeDTO> getPotholeDTOs() {
         List<PotholeDTO> potholeDTOs = new ArrayList<>();
-        String sql = "SELECT p.lat, p.long, p.pothole_name, u.username, i.image_data, c.category_desc, s.status_desc, p.active, p.upload_time FROM potholes p " +
+        String sql = "SELECT p.pothole_id, p.lat, p.long, p.pothole_name, u.username, i.image_data, c.category_desc," +
+                "s.status_desc, p.active, p.upload_time FROM potholes p " +
                 "JOIN user_accounts a ON p.account_id = a.account_id " +
                 "JOIN users u ON a.user_id = u.user_id " +
                 "JOIN images i ON p.image_id = i.image_id " +
@@ -156,18 +149,28 @@ public class JdbcPotholeDao implements PotholeDao {
 
     }
 
+    // Fix this method
     @Override
     public void updatePothole(Pothole pothole) {
         String sql = "UPDATE potholes " +
-            "SET lat = ?, long = ?, pothole_name = ?, account_id = ?, image_id = ?, " +
-            "category_id = ?, status_id = ?, active = ? " +
-            "WHERE pothole_id = ?;";
+            "SET lat = ?, long = ?, pothole_name = ? WHERE pothole_id = ?;";
 
-        jdbcTemplate.update(sql, pothole.getPotholeLat(), pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId(),
-            pothole.getImageId(), pothole.getCategoryId(), pothole.getStatusId(),
-            pothole.getActive(),
+        jdbcTemplate.update(sql, pothole.getPotholeLat(), pothole.getPotholeLong(), pothole.getPotholeName(),
             pothole.getPotholeId());
     }
+
+//    @Override
+//    public void updatePothole(Pothole pothole) {
+//        String sql = "UPDATE potholes " +
+//                "SET lat = ?, long = ?, pothole_name = ?, account_id = ?, image_id = ?, " +
+//                "category_id = ?, status_id = ?, active = ? " +
+//                "WHERE pothole_id = ?;";
+//
+//        jdbcTemplate.update(sql, pothole.getPotholeLat(), pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId(),
+//                pothole.getImageId(), pothole.getCategoryId(), pothole.getStatusId(),
+//                pothole.getActive(),
+//                pothole.getPotholeId());
+//    }
 
     @Override
     public Pothole markForDelete(Pothole pothole) {
@@ -211,6 +214,7 @@ public class JdbcPotholeDao implements PotholeDao {
     private PotholeDTO mapRowToPotholeDTO(SqlRowSet sqlRowSet) {
         PotholeDTO potholeDTO = new PotholeDTO();
 
+        potholeDTO.setPotholeId(sqlRowSet.getInt("pothole_id"));
         potholeDTO.setPotholeLat(sqlRowSet.getBigDecimal("lat"));
         potholeDTO.setPotholeLong(sqlRowSet.getBigDecimal("long"));
         potholeDTO.setPotholeName(sqlRowSet.getString("pothole_name"));
