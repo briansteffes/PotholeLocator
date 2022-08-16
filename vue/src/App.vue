@@ -25,4 +25,14 @@ export default {
 #nav {
   text-align: center;
 }
+
+a {
+  color: #fffffe;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #edd83d;
+}
+
 </style>
