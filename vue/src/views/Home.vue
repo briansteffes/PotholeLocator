@@ -2,15 +2,15 @@
   <div class="home">
     <h1>Recent Potholes Reported in <br /> Paris, Texas</h1>
     <div class="nav">
-      <button type="button" class="btn btn-primary btn-lg btn-lg">
-        <router-link :to="{ name: 'ViewPothole' }">View All Potholes</router-link>
-      </button>
-      <button type="button" class="btn btn-primary btn-lg btn-lg">
-        <router-link :to="{ name: 'ReportPothole' }">Report a Pothole</router-link>  
-      </button>
-      <button type="button" class="btn btn-success btn-lg btn-lg">
-        <router-link :to="{ name: 'SubmitClaim' }">Submit a Damage Claim</router-link>
-      </button>
+      <router-link :to="{ name: 'ViewPothole' }">
+        <button type="button" class="btn btn-primary btn-lg btn-lg">View All Potholes</button>
+      </router-link>
+      <router-link :to="{ name: 'ReportPothole' }">
+        <button type="button" class="btn btn-primary btn-lg btn-lg">Report a Pothole</button>
+      </router-link> 
+      <router-link :to="{ name: 'SubmitClaim' }">
+        <button type="button" class="btn btn-success btn-lg btn-lg">Submit a Damage Claim</button>
+      </router-link>
     </div>
   </div>
 </template>
