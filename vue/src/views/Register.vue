@@ -1,84 +1,94 @@
 <template>
   <div id="register" class="text-center">
     <form class="form-register" v-if="firstPage" @submit.prevent="flipPage">
-      <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
+      <h1>Create Account</h1>
       <div class="alert alert-danger" role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
-      <div>
-        <input
-          type="text"
-          id="username"
-          class="form-control"
-          placeholder="Username"
-          v-model="user.username"
-          required
-          autofocus
-        />
-      </div>
-      <div>
-        <input
-          type="password"
-          id="password"
-          class="form-control"
-          placeholder="Password"
-          v-model="user.password"
-          required
-        />
-      </div>
-      <div>
-        <input
-          type="password"
-          id="confirmPassword"
-          class="form-control"
-          placeholder="Confirm Password"
-          v-model="user.confirmPassword"
-          required
-        />
-      </div>
-      <div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">
-          Continue
-        </button>  
+      <div class="userform">
+        <div class="icon">
+          <span class="material-symbols-rounded">account_circle</span>
+          <input
+            type="text"
+            id="username"
+            class="form-control"
+            placeholder="Username"
+            v-model="user.username"
+            required
+            autofocus
+          />
+        </div>
+        <div class="icon">
+          <span class="material-symbols-rounded">lock</span>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            placeholder="Password"
+            v-model="user.password"
+            required
+          />
+        </div>
+        <div class="icon">
+          <span class="material-symbols-rounded">lock</span>
+          <input
+            type="password"
+            id="confirmPassword"
+            class="form-control"
+            placeholder="Confirm Password"
+            v-model="user.confirmPassword"
+            required
+          />
+        </div>
       </div>
       <div>
         <router-link :to="{ name: 'login' }">Have an account?</router-link>
+      </div>
+      <div class="button">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">
+          Continue
+        </button>  
       </div>  
     </form>
     <form class="form-register" v-if="!firstPage" @submit.prevent="createAccountInfo">
-      <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
+      <h1>Create Account</h1>
       <div class="alert alert-danger" role="alert" v-if="accountCreationErrors">
         {{ accountCreationErrorMsg }}
       </div>
-      <div>
-        <input
-          id="first-name"
-          class="form-control"
-          placeholder="First Name"
-          v-model="userAccount.firstName"
-          required
-        />
-      </div>
-      <div>
-        <input
-          id="last-name"
-          class="form-control"
-          placeholder="Last Name"
-          v-model="userAccount.lastName"
-          required
-        />
-      </div>
-      <div>
-        <input
-          type="email"
-          id="email"
-          class="form-control"
-          placeholder="Email"
-          v-model="userAccount.email"
-          required
-        />
-      </div>
-      <div>
+      <div class="userform">
+        <div class="icon">
+          <span class="material-symbols-rounded">badge</span>
+          <input
+            id="first-name"
+            class="form-control"
+            placeholder="First Name"
+            v-model="userAccount.firstName"
+            required
+          />
+        </div>
+        <div class="icon">
+          <span class="material-symbols-rounded">badge</span>
+          <input
+            id="last-name"
+            class="form-control"
+            placeholder="Last Name"
+            v-model="userAccount.lastName"
+            required
+          />
+        </div>
+        <div class="icon">
+          <span class="material-symbols-rounded">mail</span>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            placeholder="Email"
+            v-model="userAccount.email"
+            required
+          />
+        </div>
+        <div class="icon">
+          <span class="material-symbols-rounded">call</span>
           <input
           type="text"
           pattern="[0-9]+"
@@ -89,9 +99,10 @@
           v-model="userAccount.phone"
           v-on:change="isPhoneNumberValid"
           required
-        />
+          />
+        </div>
       </div>
-      <div>
+      <div class="button2">
         <button class="btn btn-lg btn-primary btn-block" type="submit">
           Submit
         </button>  
@@ -99,11 +110,11 @@
     </form>
   </div>
 </template>
-
+ 
 <script>
 import authService from '../services/AuthService';
 import accountService from '../services/AccountService';
-
+ 
 export default {
   name: 'register',
   data() {
@@ -194,5 +205,32 @@ export default {
   },
 };
 </script>
+ 
+<style scoped>
+#register {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3em;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
 
-<style></style>
+.userform {
+  padding-top: 2em;
+  margin: auto;
+  width: 24em;
+}
+ 
+.form-control {
+  padding-left: 3.25em;
+}
+
+.button {
+  margin-top: 2em;
+}
+
+.button2 {
+  margin-top: 4em;
+}
+</style>

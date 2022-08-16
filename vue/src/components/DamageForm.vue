@@ -1,6 +1,6 @@
 <template>
   <div id="report">
-    <h1>Report a Pothole</h1>
+    <h1>Submit a Claim</h1>
     <p class="status-message error" v-show="errorMsg !== ''">{{ errorMsg }}</p>
     <form @submit.prevent="submitPothole">
       <div class="reportform">
@@ -57,13 +57,13 @@
 </template>
 
 <script>
-import potholeService from '../services/PotholeService';
+// import potholeService from '../services/PotholeService';
 
 export default {
-    name: "report-form",
-    // components: {
+    name: "damage-form",
+    components: {
         
-    // },
+    },
     data() {
         return {
             pothole: {
@@ -76,6 +76,7 @@ export default {
             errorMsg: ""
         };
     },
+    /*
     methods: {
         uploadImage() {
             console.log('test!');
@@ -105,6 +106,7 @@ export default {
         }
     }
     }
+    */
 }
 </script>
 

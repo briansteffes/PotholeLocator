@@ -1,28 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Racing+Sans+One&display=swap');
-
-* {
+ 
+body {
   background: #00123d;
   font-family: 'Montserrat', sans-serif;
   color: #fefefe;
+  display: flex;
+  flex-direction: column;
+}
+ 
+h1 {
+  font-family: Racing Sans One;
+  color: #edd83d;
+  text-align: center;
 }
 
-.logo img {
-  display: block;
-  margin-left: auto; 
-  margin-right: auto;
-  margin-top: 25px;
-  margin-bottom: 25px;
-  width: 250px;
+.form-control {
+  width: 24em;
+  height: 3em;
+  border-radius: 2em;
+  margin-bottom: 1em;
 }
 
 .btn {
   border-radius: 2em;
-  width: 24em;
-  height: 3em;
   font-family: Montserrat, sans-serif;
   font-weight: 600;
+  width: 19em;
 }
-
+ 
+a {
+  font-family: 'Montserrat', sans-serif;
+}
+ 
+.icon {
+  position: relative;
+}
+ 
+.icon .material-symbols-rounded {
+  color: #00123d;
+  background: none;
+  position: absolute;
+  top: .5em;
+  left: .85em;
+}
+ 
 ::-webkit-input-placeholder {
    font-style: italic;
 }
@@ -33,5 +54,5 @@
    font-style: italic;  
 }
 :-ms-input-placeholder {  
-   font-style: italic; 
+   font-style: italic;
 }

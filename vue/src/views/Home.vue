@@ -1,16 +1,16 @@
 <template>
   <div class="home">
-    <h1>Recent Potholes Reported in Paris, Texas</h1>
+    <h1>Recent Potholes Reported in <br /> Paris, Texas</h1>
     <div class="nav">
-      <div class="button-container menu-button">
-        <router-link :to="{ name: 'ViewPothole' }">View All Potholes</router-link>
-      </div>
-      <div class="button-container menu-button">
-        <router-link :to="{ name: 'ReportPothole' }">Report a Pothole</router-link>  
-      </div>
-      <div class="button-container submit-button">
-        <router-link :to="{ name: 'SubmitClaim' }">Submit a Damage Claim</router-link>
-      </div>
+      <router-link :to="{ name: 'ViewPothole' }">
+        <button type="button" class="btn btn-primary btn-lg btn-lg">View All Potholes</button>
+      </router-link>
+      <router-link :to="{ name: 'ReportPothole' }">
+        <button type="button" class="btn btn-primary btn-lg btn-lg">Report a Pothole</button>
+      </router-link> 
+      <router-link :to="{ name: 'SubmitClaim' }">
+        <button type="button" class="btn btn-success btn-lg btn-lg">Submit a Damage Claim</button>
+      </router-link>
     </div>
   </div>
 </template>
@@ -53,51 +53,32 @@ export default {
 </script>
 
 <style scoped>
-  .home {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    padding-top: 1em;
-  }
+.home {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3em;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-  .nav {
-    display: flex;
-    flex-direction: column;
-    padding-top: 3em;
-  }
-  
-  .menu-button {
-    background-color: #0d6efd;
-  }
+.nav {
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-  a .menu-button {
-    color: #fffffe;
-    background-color: #0d6efd;
-  }
+.btn {
+  margin-top: 2em;
+  font-size: 1em;
+}
 
-  a {
-    text-decoration: none;
-  }
+.btn a:hover {
+  color: #fefefe;
+}
 
-  .button-container {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
-    margin: 1em;
-    padding: 1em;
-    text-align: center;
-    width: 24em;
-    border-radius: 3em;
-  }
-
-  .submit-button {
-    background-color: rgba(64, 249, 155);
-  }
-
-  a .submit-button {
-    color: #00123d;
-    background-color: rgba(64, 249, 155);
-  }
-
+a {
+  text-decoration: none;
+  background: none;
+  color: #fefefe;
+}
 </style>

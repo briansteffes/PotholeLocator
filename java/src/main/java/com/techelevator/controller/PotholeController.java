@@ -3,7 +3,9 @@ package com.techelevator.controller;
 import com.techelevator.dao.PotholeDao;
 import com.techelevator.dao.UserAccountDao;
 import com.techelevator.dao.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.techelevator.model.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,19 +15,14 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("/pothole")
-//@PreAuthorize("isAuthenticated()")
+@PreAuthorize("isAuthenticated()")
 public class PotholeController {
 
     private final PotholeDao potholeDao;
-//    private final UserAccountDao userAccountDao;
-//    private final UserDao userDao;
-//    private Pothole pothole;
 
-    public PotholeController(PotholeDao potholeDao, UserAccountDao userAccountDao,
-                             UserDao userDao) {
+    @Autowired
+    public PotholeController(PotholeDao potholeDao) {
         this.potholeDao = potholeDao;
-//        this.userAccountDao = userAccountDao;
-//        this.userDao = userDao;
     }
 
 //    @GetMapping("")
@@ -76,26 +73,25 @@ public class PotholeController {
      */
 
     // TODO add in image parameter
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/report")
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE')")
     public void addReport(@RequestBody Pothole pothole) {
         potholeDao.createPothole(pothole);
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping("/{potholeId}")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
-    public Pothole updateReport(@RequestBody Pothole pothole, @PathVariable int potholeId) {
-        return potholeDao.updatePothole(pothole);
+    public void updateReport(@PathVariable int potholeId, @RequestBody Pothole pothole) {
+        potholeDao.updatePothole(pothole);
     }
 
     @PutMapping("/delete/{potholeId}")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public Pothole markForDelete(@RequestBody Pothole pothole, @PathVariable int potholeId) {
         return potholeDao.markForDelete(pothole);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{potholeId}")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public void deletePothole(@PathVariable int potholeId) {
         potholeDao.deletePothole(potholeId);
     }

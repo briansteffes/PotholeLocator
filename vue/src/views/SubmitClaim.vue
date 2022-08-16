@@ -1,14 +1,13 @@
 <template>
     <div>
-        <h1>Submit Claim</h1>
-        <report-form />
+        <damage-form />
     </div>
 </template>
 
 <script>
-import ReportForm from '../components/ReportForm.vue'
+import DamageForm from '../components/DamageForm.vue'
 export default {
-  components: { ReportForm },
+  components: { DamageForm },
 
 }
 </script>

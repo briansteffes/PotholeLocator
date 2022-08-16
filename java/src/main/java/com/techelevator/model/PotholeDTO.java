@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 
 public class PotholeDTO {
 
+    private int potholeId;
     private BigDecimal potholeLat;
     private BigDecimal potholeLong;
     private String potholeName;
@@ -15,8 +16,9 @@ public class PotholeDTO {
     private boolean active;
     private Timestamp uploadTime;
 
-    public PotholeDTO(BigDecimal potholeLat, BigDecimal potholeLong, String potholeName, String username, byte[] imageData,
+    public PotholeDTO(int potholeId, BigDecimal potholeLat, BigDecimal potholeLong, String potholeName, String username, byte[] imageData,
                       String category, String status, boolean active, Timestamp uploadTime) {
+        this.potholeId = potholeId;
         this.potholeLat = potholeLat;
         this.potholeLong = potholeLong;
         this.potholeName = potholeName;
@@ -29,6 +31,14 @@ public class PotholeDTO {
     }
 
     public PotholeDTO() {}
+
+    public int getPotholeId() {
+        return potholeId;
+    }
+
+    public void setPotholeId(int potholeId) {
+        this.potholeId = potholeId;
+    }
 
     public BigDecimal getPotholeLat() {
         return potholeLat;
@@ -58,7 +68,7 @@ public class PotholeDTO {
         return username;
     }
 
-    public void setUsername(String accountId) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -74,7 +84,7 @@ public class PotholeDTO {
         return category;
     }
 
-    public void setCategory(String Category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 

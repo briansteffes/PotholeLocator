@@ -1,17 +1,20 @@
 <template>
   <div id="pothole-list">
-      <br>
-      <h2>Filter</h2>
-      <div id="filter">
-        <input type="text" id="potholeNameFilter" v-model="filter.potholeName" placeholder="Name" />
-        <input type="text" id="potholeLatFilter" v-model="filter.potholeLat" placeholder="Lat" />
-        <input type="text" id="potholeLongFilter" v-model="filter.potholeLong" placeholder="Long" />
-      </div>
+    <div id="container">
+      <div id="mapContainer"></div>
+    </div>
+    <h2 id="filter-title">Filter</h2>
+    <div id="filter">
+      <input type="text" id="potholeNameFilter" v-model="filter.potholeName" placeholder="Name" />
+      <input type="text" id="potholeLatFilter" v-model="filter.potholeLat" placeholder="Lat" />
+      <input type="text" id="potholeLongFilter" v-model="filter.potholeLong" placeholder="Long" />
+    </div>
     <div id="pothole-container">
-        <div v-for="pothole in filteredList" v-bind:key="pothole.potholeName">
+        <div v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
             <div class="pothole-info">
-                <h2>{{pothole.potholeName}}</h2>
-                <img src="https://media.istockphoto.com/photos/pot-hole-picture-id174662203?k=20&m=174662203&s=612x612&w=0&h=pcvejYWQ1S43k-VG4J5x36ikro37hRzQS-Ms7Lmgwkw=">
+                <p>{{ pothole.active === true ? 'Active' : 'Inactive'}}</p>
+                <input type="text" v-if="activeId === pothole.potholeId" v-model="pothole.potholeName" placeholder="">
+                <h2 v-if="inactiveId !== pothole.potholeId">{{pothole.potholeName}}</h2>
                 <table class="pothole-table">
                     <tr>
                         <td colspan="2">
@@ -19,7 +22,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Lat:</p></td><td><p>{{pothole.potholeLat}}</p></td>
+                        <td class="right-align"><p>Lat:</p></td><td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.potholeLat}}</p></td><td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.potholeLat"></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -27,7 +30,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Long:</p></td><td><p>{{pothole.potholeLong}}</p></td>
+                        <td class="right-align"><p>Long:</p></td><td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.potholeLong}}</p></td><td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.potholeLong"></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -35,15 +38,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Active:</p></td><td><p>{{pothole.active}}</p></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <hr>
-                        </td>
-                    </tr>
-                                        <tr>
-                        <td><p>Category:</p></td><td><p>{{pothole.category}}</p></td>
+                        <td class="right-align"><p>Category:</p></td><td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.category}}</p></td><td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.category"></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -51,7 +46,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Status:</p></td><td><p>{{pothole.status}}</p></td>
+                        <td class="right-align"><p>Status:</p></td><td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.status}}</p></td><td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.status"></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -59,7 +54,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Reported on:</p></td><td><p>{{formatTime(pothole.uploadTime)}}</p></td>
+                        <td class="right-align"><p>Reported on:</p></td><td><p>{{formatTime(pothole.uploadTime)}}</p></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -67,9 +62,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Reported by:</p></td><td><p>{{pothole.username}}</p></td>
+                        <td class="right-align"><p>Reported by:</p></td><td><p>{{pothole.username}}</p></td>
                     </tr>
                 </table>
+                <div class="pothole-button-container">
+                    <button class="btn btn-primary" @click.prevent="activateEditMode(pothole.potholeId)" v-if="inactiveId !== pothole.potholeId">Edit</button>
+                    <button class="btn btn-primary" @click.prevent="updatePothole(pothole)" v-if="activeId === pothole.potholeId">Save</button>
+                    <button class="btn btn-primary" @click.prevent="deletePothole(pothole)" v-if="inactiveId !== pothole.potholeId">Delete</button>
+                    <button class="btn btn-primary" @click.prevent="deactivateEditMode" v-if="activeId === pothole.potholeId">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
@@ -78,6 +79,8 @@
 
 <script>
 import potholeService from '../services/PotholeService';
+import "leaflet/dist/leaflet.css"
+import L from "leaflet"
 // import PotholeDetails from '@/components/PotholeDetails';
 
 export default {
@@ -89,15 +92,38 @@ export default {
         return {
             isLoading: true,
             errorMsg: "",
+            activeId: 0,
+            inactiveId: 0,
             selectedPotholeIDs: [],
             filter: {
                 potholeName: '',
                 potholeLat: '',
                 potholeLong: ''
-            }
+            },
+            map_center: [33.66099201430402, -95.5567548693612]
         };
     },
     methods: {
+        activateEditMode(selectedPothole) {
+            this.activeId = selectedPothole;
+            this.inactiveId = selectedPothole;
+        },
+        deactivateEditMode() {
+            this.activeId = 0;
+            this.inactiveId = 0;
+        },
+        setupLeafletMap: function () {
+          const mapDiv = L.map("mapContainer").setView(this.map_center, 13);
+          L.tileLayer(
+            "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+            {
+              attribution: 'Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
+              maxZoom: 18,
+              id: "mapbox/streets-v11",
+              accessToken: "pk.eyJ1IjoiYnJhaW4tc3RlZmZlcyIsImEiOiJjbDZxb2I4ZGEwZm1iM3FweTR2eTI0a2pmIn0.Ypd_EaTjrLDBEifw3QL1YQ"
+            }
+          ).addTo(mapDiv)
+        },
         formatTime(time) {
             const year = time.substring(0, 4);
             const month = time.substring(5, 7);
@@ -117,7 +143,35 @@ export default {
                         this.$router.push({ name: 'Home' });
                     }
                 });
+        },
+        updatePothole(selectedPothole) {
+            this.deactivateEditMode();
+            potholeService 
+                .updatePothole(selectedPothole)
+                .then(response => {
+                    if (response.status === 202) {
+                        this.retrievePotholes();
+                    }
+                })
+                .catch(error => {
+                    alert(`An error occurred. Status code: ${error.response.status}`);
+                });
+        },
+        deletePothole(selectedPothole) {
+            potholeService
+                .deletePotholeById(selectedPothole.potholeId)
+                .then(response => {
+                    if (response.status === 204) {
+                        this.retrievePotholes();
+                    }
+                })
+                .catch(error => {
+                    alert(`An error occurred. Status code: ${error.response.status}`);
+                });
         }
+    },
+    mounted() {
+      this.setupLeafletMap();
     },
     created() {
         this.retrievePotholes();
@@ -149,12 +203,21 @@ export default {
         }
     }
 }
+
 </script>
 
 <style scoped>
 
-h2, p {
+#filter-title {
+    margin-top: 40px;
+}
+
+p {
     margin: 0;
+}
+
+h2 {
+    font-size: 1.6em;
 }
 
 input {
@@ -162,9 +225,6 @@ input {
     border-radius: 40px;
     margin: .5em;
     padding-left: 15px;
-}
-
-input {
     color: #0a0a0a;
 }
 
@@ -188,6 +248,7 @@ input {
 
 .pothole-table {
     text-align: left;
+    margin: 10px auto 0 auto;
 }
 
 .pothole-table td {
@@ -201,6 +262,11 @@ input {
     margin: 1em;
 }
 
+tr input {
+    width: 10em;
+    margin: 0;
+}
+
 .pothole-info img {
     margin: 10px 0 20px 0;
     object-fit: cover;
@@ -212,10 +278,33 @@ input {
     margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pothole-button-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.pothole-button-container button {
+    margin-top: 20px;
+    width: 40%;
 }
 
 hr {
     margin: 0;
+}
+
+.right-align {
+    text-align: right;
+    font-weight: bold;
+}
+
+#mapContainer {
+    margin-top: 20px;
+    width: 80vw;
+    height: 80vh;
 }
 
 </style>
