@@ -24,7 +24,7 @@ public interface PotholeDao {
     // TODO: Add in image parameter
     void createPothole(Pothole pothole);
 
-    void updatePothole(Pothole pothole);
+    void updatePothole(PotholeDTO pothole);
 
     Pothole markForDelete(Pothole pothole);
 

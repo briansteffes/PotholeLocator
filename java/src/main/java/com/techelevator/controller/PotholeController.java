@@ -81,7 +81,7 @@ public class PotholeController {
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping("/{potholeId}")
-    public void updateReport(@PathVariable int potholeId, @RequestBody Pothole pothole) {
+    public void updateReport(@PathVariable int potholeId, @RequestBody PotholeDTO pothole) {
         potholeDao.updatePothole(pothole);
     }
 
