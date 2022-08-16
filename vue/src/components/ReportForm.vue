@@ -8,7 +8,7 @@
           <input
             type="text"
             id="potholeName"
-            class="form-control input"
+            class="form-control"
             placeholder="Name"
             v-model="pothole.potholeName"
             required
@@ -19,7 +19,7 @@
           <input
             type="text"
             id="potholeLat"
-            class="form-control input"
+            class="form-control"
             placeholder="Latitude"
             v-model="pothole.potholeLat"
             required
@@ -30,7 +30,7 @@
           <input
             type="text"
             id="potholeLong"
-            class="form-control input"
+            class="form-control"
             placeholder="Longitude"
             v-model="pothole.potholeLong"
             required
@@ -40,17 +40,17 @@
         <!-- <div>
                   <button @click.prevent="uploadImage" class="photo-button">Attach Photo</button>
               </div> -->
-        <div>
-          <label for="formFileLg" class="form-label">Attach a photo</label>
+        <div class="upload">
+          <label for="formFileLg" class="form-label">Attach a photo (optional)</label>
           <input
             class="form-control form-control-lg"
             id="formFileLg"
             type="file"
           />
         </div>
-      <div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
+        <div class="submit">
+          <button type="submit" class="btn btn-primary btn-lg btn-lg">Submit</button>
+        </div>
       </div>
     </form>
   </div>
@@ -112,18 +112,15 @@ export default {
 #report {
   display: flex;
   flex-direction: column;
+  margin-top: 3em;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
-  align-items: center;
-  justify-content: center;
-  padding-top: 1em;
 }
 
 .reportform {
-  display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 3em;
+  padding-top: 2em;
+  margin: auto;
   width: 24em;
 }
 
@@ -132,12 +129,21 @@ export default {
   font-family: "Montserrat", sans-serif;
 }
 
-.form-control {
-  border-radius: 2em;
+.form-control-lg {
+  height: 2em;
+  width: 19em;
 }
 
-.input {
-  height: 3em;
+#potholeName, #potholeLat, #potholeLong {
+  padding-left: 1em;
+}
+
+.btn {
+  margin-top: 2em;
+}
+
+.upload {
+  margin-top: 2em;
 }
 
 /*
