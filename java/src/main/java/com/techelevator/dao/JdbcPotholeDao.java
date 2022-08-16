@@ -151,12 +151,38 @@ public class JdbcPotholeDao implements PotholeDao {
 
     // Fix this method
     @Override
-    public void updatePothole(Pothole pothole) {
-        String sql = "UPDATE potholes " +
-            "SET lat = ?, long = ?, pothole_name = ? WHERE pothole_id = ?;";
+    public void updatePothole(PotholeDTO pothole) {
 
-        jdbcTemplate.update(sql, pothole.getPotholeLat(), pothole.getPotholeLong(), pothole.getPotholeName(),
-            pothole.getPotholeId());
+        Pothole potholeToUpdate = new Pothole();
+        potholeToUpdate.setPotholeId(pothole.getPotholeId());
+        potholeToUpdate.setPotholeLat(pothole.getPotholeLat());
+        potholeToUpdate.setPotholeLong(pothole.getPotholeLong());
+        potholeToUpdate.setPotholeName(pothole.getPotholeName());
+
+        if (pothole.getStatus().equals("Reported")) {
+            potholeToUpdate.setStatusId(1);
+        } else if (pothole.getStatus().equals("Inspected")) {
+            potholeToUpdate.setStatusId(2);
+        } else if (pothole.getStatus().equals("Repaired")) {
+            potholeToUpdate.setStatusId(3);
+        } else {
+            potholeToUpdate.setStatusId(1);
+        }
+
+        if (pothole.getCategory().equals("Major")) {
+            potholeToUpdate.setCategoryId(1);
+        } else if (pothole.getCategory().equals("Minor")) {
+            potholeToUpdate.setCategoryId(2);
+        } else {
+            potholeToUpdate.setCategoryId(1);
+        }
+
+        String sql = "UPDATE potholes " +
+            "SET lat = ?, long = ?, pothole_name = ?, status_id = ?, category_id = ? WHERE pothole_id = ?;";
+
+        jdbcTemplate.update(sql, potholeToUpdate.getPotholeLat(), potholeToUpdate.getPotholeLong(),
+                potholeToUpdate.getPotholeName(), potholeToUpdate.getStatusId(),
+                potholeToUpdate.getCategoryId(), potholeToUpdate.getPotholeId());
     }
 
 //    @Override

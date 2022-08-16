@@ -15,6 +15,7 @@
                 <p>{{ pothole.active === true ? 'Active' : 'Inactive'}}</p>
                 <input type="text" v-if="activeId === pothole.potholeId" v-model="pothole.potholeName" placeholder="">
                 <h2 v-if="inactiveId !== pothole.potholeId">{{pothole.potholeName}}</h2>
+                <p class="validation-error" v-if="activeId === pothole.potholeId">{{ formErrorMsg }}</p>
                 <table class="pothole-table">
                     <tr>
                         <td colspan="2">
@@ -22,7 +23,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="right-align"><p>Lat:</p></td><td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.potholeLat}}</p></td><td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.potholeLat"></td>
+                        <td class="right-align"><p>Lat:</p></td>
+                        <td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.potholeLat}}</p></td>
+                        <td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.potholeLat" v-on:change="latitudeValidation(pothole.potholeLat)"></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -30,7 +33,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="right-align"><p>Long:</p></td><td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.potholeLong}}</p></td><td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.potholeLong"></td>
+                        <td class="right-align"><p>Long:</p></td>
+                        <td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.potholeLong}}</p></td>
+                        <td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.potholeLong" v-on:change="longitudeValidation(pothole.potholeLong)"></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -38,7 +43,14 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="right-align"><p>Category:</p></td><td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.category}}</p></td><td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.category"></td>
+                        <td class="right-align"><p>Category:</p></td>
+                        <td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.category}}</p></td>
+                        <td v-if="activeId === pothole.potholeId">
+                            <select name="category" v-model="pothole.category">
+                                <option value="Major">Major</option>
+                                <option value="Minor">Minor</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -46,7 +58,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="right-align"><p>Status:</p></td><td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.status}}</p></td><td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.status"></td>
+                        <td class="right-align"><p>Status:</p></td>
+                        <td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.status}}</p></td>
+                        <td v-if="activeId === pothole.potholeId">
+                            <select name="status" v-model="pothole.status">
+                                <option value="Reported">Reported</option>
+                                <option value="Inspected">Inspected</option>
+                                <option value="Repaired">Repaired</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -54,7 +74,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="right-align"><p>Reported on:</p></td><td><p>{{formatTime(pothole.uploadTime)}}</p></td>
+                        <td class="right-align"><p>Reported on:</p></td>
+                        <td><p>{{formatTime(pothole.uploadTime)}}</p></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -62,7 +83,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="right-align"><p>Reported by:</p></td><td><p>{{pothole.username}}</p></td>
+                        <td class="right-align"><p>Reported by:</p></td>
+                        <td><p>{{pothole.username}}</p></td>
                     </tr>
                 </table>
                 <div class="pothole-button-container">
@@ -92,6 +114,7 @@ export default {
         return {
             isLoading: true,
             errorMsg: "",
+            formErrorMsg: "",
             activeId: 0,
             inactiveId: 0,
             selectedPotholeIDs: [],
@@ -104,6 +127,27 @@ export default {
         };
     },
     methods: {
+        latitudeValidation(coordinate) {
+            // Source for RegEx below: https://www.regexlib.com/Search.aspx?k=latitude&AspxAutoDetectCookieSupport=1
+            const number = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}/;
+            if (!number.test(coordinate)) {
+                this.formErrorMsg = 'Please enter a valid coordinate.';
+            } else {
+                this.clearValidationMsg();
+            }
+        },
+        longitudeValidation(coordinate) {
+            // Source for RegEx below: https://www.regexlib.com/Search.aspx?k=latitude&AspxAutoDetectCookieSupport=1
+            const number = /^-?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}/;
+            if (!number.test(coordinate)) {
+                this.formErrorMsg = 'Please enter a valid coordinate.';
+            } else {
+                this.clearValidationMsg();
+            }
+        },
+        clearValidationMsg() {
+            this.formErrorMsg = '';
+        },
         activateEditMode(selectedPothole) {
             this.activeId = selectedPothole;
             this.inactiveId = selectedPothole;
@@ -111,6 +155,8 @@ export default {
         deactivateEditMode() {
             this.activeId = 0;
             this.inactiveId = 0;
+            this.retrievePotholes();
+            this.clearValidationMsg();
         },
         setupLeafletMap: function () {
           const mapDiv = L.map("mapContainer").setView(this.map_center, 13);
@@ -134,7 +180,7 @@ export default {
             potholeService
                 .getAllPotholes()
                 .then(response => {
-                    this.$store.commit("SET_POTHOLES", response.data);
+                    this.$store.commit("SET_POTHOLES", response.data.sort((a, b) => a.uploadTime < b.uploadTime ? 1 : -1));
                     this.isLoading = false;
                 })
                 .catch(error => {
@@ -145,17 +191,19 @@ export default {
                 });
         },
         updatePothole(selectedPothole) {
-            this.deactivateEditMode();
-            potholeService 
-                .updatePothole(selectedPothole)
-                .then(response => {
-                    if (response.status === 202) {
-                        this.retrievePotholes();
-                    }
-                })
-                .catch(error => {
-                    alert(`An error occurred. Status code: ${error.response.status}`);
-                });
+            if (this.formErrorMsg === '') {
+                this.deactivateEditMode();
+                potholeService 
+                    .updatePothole(selectedPothole)
+                    .then(response => {
+                        if (response.status === 202) {
+                            this.retrievePotholes();
+                        }
+                    })
+                    .catch(error => {
+                        alert(`An error occurred. Status code: ${error.response.status}`);
+                    });
+                }
         },
         deletePothole(selectedPothole) {
             potholeService
@@ -175,7 +223,6 @@ export default {
     },
     created() {
         this.retrievePotholes();
-        console.log(this.$store.state.potholes);
     },
     computed: {
         filteredList() {
@@ -228,6 +275,13 @@ input {
     color: #0a0a0a;
 }
 
+select {
+    background-color: #fffffe;
+    border-radius: 40px;
+    padding-left: 5px;
+    color: #0a0a0a;
+}
+
 ::placeholder {
     color: #aaaaaa;
 }
@@ -239,6 +293,10 @@ input {
     justify-content: center;
     text-align: center;
     flex-wrap: wrap;
+}
+
+.validation-error {
+    color: #dc3545;
 }
 
 #filter {
@@ -272,6 +330,10 @@ tr input {
     object-fit: cover;
     width: 200px;
     border-radius: 3px;
+}
+
+td input {
+    width: 7em;
 }
 
 #pothole-container {
