@@ -140,12 +140,13 @@ public class JdbcPotholeDao implements PotholeDao {
 //                pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId(), pothole.getImageId(), pothole.getCategoryId(),
 //                pothole.getStatusId(), pothole.getActive());
 
-        String sqlTwo = "INSERT INTO potholes(lat, long, pothole_name, account_id) " +
-                "VALUES(?, ?, ?, ?) RETURNING pothole_id;";
+        String sqlTwo = "INSERT INTO potholes(lat, long, pothole_name, account_id, category_id) " +
+                "VALUES(?, ?, ?, ?, ?) RETURNING pothole_id;";
 
         Integer potholeId =
                 jdbcTemplate.queryForObject(sqlTwo, Integer.class, pothole.getPotholeLat(),
-                        pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId());
+                        pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId(),
+                        pothole.getCategoryId());
 
     }
 
@@ -158,6 +159,7 @@ public class JdbcPotholeDao implements PotholeDao {
         potholeToUpdate.setPotholeLat(pothole.getPotholeLat());
         potholeToUpdate.setPotholeLong(pothole.getPotholeLong());
         potholeToUpdate.setPotholeName(pothole.getPotholeName());
+        potholeToUpdate.setActive(pothole.getActive());
 
         if (pothole.getStatus().equals("Reported")) {
             potholeToUpdate.setStatusId(1);
@@ -178,11 +180,12 @@ public class JdbcPotholeDao implements PotholeDao {
         }
 
         String sql = "UPDATE potholes " +
-            "SET lat = ?, long = ?, pothole_name = ?, status_id = ?, category_id = ? WHERE pothole_id = ?;";
+            "SET lat = ?, long = ?, pothole_name = ?, status_id = ?, category_id = ?, " +
+                "active = ? WHERE pothole_id = ?;";
 
         jdbcTemplate.update(sql, potholeToUpdate.getPotholeLat(), potholeToUpdate.getPotholeLong(),
                 potholeToUpdate.getPotholeName(), potholeToUpdate.getStatusId(),
-                potholeToUpdate.getCategoryId(), potholeToUpdate.getPotholeId());
+                potholeToUpdate.getCategoryId(), pothole.getActive(), potholeToUpdate.getPotholeId());
     }
 
 //    @Override

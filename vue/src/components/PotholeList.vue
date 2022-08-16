@@ -8,11 +8,19 @@
       <input type="text" id="potholeNameFilter" v-model="filter.potholeName" placeholder="Name" />
       <input type="text" id="potholeLatFilter" v-model="filter.potholeLat" placeholder="Lat" />
       <input type="text" id="potholeLongFilter" v-model="filter.potholeLong" placeholder="Long" />
+      <input type="text" id="potholeCategoryFilter" v-model="filter.category" placeholder="Category" />
+      <input type="text" id="potholeStatusFilter" v-model="filter.status" placeholder="Status" />
     </div>
     <div id="pothole-container">
         <div v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
             <div class="pothole-info">
-                <p>{{ pothole.active === true ? 'Active' : 'Inactive'}}</p>
+                <div v-if="activeId === pothole.potholeId">
+                    <select name="active" v-model="pothole.active">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+                <p v-if="inactiveId !== pothole.potholeId">{{ pothole.active === true ? 'Active' : 'Inactive'}}</p>
                 <input type="text" v-if="activeId === pothole.potholeId" v-model="pothole.potholeName" placeholder="">
                 <h2 v-if="inactiveId !== pothole.potholeId">{{pothole.potholeName}}</h2>
                 <p class="validation-error" v-if="activeId === pothole.potholeId">{{ formErrorMsg }}</p>
@@ -121,7 +129,9 @@ export default {
             filter: {
                 potholeName: '',
                 potholeLat: '',
-                potholeLong: ''
+                potholeLong: '',
+                category: '',
+                status: ''
             },
             map_center: [33.66099201430402, -95.5567548693612]
         };
@@ -246,6 +256,20 @@ export default {
                     .includes(this.filter.potholeLong)
                 );
             }
+            if (this.filter.category != "") {
+                filteredPotholes = filteredPotholes.filter((pothole) =>
+                pothole.category
+                    .toLowerCase()
+                    .includes(this.filter.category.toLowerCase())
+                );
+            }
+            if (this.filter.status != "") {
+                filteredPotholes = filteredPotholes.filter((pothole) =>
+                pothole.status
+                    .toLowerCase()
+                    .includes(this.filter.status.toLowerCase())
+                );
+            }
             return filteredPotholes;
         }
     }
@@ -302,6 +326,7 @@ select {
 #filter {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .pothole-table {
@@ -341,6 +366,7 @@ td input {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    max-width: 80%;
 }
 
 .pothole-button-container {
