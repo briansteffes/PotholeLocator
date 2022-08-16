@@ -94,6 +94,7 @@ public class PotholeController {
         return potholeDao.markForDelete(pothole);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{potholeId}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public void deletePothole(@PathVariable int potholeId) {

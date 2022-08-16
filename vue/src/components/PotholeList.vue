@@ -11,10 +11,10 @@
       <div id="mapContainer"></div>
     </div>
     <div id="pothole-container">
-        <div v-for="pothole in filteredList" v-bind:key="pothole.uploadTime">
+        <div v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
             <div class="pothole-info">
+                <p>{{ pothole.active === true ? 'Active' : 'Inactive'}}</p>
                 <h2>{{pothole.potholeName}}</h2>
-                <img src="https://media.istockphoto.com/photos/pot-hole-picture-id174662203?k=20&m=174662203&s=612x612&w=0&h=pcvejYWQ1S43k-VG4J5x36ikro37hRzQS-Ms7Lmgwkw=">
                 <table class="pothole-table">
                     <tr>
                         <td colspan="2">
@@ -31,14 +31,6 @@
                     </tr>
                     <tr>
                         <td class="right-align"><p>Long:</p></td><td><p>{{pothole.potholeLong}}</p></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <hr>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="right-align"><p>Active:</p></td><td><p>{{pothole.active}}</p></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -73,6 +65,10 @@
                         <td class="right-align"><p>Reported by:</p></td><td><p>{{pothole.username}}</p></td>
                     </tr>
                 </table>
+                <div class="pothole-button-container">
+                    <button class="btn btn-primary">Edit</button>
+                    <button class="btn btn-primary" @click.prevent="deletePothole(pothole)">Delete</button>
+                </div>
             </div>
         </div>
     </div>
@@ -135,6 +131,18 @@ export default {
                         this.$router.push({ name: 'Home' });
                     }
                 });
+        },
+        deletePothole(selectedPothole) {
+            potholeService
+                .deletePotholeById(selectedPothole.potholeId)
+                .then(response => {
+                    if (response.status === 204) {
+                        this.retrievePotholes();
+                    }
+                })
+                .catch(error => {
+                    alert(`An error occurred. Status code: ${error.response.status}`);
+                });
         }
     },
     mounted() {
@@ -179,14 +187,15 @@ h2, p {
     margin: 0;
 }
 
+h2 {
+    font-size: 1.6em;
+}
+
 input {
     background-color: #fffffe;
     border-radius: 40px;
     margin: .5em;
     padding-left: 15px;
-}
-
-input {
     color: #0a0a0a;
 }
 
@@ -210,6 +219,7 @@ input {
 
 .pothole-table {
     text-align: left;
+    margin: 10px auto 0 auto;
 }
 
 .pothole-table td {
@@ -234,6 +244,16 @@ input {
     margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
+}
+
+.pothole-button-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.pothole-button-container button {
+    width: 40%;
 }
 
 hr {
