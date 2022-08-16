@@ -22,6 +22,7 @@
             class="form-control"
             placeholder="Latitude"
             v-model="pothole.potholeLat"
+            v-on:change="latitudeValidation(pothole.potholeLat)"
             required
             autofocus
           />
@@ -33,9 +34,17 @@
             class="form-control"
             placeholder="Longitude"
             v-model="pothole.potholeLong"
+            v-on:change="longitudeValidation(pothole.potholeLong)"
             required
             autofocus
           />
+        </div>
+        <div>
+          <select name="category" v-model="pothole.categoryId" class="form-control" :class="{ placeholderSelect : !categoryIdNotNull }" @change="checkCategoryId">
+            <option class="never-ital" :value="null" disabled>Select Category</option>
+            <option class="never-ital" value="1">Major</option>
+            <option class="never-ital" value="2">Minor</option>
+          </select>                           
         </div>
         <!-- <div>
                   <button @click.prevent="uploadImage" class="photo-button">Attach Photo</button>
@@ -70,17 +79,48 @@ export default {
                 potholeName: '',
                 potholeLat: '',
                 potholeLong: '',
-                accountId: this.$store.state.userAccount.accountId
+                accountId: this.$store.state.userAccount.accountId,
+                categoryId: null,
             },
             isLoading: true,
-            errorMsg: ""
+            errorMsg: "",
+            categoryIdNotNull: false
         };
     },
     methods: {
+        checkCategoryId() {
+          if (this.pothole.categoryId === null) {
+            this.categoryIdNotNull = false;
+          }
+          this.categoryIdNotNull = true;
+        },
+        latitudeValidation(coordinate) {
+          // Source for RegEx below: https://www.regexlib.com/Search.aspx?k=latitude&AspxAutoDetectCookieSupport=1
+          const number = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}/;
+          if (!number.test(coordinate)) {
+            this.errorMsg = 'Please enter a valid coordinate.';
+          } else {
+            this.errorMsg = '';
+          }
+        },
+        longitudeValidation(coordinate) {
+          // Source for RegEx below: https://www.regexlib.com/Search.aspx?k=latitude&AspxAutoDetectCookieSupport=1
+          const number = /^-?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}/;
+          if (!number.test(coordinate)) {
+            this.formErrorMsg = 'Please enter a valid coordinate.';
+          } else {
+            this.errorMsg = '';
+          }
+        },
         uploadImage() {
             console.log('test!');
         },
         submitPothole() {
+          if (this.pothole.categoryId === null) {
+              this.errorMsg = 'Please select a category.';
+            }
+
+          if (this.errorMsg === '') {
             potholeService
             .createPothole(this.pothole)
             .then(response => {
@@ -94,6 +134,7 @@ export default {
             .catch(error => {
                 this.handleErrorResponse(error, "adding");
             })
+          }
         },
         handleErrorResponse(error, verb) {
         if (error.response) {
@@ -116,6 +157,14 @@ export default {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+}
+
+.placeholderSelect {
+  font-style: italic;
+}
+
+.never-ital {
+  font-style: normal;
 }
 
 .reportform {
