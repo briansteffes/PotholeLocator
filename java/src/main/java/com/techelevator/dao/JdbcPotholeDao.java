@@ -149,18 +149,28 @@ public class JdbcPotholeDao implements PotholeDao {
 
     }
 
+    // Fix this method
     @Override
     public void updatePothole(Pothole pothole) {
         String sql = "UPDATE potholes " +
-            "SET lat = ?, long = ?, pothole_name = ?, account_id = ?, image_id = ?, " +
-            "category_id = ?, status_id = ?, active = ? " +
-            "WHERE pothole_id = ?;";
+            "SET lat = ?, long = ?, pothole_name = ? WHERE pothole_id = ?;";
 
-        jdbcTemplate.update(sql, pothole.getPotholeLat(), pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId(),
-            pothole.getImageId(), pothole.getCategoryId(), pothole.getStatusId(),
-            pothole.getActive(),
+        jdbcTemplate.update(sql, pothole.getPotholeLat(), pothole.getPotholeLong(), pothole.getPotholeName(),
             pothole.getPotholeId());
     }
+
+//    @Override
+//    public void updatePothole(Pothole pothole) {
+//        String sql = "UPDATE potholes " +
+//                "SET lat = ?, long = ?, pothole_name = ?, account_id = ?, image_id = ?, " +
+//                "category_id = ?, status_id = ?, active = ? " +
+//                "WHERE pothole_id = ?;";
+//
+//        jdbcTemplate.update(sql, pothole.getPotholeLat(), pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId(),
+//                pothole.getImageId(), pothole.getCategoryId(), pothole.getStatusId(),
+//                pothole.getActive(),
+//                pothole.getPotholeId());
+//    }
 
     @Override
     public Pothole markForDelete(Pothole pothole) {

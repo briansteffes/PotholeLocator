@@ -18,6 +18,10 @@ export default {
     //     return axios.get('/pothole/', location);
     // },
 
+    updatePothole(pothole) {
+        return axios.put(`/pothole/${pothole.potholeId}`, pothole);
+    },
+
     deletePotholeById(potholeId) {
         return axios.delete(`/pothole/${potholeId}`);
     }

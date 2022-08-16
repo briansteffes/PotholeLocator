@@ -1,20 +1,20 @@
 <template>
   <div id="pothole-list">
-    <br>
-    <h2>Filter</h2>
+    <div id="container">
+      <div id="mapContainer"></div>
+    </div>
+    <h2 id="filter-title">Filter</h2>
     <div id="filter">
       <input type="text" id="potholeNameFilter" v-model="filter.potholeName" placeholder="Name" />
       <input type="text" id="potholeLatFilter" v-model="filter.potholeLat" placeholder="Lat" />
       <input type="text" id="potholeLongFilter" v-model="filter.potholeLong" placeholder="Long" />
     </div>
-    <div id="container">
-      <div id="mapContainer"></div>
-    </div>
     <div id="pothole-container">
         <div v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
             <div class="pothole-info">
                 <p>{{ pothole.active === true ? 'Active' : 'Inactive'}}</p>
-                <h2>{{pothole.potholeName}}</h2>
+                <input type="text" v-if="activeId === pothole.potholeId" v-model="pothole.potholeName" placeholder="">
+                <h2 v-if="inactiveId !== pothole.potholeId">{{pothole.potholeName}}</h2>
                 <table class="pothole-table">
                     <tr>
                         <td colspan="2">
@@ -22,7 +22,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="right-align"><p>Lat:</p></td><td><p>{{pothole.potholeLat}}</p></td>
+                        <td class="right-align"><p>Lat:</p></td><td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.potholeLat}}</p></td><td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.potholeLat"></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -30,15 +30,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="right-align"><p>Long:</p></td><td><p>{{pothole.potholeLong}}</p></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <hr>
-                        </td>
-                    </tr>
-                                        <tr>
-                        <td class="right-align"><p>Category:</p></td><td><p>{{pothole.category}}</p></td>
+                        <td class="right-align"><p>Long:</p></td><td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.potholeLong}}</p></td><td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.potholeLong"></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -46,7 +38,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="right-align"><p>Status:</p></td><td><p>{{pothole.status}}</p></td>
+                        <td class="right-align"><p>Category:</p></td><td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.category}}</p></td><td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.category"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="right-align"><p>Status:</p></td><td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.status}}</p></td><td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.status"></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -66,8 +66,10 @@
                     </tr>
                 </table>
                 <div class="pothole-button-container">
-                    <button class="btn btn-primary">Edit</button>
-                    <button class="btn btn-primary" @click.prevent="deletePothole(pothole)">Delete</button>
+                    <button class="btn btn-primary" @click.prevent="activateEditMode(pothole.potholeId)" v-if="inactiveId !== pothole.potholeId">Edit</button>
+                    <button class="btn btn-primary" @click.prevent="updatePothole(pothole)" v-if="activeId === pothole.potholeId">Save</button>
+                    <button class="btn btn-primary" @click.prevent="deletePothole(pothole)" v-if="inactiveId !== pothole.potholeId">Delete</button>
+                    <button class="btn btn-primary" @click.prevent="deactivateEditMode" v-if="activeId === pothole.potholeId">Cancel</button>
                 </div>
             </div>
         </div>
@@ -90,6 +92,8 @@ export default {
         return {
             isLoading: true,
             errorMsg: "",
+            activeId: 0,
+            inactiveId: 0,
             selectedPotholeIDs: [],
             filter: {
                 potholeName: '',
@@ -100,6 +104,14 @@ export default {
         };
     },
     methods: {
+        activateEditMode(selectedPothole) {
+            this.activeId = selectedPothole;
+            this.inactiveId = selectedPothole;
+        },
+        deactivateEditMode() {
+            this.activeId = 0;
+            this.inactiveId = 0;
+        },
         setupLeafletMap: function () {
           const mapDiv = L.map("mapContainer").setView(this.map_center, 13);
           L.tileLayer(
@@ -130,6 +142,19 @@ export default {
                         alert("Pothole details not available.");
                         this.$router.push({ name: 'Home' });
                     }
+                });
+        },
+        updatePothole(selectedPothole) {
+            this.deactivateEditMode();
+            potholeService 
+                .updatePothole(selectedPothole)
+                .then(response => {
+                    if (response.status === 202) {
+                        this.retrievePotholes();
+                    }
+                })
+                .catch(error => {
+                    alert(`An error occurred. Status code: ${error.response.status}`);
                 });
         },
         deletePothole(selectedPothole) {
@@ -183,7 +208,11 @@ export default {
 
 <style scoped>
 
-h2, p {
+#filter-title {
+    margin-top: 40px;
+}
+
+p {
     margin: 0;
 }
 
@@ -233,6 +262,11 @@ input {
     margin: 1em;
 }
 
+tr input {
+    width: 10em;
+    margin: 0;
+}
+
 .pothole-info img {
     margin: 10px 0 20px 0;
     object-fit: cover;
@@ -244,6 +278,7 @@ input {
     margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .pothole-button-container {
@@ -253,6 +288,7 @@ input {
 }
 
 .pothole-button-container button {
+    margin-top: 20px;
     width: 40%;
 }
 
@@ -262,11 +298,13 @@ hr {
 
 .right-align {
     text-align: right;
+    font-weight: bold;
 }
 
 #mapContainer {
-  width: 80vw;
-  height: 100vh;
+    margin-top: 20px;
+    width: 80vw;
+    height: 80vh;
 }
 
 </style>
