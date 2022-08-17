@@ -7,7 +7,6 @@ import Register from '../views/Register.vue'
 import store from '../store/index'
 import ViewPothole from '../views/ViewPothole.vue'
 import ReportPothole from '../views/ReportPothole.vue'
-import SubmitClaim from '../views/SubmitClaim.vue'
 
 Vue.use(Router)
 
@@ -29,7 +28,7 @@ const router = new Router({
       name: 'home',
       component: Home,
       meta: {
-        requiresAuth: true
+        requiresAuth: false
       }
     },
     {
@@ -68,14 +67,6 @@ const router = new Router({
       path: "/report-pothole",
       name: "ReportPothole",
       component: ReportPothole,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: "/submit-claim",
-      name: "SubmitClaim",
-      component: SubmitClaim,
       meta: {
         requiresAuth: true
       }
