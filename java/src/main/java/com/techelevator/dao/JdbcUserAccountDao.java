@@ -88,7 +88,7 @@ public class JdbcUserAccountDao implements UserAccountDao {
         userAccount.setFirstName(rowSet.getString("f_name"));
         userAccount.setLastName(rowSet.getString("l_name"));
         userAccount.setEmail(rowSet.getString("email"));
-        userAccount.setPhone(BigInteger.valueOf(rowSet.getInt("phone")));
+        userAccount.setPhone(BigInteger.valueOf(rowSet.getLong("phone")));
         userAccount.setFlagged(rowSet.getBoolean("flagged"));
         return userAccount;
     }

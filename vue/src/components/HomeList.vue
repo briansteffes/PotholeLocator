@@ -182,10 +182,11 @@ export default {
             potholeService
                 .getAllPotholes()
                 .then(response => {
-                    if (response.data.length > 5) {
+                    const sortedData = response.data.sort((a, b) => a.uploadTime < b.uploadTime ? 1 : -1);
+                    if (sortedData.length > 5) {
                         response.data = response.data.slice(0, 4);
                     }
-                    this.$store.commit("SET_POTHOLES", response.data.sort((a, b) => a.uploadTime < b.uploadTime ? 1 : -1));
+                    this.$store.commit("SET_POTHOLES", response.data);
                     this.isLoading = false;
                 })
                 .catch(error => {
