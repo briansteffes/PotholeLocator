@@ -113,10 +113,9 @@ export default {
           }
         },
         uploadImage() {
-            console.log('test!');
+            console.log('This functionality is coming soon!');
         },
         submitPothole() {
-          console.log(this.pothole);
           if (this.pothole.categoryId === null) {
               this.errorMsg = 'Please select a category.';
             }
@@ -139,7 +138,7 @@ export default {
         },
         handleErrorResponse(error, verb) {
         if (error.response) {
-            this.errorMsg = `Error ${verb} pothole. Response received was ${error.response.statusText}.`;
+            this.errorMsg = `Error ${verb} pothole. Please try again.`;
         } else if (error.request) {
             this.errorMsg = `Error ${verb} pothole. Server could not be reached.`;
         } else {

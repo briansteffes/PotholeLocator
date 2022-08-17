@@ -6,11 +6,8 @@
         <button type="button" class="btn btn-primary btn-lg btn-lg">View All Potholes</button>
       </router-link>
       <router-link :to="{ name: 'ReportPothole' }">
-        <button type="button" class="btn btn-primary btn-lg btn-lg">Report a Pothole</button>
+        <button type="button" class="btn btn-success btn-lg btn-lg">Report a Pothole</button>
       </router-link> 
-      <router-link :to="{ name: 'SubmitClaim' }">
-        <button type="button" class="btn btn-success btn-lg btn-lg">Submit a Damage Claim</button>
-      </router-link>
     </div>
   </div>
 </template>
@@ -72,13 +69,4 @@ export default {
   font-size: 1em;
 }
 
-.btn a:hover {
-  color: #fefefe;
-}
-
-a {
-  text-decoration: none;
-  background: none;
-  color: #fefefe;
-}
 </style>

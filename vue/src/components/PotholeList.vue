@@ -27,11 +27,6 @@
                 <p class="validation-error" v-if="activeId === pothole.potholeId">{{ formErrorMsg }}</p>
                 <table class="pothole-table">
                     <tr>
-                        <td colspan="2">
-                            <hr>
-                        </td>
-                    </tr>
-                    <tr>
                         <td class="right-align"><p>Lat:</p></td>
                         <td v-if="inactiveId !== pothole.potholeId"><p>{{pothole.potholeLat}}</p></td>
                         <td v-if="activeId === pothole.potholeId"><input type="text" v-model="pothole.potholeLat" v-on:change="latitudeValidation(pothole.potholeLat)"></td>
@@ -170,8 +165,9 @@ export default {
             return this.images[1];
         },
         checkCredentials() {
+            // || authority.name === "ROLE_USER"
             for (let authority of this.$store.state.user.authorities) {
-                if (authority.name === "ROLE_ADMIN" || authority.name === "ROLE_EMPLOYEE") {
+                if (authority.name === "ROLE_ADMIN" || authority.name === "ROLE_EMPLOYEE" || authority.name === "ROLE_USER") {
                     this.hasValidCredentials = true;
                 }
             }
@@ -365,6 +361,7 @@ select {
     justify-content: center;
     text-align: center;
     flex-wrap: wrap;
+    margin-bottom: 40px;
 }
 
 .validation-error {
@@ -400,7 +397,7 @@ tr input {
 }
 
 .pothole-info img {
-    margin: 10px 0 20px 0;
+    margin: 10px 0 10px 0;
     object-fit: cover;
     width: 100%;
     height: 200px;
