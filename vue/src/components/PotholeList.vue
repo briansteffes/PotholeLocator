@@ -1,7 +1,21 @@
 <template>
   <div id="pothole-list">
     <div id="container">
-      <div id="mapContainer"></div>
+      <div id="mapContainer">
+        <l-map :zoom="13" :center=this.map_center>
+          <l-tile-layer :url="this.tile_layer_url"
+                        :attribution="this.tile_layer_attribution"
+                        :options="{tileSize:this.tile_layer_tileSize, zoomOffset:this.tile_layer_zoomOffset}">
+          </l-tile-layer>
+          <div  v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
+            <l-circle-marker @click="scrollTo(pothole.potholeId)" :lat-lng="[pothole.potholeLat, pothole.potholeLong]"></l-circle-marker>
+          </div>
+<!--          <l-marker :lat-lng="this.circle.center" :icon="this.potHoleIcon"></l-marker>-->
+
+
+
+        </l-map>
+      </div>
     </div>
     <h2 id="filter-title">Filter</h2>
     <div id="filter">
@@ -13,7 +27,7 @@
     </div>
     <div id="pothole-container">
         <div v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
-            <div class="pothole-info">
+            <div class="pothole-info" :ref="pothole.potholeId">
                 <div v-if="activeId === pothole.potholeId">
                     <select name="active" v-model="pothole.active">
                         <option value="true">Active</option>
@@ -109,14 +123,13 @@
 
 <script>
 import potholeService from '../services/PotholeService';
-import "leaflet/dist/leaflet.css"
-import L from "leaflet"
+import L from "leaflet";
+
 // import PotholeDetails from '@/components/PotholeDetails';
 
 export default {
     name: "pothole-list",
     components: {
-        // PotholeDetails
     },
     data() {
         return {
@@ -133,10 +146,33 @@ export default {
                 category: '',
                 status: ''
             },
-            map_center: [33.66099201430402, -95.5567548693612]
+            tile_layer_url: "https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYnJhaW4tc3RlZmZlcyIsImEiOiJjbDZxb2I4ZGEwZm1iM3FweTR2eTI0a2pmIn0.Ypd_EaTjrLDBEifw3QL1YQ",
+            tile_layer_attribution: 'Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
+            tile_layer_maxZoom: 18,
+            tile_layer_style: "mapbox/dark-v10",
+            tile_layer_zoomOffset: -1,
+            tile_layer_tileSize: 512,
+            tile_layer_accessToken: "pk.eyJ1IjoiYnJhaW4tc3RlZmZlcyIsImEiOiJjbDZxb2I4ZGEwZm1iM3FweTR2eTI0a2pmIn0.Ypd_EaTjrLDBEifw3QL1YQ",
+            map_center: [33.66099201430402, -95.5567548693612],
+            circle: {
+              center: [33.66099201430402, -95.5567548693612],
+              radius: 4500,
+              color: 'red'
+            },
+            potHoleIcon: L.icon({
+              iconURL: "https://www.flaticon.com/free-icons/location",
+              iconSize: [40,100],
+              iconAnchor: [20,100]
+            })
         };
     },
     methods: {
+      scrollTo(refName) {
+        const element = this.$refs[refName];
+        const top = element.offsetTop;
+
+        window.scrollTo(0, top);
+      },
         latitudeValidation(coordinate) {
             // Source for RegEx below: https://www.regexlib.com/Search.aspx?k=latitude&AspxAutoDetectCookieSupport=1
             const number = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}/;
@@ -168,18 +204,7 @@ export default {
             this.retrievePotholes();
             this.clearValidationMsg();
         },
-        setupLeafletMap: function () {
-          const mapDiv = L.map("mapContainer").setView(this.map_center, 13);
-          L.tileLayer(
-            "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
-            {
-              attribution: 'Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
-              maxZoom: 18,
-              id: "mapbox/streets-v11",
-              accessToken: "pk.eyJ1IjoiYnJhaW4tc3RlZmZlcyIsImEiOiJjbDZxb2I4ZGEwZm1iM3FweTR2eTI0a2pmIn0.Ypd_EaTjrLDBEifw3QL1YQ"
-            }
-          ).addTo(mapDiv)
-        },
+        setupLeafletMap: function () {},
         formatTime(time) {
             const year = time.substring(0, 4);
             const month = time.substring(5, 7);
@@ -392,7 +417,8 @@ hr {
 #mapContainer {
     margin-top: 20px;
     width: 80vw;
-    height: 80vh;
+    height: 60vh;
+    border-radius: 10px;
 }
 
 </style>
