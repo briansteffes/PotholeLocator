@@ -15,7 +15,6 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("/pothole")
-@PreAuthorize("isAuthenticated()")
 public class PotholeController {
 
     private final PotholeDao potholeDao;
@@ -74,23 +73,27 @@ public class PotholeController {
 
     // TODO add in image parameter
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/report")
     public void addReport(@RequestBody Pothole pothole) {
         potholeDao.createPothole(pothole);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/{potholeId}")
     public void updateReport(@PathVariable int potholeId, @RequestBody PotholeDTO pothole) {
         potholeDao.updatePothole(pothole);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/delete/{potholeId}")
     public Pothole markForDelete(@RequestBody Pothole pothole, @PathVariable int potholeId) {
         return potholeDao.markForDelete(pothole);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{potholeId}")
     public void deletePothole(@PathVariable int potholeId) {
         potholeDao.deletePothole(potholeId);

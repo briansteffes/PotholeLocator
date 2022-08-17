@@ -1,28 +1,5 @@
 <template>
   <div id="pothole-list">
-    <div id="container">
-      <div id="mapContainer">
-        <l-map :zoom="13" :center=this.map_center @click="addMarker()">
-          <l-tile-layer :url="this.tile_layer_url"
-                        :attribution="this.tile_layer_attribution"
-                        :options="{tileSize:this.tile_layer_tileSize, zoomOffset:this.tile_layer_zoomOffset}">
-          </l-tile-layer>
-          <div  v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
-            <l-circle-marker @click="scrollTo(pothole.potholeId)" :lat-lng="[pothole.potholeLat, pothole.potholeLong]">
-              <l-popup><app-header></app-header></l-popup>
-            </l-circle-marker>
-          </div>
-        </l-map>
-      </div>
-    </div>
-    <h2 id="filter-title">Filter</h2>
-    <div id="filter">
-      <input type="text" id="potholeNameFilter" v-model="filter.potholeName" placeholder="Name" />
-      <input type="text" id="potholeLatFilter" v-model="filter.potholeLat" placeholder="Lat" />
-      <input type="text" id="potholeLongFilter" v-model="filter.potholeLong" placeholder="Long" />
-      <input type="text" id="potholeCategoryFilter" v-model="filter.category" placeholder="Category" />
-      <input type="text" id="potholeStatusFilter" v-model="filter.status" placeholder="Status" />
-    </div>
     <div id="pothole-container">
         <div v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
             <div class="pothole-info" v-if="checkForActiveAndCredentials(pothole.active)">
@@ -117,15 +94,12 @@
 
 <script>
 import potholeService from '../services/PotholeService';
-import L from "leaflet";
-import AppHeader from "./AppHeader";
-
 // import PotholeDetails from '@/components/PotholeDetails';
 
 export default {
-    name: "pothole-list",
+    name: "home-list",
     components: {
-      AppHeader
+        // PotholeDetails
     },
     data() {
         return {
@@ -143,141 +117,111 @@ export default {
                 category: '',
                 status: ''
             },
-            tile_layer_url: "https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYnJhaW4tc3RlZmZlcyIsImEiOiJjbDZxb2I4ZGEwZm1iM3FweTR2eTI0a2pmIn0.Ypd_EaTjrLDBEifw3QL1YQ",
-            tile_layer_attribution: 'Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
-            tile_layer_maxZoom: 18,
-            tile_layer_style: "mapbox/dark-v10",
-            tile_layer_zoomOffset: -1,
-            tile_layer_tileSize: 512,
-            tile_layer_accessToken: "pk.eyJ1IjoiYnJhaW4tc3RlZmZlcyIsImEiOiJjbDZxb2I4ZGEwZm1iM3FweTR2eTI0a2pmIn0.Ypd_EaTjrLDBEifw3QL1YQ",
-            map_center: [33.66099201430402, -95.5567548693612],
-            circle: {
-              center: [33.66099201430402, -95.5567548693612],
-              radius: 4500,
-              color: 'red'
-            },
-            potHoleIcon: L.icon({
-              iconURL: "https://www.flaticon.com/free-icons/location",
-              iconSize: [40,100],
-              iconAnchor: [20,100]
-            })
         };
     },
     methods: {
-      addMarker(e) {
-        const newMarker = new L.Marker(e.latLng)
-        // newMarker.addTo(map);
-        console.log(newMarker)
-      },
-      scrollTo(refName) {
-        const element = this.$refs[refName];
-        const top = element.offsetTop;
-
-        window.scrollTo(0, top);
-      },
-      getImgUrl(selectedPotholeId) {
-          if (selectedPotholeId < 23) {
-              return this.$store.state.images[selectedPotholeId];
-          }
-          return this.$store.state.images[1];
-      },
-      checkCredentials() {
-          for (let authority of this.$store.state.user.authorities) {
-              if (authority.name === "ROLE_ADMIN" || authority.name === "ROLE_EMPLOYEE") {
-                  this.hasValidCredentials = true;
-              }
-          }
-      },
-      checkForActiveAndCredentials(isSelectedPotholeActive) {
-          if (this.hasValidCredentials === false) {
-              if (isSelectedPotholeActive === false) {
-                  return false;
-              }
-          }
-          return true;
-      },
-      latitudeValidation(coordinate) {
-          // Source for RegEx below: https://www.regexlib.com/Search.aspx?k=latitude&AspxAutoDetectCookieSupport=1
-          const number = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}/;
-          if (!number.test(coordinate)) {
-              this.formErrorMsg = 'Please enter a valid coordinate.';
-          } else {
-              this.clearValidationMsg();
-          }
-      },
-      longitudeValidation(coordinate) {
-          // Source for RegEx below: https://www.regexlib.com/Search.aspx?k=latitude&AspxAutoDetectCookieSupport=1
-          const number = /^-?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}/;
-          if (!number.test(coordinate)) {
-              this.formErrorMsg = 'Please enter a valid coordinate.';
-          } else {
-              this.clearValidationMsg();
-          }
-      },
-      clearValidationMsg() {
-          this.formErrorMsg = '';
-      },
-      activateEditMode(selectedPothole) {
-          this.activeId = selectedPothole;
-          this.inactiveId = selectedPothole;
-      },
-      deactivateEditMode() {
-          this.activeId = 0;
-          this.inactiveId = 0;
-          this.retrievePotholes();
-          this.clearValidationMsg();
-      },
-      setupLeafletMap: function () {},
-      formatTime(time) {
-          const year = time.substring(0, 4);
-          const month = time.substring(5, 7);
-          const day = time.substring(8, 10);
-          return `${month}-${day}-${year}`;
-      },
-      retrievePotholes() {
-          potholeService
-              .getAllPotholes()
-              .then(response => {
-                  this.$store.commit("SET_POTHOLES", response.data.sort((a, b) => a.uploadTime < b.uploadTime ? 1 : -1));
-                  this.isLoading = false;
-              })
-              .catch(error => {
-                  if (error.response && error.response.status === 404) {
-                      alert("Pothole details not available.");
-                      this.$router.push({ name: 'Home' });
-                  }
-              });
-      },
-      updatePothole(selectedPothole) {
-          if (this.formErrorMsg === '') {
-              this.deactivateEditMode();
-              potholeService
-                  .updatePothole(selectedPothole)
-                  .then(response => {
-                      if (response.status === 202) {
-                          this.retrievePotholes();
-                      }
-                  })
-                  .catch(error => {
-                      alert(`An error occurred. Status code: ${error.response.status}`);
-                  });
-              }
-      },
-      deletePothole(selectedPothole) {
-          potholeService
-              .deletePotholeById(selectedPothole.potholeId)
-              .then(response => {
-                  if (response.status === 204) {
-                      this.retrievePotholes();
-                  }
-              })
-              .catch(error => {
-                  alert(`An error occurred. Status code: ${error.response.status}`);
-              });
-      }
-    },
-    mounted() {
-      this.setupLeafletMap();
+        getImgUrl(selectedPotholeId) {
+            if (selectedPotholeId < 23) {
+                return this.$store.state.images[selectedPotholeId];
+            }
+            return this.$store.state.images[1];
+        },
+        checkCredentials() {
+            for (let authority of this.$store.state.user.authorities) {
+                if (authority.name === "ROLE_ADMIN" || authority.name === "ROLE_EMPLOYEE") {
+                    this.hasValidCredentials = true;
+                }
+            }
+        },
+        checkForActiveAndCredentials(isSelectedPotholeActive) {
+            if (this.hasValidCredentials === false) {
+                if (isSelectedPotholeActive === false) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        latitudeValidation(coordinate) {
+            // Source for RegEx below: https://www.regexlib.com/Search.aspx?k=latitude&AspxAutoDetectCookieSupport=1
+            const number = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}/;
+            if (!number.test(coordinate)) {
+                this.formErrorMsg = 'Please enter a valid coordinate.';
+            } else {
+                this.clearValidationMsg();
+            }
+        },
+        longitudeValidation(coordinate) {
+            // Source for RegEx below: https://www.regexlib.com/Search.aspx?k=latitude&AspxAutoDetectCookieSupport=1
+            const number = /^-?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}/;
+            if (!number.test(coordinate)) {
+                this.formErrorMsg = 'Please enter a valid coordinate.';
+            } else {
+                this.clearValidationMsg();
+            }
+        },
+        clearValidationMsg() {
+            this.formErrorMsg = '';
+        },
+        activateEditMode(selectedPothole) {
+            this.activeId = selectedPothole;
+            this.inactiveId = selectedPothole;
+        },
+        deactivateEditMode() {
+            this.activeId = 0;
+            this.inactiveId = 0;
+            this.retrievePotholes();
+            this.clearValidationMsg();
+        },
+        formatTime(time) {
+            const year = time.substring(0, 4);
+            const month = time.substring(5, 7);
+            const day = time.substring(8, 10);
+            return `${month}-${day}-${year}`;
+        }, 
+        retrievePotholes() {
+            potholeService
+                .getAllPotholes()
+                .then(response => {
+                    if (response.data.length > 5) {
+                        response.data = response.data.slice(0, 4);
+                    }
+                    this.$store.commit("SET_POTHOLES", response.data.sort((a, b) => a.uploadTime < b.uploadTime ? 1 : -1));
+                    this.isLoading = false;
+                })
+                .catch(error => {
+                    if (error.response && error.response.status === 404) {
+                        alert("Pothole details not available.");
+                        this.$router.push({ name: 'Home' });
+                    }
+                });
+        },
+        updatePothole(selectedPothole) {
+            if (this.formErrorMsg === '') {
+                this.deactivateEditMode();
+                potholeService 
+                    .updatePothole(selectedPothole)
+                    .then(response => {
+                        if (response.status === 202) {
+                            this.retrievePotholes();
+                        }
+                    })
+                    .catch(error => {
+                        alert(`An error occurred. Status code: ${error.response.status}`);
+                    });
+                }
+        },
+        deletePothole(selectedPothole) {
+            potholeService
+                .deletePotholeById(selectedPothole.potholeId)
+                .then(response => {
+                    if (response.status === 204) {
+                        this.retrievePotholes();
+                    }
+                })
+                .catch(error => {
+                    alert(`An error occurred. Status code: ${error.response.status}`);
+                });
+        }
     },
     created() {
         this.retrievePotholes();
@@ -337,7 +281,11 @@ p {
 }
 
 h2 {
-    font-size: 1.6em;
+    font-size: 1.4em;
+}
+
+td {
+    font-size: .9em;
 }
 
 input {
@@ -393,7 +341,7 @@ select {
     border-radius: 20px;
     padding: 1em;
     margin: 1em;
-    width: 21em;
+    width: 20em;
 }
 
 tr input {
@@ -414,11 +362,10 @@ td input {
 }
 
 #pothole-container {
-    margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    max-width: 80%;
+
 }
 
 .pothole-button-container {
@@ -439,13 +386,6 @@ hr {
 .right-align {
     text-align: right;
     font-weight: bold;
-}
-
-#mapContainer {
-    margin-top: 20px;
-    width: 80vw;
-    height: 60vh;
-    border-radius: 20px;
 }
 
 </style>

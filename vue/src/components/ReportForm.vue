@@ -113,7 +113,7 @@ export default {
           }
         },
         uploadImage() {
-            console.log('test!');
+            console.log('This functionality is coming soon!');
         },
         submitPothole() {
           if (this.pothole.categoryId === null) {
@@ -138,7 +138,7 @@ export default {
         },
         handleErrorResponse(error, verb) {
         if (error.response) {
-            this.errorMsg = `Error ${verb} pothole. Response received was ${error.response.statusText}.`;
+            this.errorMsg = `Error ${verb} pothole. Please try again.`;
         } else if (error.request) {
             this.errorMsg = `Error ${verb} pothole. Server could not be reached.`;
         } else {
@@ -161,6 +161,7 @@ export default {
 
 .placeholderSelect {
   font-style: italic;
+  color: #6c757d;
 }
 
 .never-ital {

@@ -15,8 +15,8 @@ CREATE TABLE user_accounts (
         user_id int NOT NULL UNIQUE,
         f_name varchar(35) NOT NULL,
         l_name varchar(50) NOT NULL,
-        email varchar(70) NOT NULL UNIQUE,
-        phone bigint NOT NULL UNIQUE,
+        email varchar(70) NOT NULL,
+        phone bigint NOT NULL,
         flagged boolean NOT NULL DEFAULT FALSE,
         account_created timestamp not null default current_timestamp,
         CONSTRAINT PK_account_id PRIMARY KEY (account_id),
@@ -43,24 +43,6 @@ CREATE TABLE categories (
 	category_desc varchar(10) NOT NULL,
 	CONSTRAINT PK_category_id PRIMARY KEY (category_id)
 );
-
-INSERT INTO images (image_name, image_type)
-VALUES('bad_pothole', '.jpg');
-INSERT INTO images (image_name, image_type)
-VALUES('uhh_pothole', '.jpg');
-INSERT INTO images (image_name, image_type)
-VALUES('ugly_pothole', '.jpg');
-INSERT INTO images (image_name, image_type)
-VALUES('yikes_pothole', '.jpg');
-INSERT INTO images (image_name, image_type)
-VALUES('minor_pothole', '.jpg');
-
-INSERT INTO categories(category_desc) VALUES('Major');
-INSERT INTO categories(category_desc) VALUES('Minor');
-
-INSERT INTO statuses(status_desc) VALUES('Reported');
-INSERT INTO statuses(status_desc) VALUES('Inspected');
-INSERT INTO statuses(status_desc) VALUES('Repaired');
 
 CREATE TABLE potholes (
         pothole_id SERIAL,
