@@ -42,24 +42,6 @@ CREATE TABLE categories (
 	CONSTRAINT PK_category_id PRIMARY KEY (category_id)
 );
 
-INSERT INTO images (image_name, image_type)
-VALUES('bad_pothole', '.jpg');
-INSERT INTO images (image_name, image_type)
-VALUES('uhh_pothole', '.jpg');
-INSERT INTO images (image_name, image_type)
-VALUES('ugly_pothole', '.jpg');
-INSERT INTO images (image_name, image_type)
-VALUES('yikes_pothole', '.jpg');
-INSERT INTO images (image_name, image_type)
-VALUES('minor_pothole', '.jpg');
-
-INSERT INTO categories(category_desc) VALUES('Major');
-INSERT INTO categories(category_desc) VALUES('Minor');
-
-INSERT INTO statuses(status_desc) VALUES('Reported');
-INSERT INTO statuses(status_desc) VALUES('Inspected');
-INSERT INTO statuses(status_desc) VALUES('Repaired');
-
 CREATE TABLE potholes (
         pothole_id SERIAL,
         lat decimal(8,6),

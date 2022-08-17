@@ -343,6 +343,7 @@ select {
     border-radius: 20px;
     padding: 1em;
     margin: 1em;
+    width: 21em;
 }
 
 tr input {
