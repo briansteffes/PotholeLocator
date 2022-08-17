@@ -116,6 +116,7 @@ export default {
             console.log('test!');
         },
         submitPothole() {
+          console.log(this.pothole);
           if (this.pothole.categoryId === null) {
               this.errorMsg = 'Please select a category.';
             }

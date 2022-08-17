@@ -148,6 +148,7 @@ public class JdbcPotholeDao implements PotholeDao {
                         pothole.getPotholeLong(), pothole.getPotholeName(), pothole.getAccountId(),
                         pothole.getCategoryId());
 
+        System.out.println(potholeId);
     }
 
     // Fix this method
