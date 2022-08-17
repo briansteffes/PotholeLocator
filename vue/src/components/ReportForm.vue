@@ -161,6 +161,7 @@ export default {
 
 .placeholderSelect {
   font-style: italic;
+  color: #6c757d;
 }
 
 .never-ital {
