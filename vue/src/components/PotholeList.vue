@@ -2,18 +2,16 @@
   <div id="pothole-list">
     <div id="container">
       <div id="mapContainer">
-        <l-map :zoom="13" :center=this.map_center>
+        <l-map :zoom="13" :center=this.map_center @click="addMarker()">
           <l-tile-layer :url="this.tile_layer_url"
                         :attribution="this.tile_layer_attribution"
                         :options="{tileSize:this.tile_layer_tileSize, zoomOffset:this.tile_layer_zoomOffset}">
           </l-tile-layer>
           <div  v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
-            <l-circle-marker @click="scrollTo(pothole.potholeId)" :lat-lng="[pothole.potholeLat, pothole.potholeLong]"></l-circle-marker>
+            <l-circle-marker @click="scrollTo(pothole.potholeId)" :lat-lng="[pothole.potholeLat, pothole.potholeLong]">
+              <l-popup><app-header></app-header></l-popup>
+            </l-circle-marker>
           </div>
-<!--          <l-marker :lat-lng="this.circle.center" :icon="this.potHoleIcon"></l-marker>-->
-
-
-
         </l-map>
       </div>
     </div>
@@ -124,12 +122,14 @@
 <script>
 import potholeService from '../services/PotholeService';
 import L from "leaflet";
+import AppHeader from "./AppHeader";
 
 // import PotholeDetails from '@/components/PotholeDetails';
 
 export default {
     name: "pothole-list",
     components: {
+      AppHeader
     },
     data() {
         return {
@@ -167,6 +167,10 @@ export default {
         };
     },
     methods: {
+      addMarker(e) {
+        const newMarker = new L.Marker(e.latLng)
+        newMarker.addTo(map);
+      },
       scrollTo(refName) {
         const element = this.$refs[refName];
         const top = element.offsetTop;
@@ -418,7 +422,7 @@ hr {
     margin-top: 20px;
     width: 80vw;
     height: 60vh;
-    border-radius: 10px;
+    border-radius: 20px;
 }
 
 </style>
