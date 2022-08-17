@@ -67,12 +67,12 @@ export default {
 
 .nav {
   flex-direction: row;
-  align-content: center;
+  justify-content: center;
   margin-bottom: 30px;
 }
 
 .btn {
-  margin-top: 2em;
+  margin: 0 1em 0 1em;
   font-size: 1em;
 }
 

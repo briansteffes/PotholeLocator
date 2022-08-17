@@ -314,7 +314,6 @@ select {
     justify-content: center;
     text-align: center;
     flex-wrap: wrap;
-    margin-bottom: 40px;
 }
 
 .validation-error {
