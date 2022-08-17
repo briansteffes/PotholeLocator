@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS potholes, categories, statuses, images, user_accounts, users CASCADE;
+DROP TABLE IF EXISTS potholes, categories, statuses, images, user_accounts, users, pothole_statuses CASCADE;
 
 CREATE TABLE users (
 	user_id SERIAL,
@@ -18,6 +18,7 @@ CREATE TABLE user_accounts (
         email varchar(70) NOT NULL,
         phone bigint NOT NULL,
         flagged boolean NOT NULL DEFAULT FALSE,
+        account_created timestamp not null default current_timestamp,
         CONSTRAINT PK_account_id PRIMARY KEY (account_id),
         CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
@@ -26,7 +27,8 @@ CREATE TABLE images (
         image_id SERIAL not null,
         image_name varchar(40),
         image_type varchar(40),
-        image_data bytea,
+        image_data bytea default null,
+        upload_time timestamp not null default current_timestamp,
         CONSTRAINT PK_image_id PRIMARY KEY (image_id)
 );
 
