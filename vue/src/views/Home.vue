@@ -1,21 +1,28 @@
 <template>
   <div class="home">
     <h1>Recent Potholes Reported in <br /> Paris, Texas</h1>
-    <div class="nav">
-      <router-link :to="{ name: 'ViewPothole' }">
-        <button type="button" class="btn btn-primary btn-lg btn-lg">View All Potholes</button>
-      </router-link>
-      <router-link :to="{ name: 'ReportPothole' }">
-        <button type="button" class="btn btn-success btn-lg btn-lg">Report a Pothole</button>
-      </router-link> 
+    <div>
+      <home-map />
+      <div class="nav">
+        <router-link :to="{ name: 'ViewPothole' }">
+          <button type="button" class="btn btn-primary btn-lg btn-lg">View All Potholes</button>
+        </router-link>
+        <router-link v-if="$store.state.token != ''" :to="{ name: 'ReportPothole' }">
+          <button type="button" class="btn btn-success btn-lg btn-lg">Report a Pothole</button>
+        </router-link> 
+      </div>
+      <home-list />
     </div>
   </div>
 </template>
 
 <script>
+import HomeList from '../components/HomeList.vue';
+import HomeMap from '../components/HomeMap.vue';
 import accountService from '../services/AccountService';
 
 export default {
+  components: { HomeList, HomeMap },
   name: "home",
   data() {
     return {
@@ -59,9 +66,9 @@ export default {
 }
 
 .nav {
-  flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
+  flex-direction: row;
+  align-content: center;
+  margin-bottom: 30px;
 }
 
 .btn {
