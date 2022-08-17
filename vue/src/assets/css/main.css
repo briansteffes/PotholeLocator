@@ -30,8 +30,19 @@ h1 {
  
 a {
   font-family: 'Montserrat', sans-serif;
+  text-decoration: none;
+  background: none;
+  color: #fefefe;
 }
  
+.btn a:hover {
+  color: #fefefe;
+}
+
+a:hover {
+  color: #edd83d;
+}
+
 .icon {
   position: relative;
 }

@@ -1,16 +1,5 @@
 <template>
   <div id="pothole-list">
-    <div id="container">
-      <div id="mapContainer"></div>
-    </div>
-    <h2 id="filter-title">Filter</h2>
-    <div id="filter">
-      <input type="text" id="potholeNameFilter" v-model="filter.potholeName" placeholder="Name" />
-      <input type="text" id="potholeLatFilter" v-model="filter.potholeLat" placeholder="Lat" />
-      <input type="text" id="potholeLongFilter" v-model="filter.potholeLong" placeholder="Long" />
-      <input type="text" id="potholeCategoryFilter" v-model="filter.category" placeholder="Category" />
-      <input type="text" id="potholeStatusFilter" v-model="filter.status" placeholder="Status" />
-    </div>
     <div id="pothole-container">
         <div v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
             <div class="pothole-info" v-if="checkForActiveAndCredentials(pothole.active)">
@@ -105,12 +94,10 @@
 
 <script>
 import potholeService from '../services/PotholeService';
-import "leaflet/dist/leaflet.css"
-import L from "leaflet"
 // import PotholeDetails from '@/components/PotholeDetails';
 
 export default {
-    name: "pothole-list",
+    name: "home-list",
     components: {
         // PotholeDetails
     },
@@ -130,8 +117,6 @@ export default {
                 category: '',
                 status: ''
             },
-
-            map_center: [33.66099201430402, -95.5567548693612]
         };
     },
     methods: {
@@ -187,18 +172,6 @@ export default {
             this.retrievePotholes();
             this.clearValidationMsg();
         },
-        setupLeafletMap: function () {
-          const mapDiv = L.map("mapContainer").setView(this.map_center, 13);
-          L.tileLayer(
-            "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
-            {
-              attribution: 'Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
-              maxZoom: 18,
-              id: "mapbox/streets-v11",
-              accessToken: "pk.eyJ1IjoiYnJhaW4tc3RlZmZlcyIsImEiOiJjbDZxb2I4ZGEwZm1iM3FweTR2eTI0a2pmIn0.Ypd_EaTjrLDBEifw3QL1YQ"
-            }
-          ).addTo(mapDiv)
-        },
         formatTime(time) {
             const year = time.substring(0, 4);
             const month = time.substring(5, 7);
@@ -209,6 +182,9 @@ export default {
             potholeService
                 .getAllPotholes()
                 .then(response => {
+                    if (response.data.length > 5) {
+                        response.data = response.data.slice(0, 4);
+                    }
                     this.$store.commit("SET_POTHOLES", response.data.sort((a, b) => a.uploadTime < b.uploadTime ? 1 : -1));
                     this.isLoading = false;
                 })
@@ -246,9 +222,6 @@ export default {
                     alert(`An error occurred. Status code: ${error.response.status}`);
                 });
         }
-    },
-    mounted() {
-      this.setupLeafletMap();
     },
     created() {
         this.retrievePotholes();
@@ -308,7 +281,11 @@ p {
 }
 
 h2 {
-    font-size: 1.6em;
+    font-size: 1.4em;
+}
+
+td {
+    font-size: .9em;
 }
 
 input {
@@ -364,7 +341,7 @@ select {
     border-radius: 20px;
     padding: 1em;
     margin: 1em;
-    width: 21em;
+    width: 20em;
 }
 
 tr input {
@@ -385,11 +362,10 @@ td input {
 }
 
 #pothole-container {
-    margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    max-width: 80%;
+
 }
 
 .pothole-button-container {
@@ -410,12 +386,6 @@ hr {
 .right-align {
     text-align: right;
     font-weight: bold;
-}
-
-#mapContainer {
-    margin-top: 20px;
-    width: 80vw;
-    height: 80vh;
 }
 
 </style>
