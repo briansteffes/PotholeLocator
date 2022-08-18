@@ -76,4 +76,10 @@ export default {
   font-size: 1em;
 }
 
+@media only screen and (max-width: 680px) {
+  .btn:first-child {
+    margin: 0 1em 1em 1em;
+  }
+}
+
 </style>
