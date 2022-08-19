@@ -43,7 +43,7 @@ public class PotholeImageService implements PotholeImageDao {
                         "set pothole_id = ?, image_link = ? where pothole_image_id = ?;";
         jdbcTemplate.update(sql,
                 potholeImage.getPothole_id(),
-                potholeImage.getPotholeImageLink(),
+                String.valueOf(potholeImage.getPotholeImageLink()),
                 potholeImageId);
     }
 
