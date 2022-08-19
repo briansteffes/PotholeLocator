@@ -44,6 +44,13 @@ CREATE TABLE categories (
 	CONSTRAINT PK_category_id PRIMARY KEY (category_id)
 );
 
+-- Holds the latest image of the pothole
+create table pothole_images (
+    pothole_image_id serial constraint pothole_image_pk primary key,
+    pothole_id int unique not null references potholes(pothole_id),
+    image_link text default null
+);
+
 CREATE TABLE potholes (
         pothole_id SERIAL,
         lat decimal(8,6),

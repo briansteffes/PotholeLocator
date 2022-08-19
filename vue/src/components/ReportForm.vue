@@ -56,6 +56,11 @@
             id="formFileLg"
             type="file"
           />
+          <vue-dropzone
+            ref="myVueDropzone"
+            id="dropzone"
+            v-on:vdropzone-file-added="sendingEvent"
+            :options="dropzoneOptions"></vue-dropzone>
         </div>
         <div class="submit">
           <button type="submit" class="btn btn-primary btn-lg btn-lg">Submit</button>
@@ -67,27 +72,49 @@
 
 <script>
 import potholeService from '../services/PotholeService';
+import vue2Dropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+import axios from "axios";
 
 export default {
     name: "report-form",
-    // components: {
-        
-    // },
-    data() {
+    components: {
+      vueDropzone: vue2Dropzone
+    },
+    data: function () {
         return {
-            pothole: {
-                potholeName: '',
-                potholeLat: '',
-                potholeLong: '',
-                accountId: this.$store.state.userAccount.accountId,
-                categoryId: null,
-            },
-            isLoading: true,
-            errorMsg: "",
-            categoryIdNotNull: false
+          pothole: {
+            potholeName: '',
+            potholeLat: '',
+            potholeLong: '',
+            accountId: this.$store.state.userAccount.accountId,
+            categoryId: null,
+            potholeImage: '',
+          },
+          isLoading: true,
+          errorMsg: "",
+          categoryIdNotNull: false,
+          dropzoneOptions: {
+            url: `http://localhost:9000/pothole-image/${this.$store.state.userAccount.accountId}/image/upload/`,
+            thumbnailWidth: 175,
+            thumbnailHeight: 150,
+            maxFilesize: 10,
+            headers: { "Test-Header": "header value"}
+
+          }
         };
     },
     methods: {
+        sendingEvent(file) {
+          const formData = new FormData();
+          formData.append("file", file);
+          axios.post(
+            `http://localhost:9000/pothole-image/${this.pothole.accountId}/image/upload/`,
+            formData,
+            {
+              headers: {"Content-Type": "multipart/form-data"}
+            }).then(() => { console.log("file uploaded successfully")}).catch(err => { console.log(err);});
+        },
         checkCategoryId() {
           if (this.pothole.categoryId === null) {
             this.categoryIdNotNull = false;
