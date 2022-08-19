@@ -35,7 +35,8 @@
                 <p v-if="hasValidCredentials && inactiveId !== pothole.potholeId ">{{ pothole.active === true ? 'Active' : 'Inactive'}}</p>
                 <input type="text" v-if="activeId === pothole.potholeId" v-model="pothole.potholeName" placeholder="">
                 <h2 v-if="inactiveId !== pothole.potholeId">{{pothole.potholeName}}</h2>
-                <img v-bind:src="getImgUrl(pothole.potholeId)">
+                <img src='http://localhost:8080/api/v1/user-profile/3/image/download'>
+<!--                <img v-bind:src="getImgUrl(pothole.potholeId)">-->
                 <p class="validation-error" v-if="activeId === pothole.potholeId">{{ formErrorMsg }}</p>
                 <table class="pothole-table">
                     <tr>

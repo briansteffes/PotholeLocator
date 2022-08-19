@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -32,5 +33,10 @@ public class PotholeImageController {
     public void uploadPotholeImage(@PathVariable("potholeId") Long potholeId,
                                    @RequestParam("file")MultipartFile file) {
         potholeImageService.uploadPotholeImage(potholeId, file);
+    }
+
+    @GetMapping(path = "{potholeId}/image/download")
+    public byte[] downloadPotholeImage(@PathVariable("potholeId") Long potholeId) {
+        return potholeImageService.downloadPotholeImage(potholeId);
     }
 }

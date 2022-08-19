@@ -1,6 +1,5 @@
 package com.techelevator.potholeImage;
 
-import com.amazonaws.services.s3.model.Bucket;
 import com.techelevator.bucket.BucketName;
 import com.techelevator.fileStore.FileStore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,7 @@ public class PotholeImageService implements PotholeImageDao {
                         "set pothole_id = ?, image_link = ? where pothole_image_id = ?;";
         jdbcTemplate.update(sql,
                 potholeImage.getPothole_id(),
-                String.valueOf(potholeImage.getPotholeImageLink()),
+                potholeImage.getPotholeImageLink().get(),
                 potholeImageId);
     }
 
@@ -81,6 +80,17 @@ public class PotholeImageService implements PotholeImageDao {
         }
     }
 
+    public byte[] downloadPotholeImage(Long potholeId) {
+        PotholeImage potholeImage = getPotholeOrThrow(potholeId);
+        String path = String.format("%s/%s",
+                BucketName.PROFILE_IMAGE.getBucketName(),
+                potholeImage.getPothole_id());
+
+        return potholeImage.getPotholeImageLink()
+                .map(link -> fileStore.download(path, link))
+                .orElse(new byte[0]);
+    }
+
     private PotholeImage mapRowToPotholeImage(SqlRowSet rs) {
         PotholeImage potholeImage = new PotholeImage();
         potholeImage.setId(rs.getLong("pothole_image_id"));
@@ -96,4 +106,6 @@ public class PotholeImageService implements PotholeImageDao {
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException(String.format("Pothole %s not found", potholeId)));
     }
+
+
 }
