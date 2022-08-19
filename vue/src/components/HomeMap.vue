@@ -1,7 +1,19 @@
 <template>
   <div id="pothole-list">
     <div id="container">
-      <div id="mapContainer"></div>
+      <div id="mapContainer">
+        <l-map :zoom="13" :center=this.map_center>
+          <l-tile-layer :url="this.tile_layer_url"
+                        :attribution="this.tile_layer_attribution"
+                        :options="{tileSize:this.tile_layer_tileSize, zoomOffset:this.tile_layer_zoomOffset}">
+          </l-tile-layer>
+          <div v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
+            <l-circle-marker :lat-lng="[pothole.potholeLat, pothole.potholeLong]">
+              <l-popup><app-header></app-header></l-popup>
+            </l-circle-marker>
+          </div>
+        </l-map>
+      </div>
     </div>
   </div>
 </template>
@@ -33,8 +45,24 @@ export default {
                 category: '',
                 status: ''
             },
-
-            map_center: [33.66099201430402, -95.5567548693612]
+            tile_layer_url: "https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYnJhaW4tc3RlZmZlcyIsImEiOiJjbDZxb2I4ZGEwZm1iM3FweTR2eTI0a2pmIn0.Ypd_EaTjrLDBEifw3QL1YQ",
+            tile_layer_attribution: 'Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
+            tile_layer_maxZoom: 18,
+            tile_layer_style: "mapbox/dark-v10",
+            tile_layer_zoomOffset: -1,
+            tile_layer_tileSize: 512,
+            tile_layer_accessToken: "pk.eyJ1IjoiYnJhaW4tc3RlZmZlcyIsImEiOiJjbDZxb2I4ZGEwZm1iM3FweTR2eTI0a2pmIn0.Ypd_EaTjrLDBEifw3QL1YQ",
+            map_center: [33.66099201430402, -95.5567548693612],
+            circle: {
+              center: [33.66099201430402, -95.5567548693612],
+              radius: 4500,
+              color: 'red'
+            },
+            potHoleIcon: L.icon({
+              iconURL: "https://www.flaticon.com/free-icons/location",
+              iconSize: [40,100],
+              iconAnchor: [20,100]
+            })
         };
     },
     methods: {
@@ -45,69 +73,71 @@ export default {
             return this.$store.state.images[1];
         },
         checkCredentials() {
-            for (let authority of this.$store.state.user.authorities) {
-                if (authority.name === "ROLE_ADMIN" || authority.name === "ROLE_EMPLOYEE") {
-                    this.hasValidCredentials = true;
+            if (this.$store.state.user !== {}) {
+                for (let authority of this.$store.state.user.authorities) {
+                    if (authority.name === "ROLE_ADMIN" || authority.name === "ROLE_EMPLOYEE") {
+                        this.hasValidCredentials = true;
+                    }
                 }
             }
         },
-        checkForActiveAndCredentials(isSelectedPotholeActive) {
-            if (this.hasValidCredentials === false) {
-                if (isSelectedPotholeActive === false) {
-                    return false;
-                }
-            }
-            return true;
-        },
-        latitudeValidation(coordinate) {
-            // Source for RegEx below: https://www.regexlib.com/Search.aspx?k=latitude&AspxAutoDetectCookieSupport=1
-            const number = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}/;
-            if (!number.test(coordinate)) {
-                this.formErrorMsg = 'Please enter a valid coordinate.';
-            } else {
-                this.clearValidationMsg();
-            }
-        },
-        longitudeValidation(coordinate) {
-            // Source for RegEx below: https://www.regexlib.com/Search.aspx?k=latitude&AspxAutoDetectCookieSupport=1
-            const number = /^-?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}/;
-            if (!number.test(coordinate)) {
-                this.formErrorMsg = 'Please enter a valid coordinate.';
-            } else {
-                this.clearValidationMsg();
-            }
-        },
+        // checkForActiveAndCredentials(isSelectedPotholeActive) {
+        //     if (this.hasValidCredentials === false) {
+        //         if (isSelectedPotholeActive === false) {
+        //             return false;
+        //         }
+        //     }
+        //     return true;
+        // },
+        // latitudeValidation(coordinate) {
+        //     // Source for RegEx below: https://www.regexlib.com/Search.aspx?k=latitude&AspxAutoDetectCookieSupport=1
+        //     const number = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}/;
+        //     if (!number.test(coordinate)) {
+        //         this.formErrorMsg = 'Please enter a valid coordinate.';
+        //     } else {
+        //         this.clearValidationMsg();
+        //     }
+        // },
+        // longitudeValidation(coordinate) {
+        //     // Source for RegEx below: https://www.regexlib.com/Search.aspx?k=latitude&AspxAutoDetectCookieSupport=1
+        //     const number = /^-?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}/;
+        //     if (!number.test(coordinate)) {
+        //         this.formErrorMsg = 'Please enter a valid coordinate.';
+        //     } else {
+        //         this.clearValidationMsg();
+        //     }
+        // },
         clearValidationMsg() {
             this.formErrorMsg = '';
         },
-        activateEditMode(selectedPothole) {
-            this.activeId = selectedPothole;
-            this.inactiveId = selectedPothole;
-        },
-        deactivateEditMode() {
-            this.activeId = 0;
-            this.inactiveId = 0;
-            this.retrievePotholes();
-            this.clearValidationMsg();
-        },
-        setupLeafletMap: function () {
-          const mapDiv = L.map("mapContainer").setView(this.map_center, 13);
-          L.tileLayer(
-            "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
-            {
-              attribution: 'Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
-              maxZoom: 18,
-              id: "mapbox/streets-v11",
-              accessToken: "pk.eyJ1IjoiYnJhaW4tc3RlZmZlcyIsImEiOiJjbDZxb2I4ZGEwZm1iM3FweTR2eTI0a2pmIn0.Ypd_EaTjrLDBEifw3QL1YQ"
-            }
-          ).addTo(mapDiv)
-        },
-        formatTime(time) {
-            const year = time.substring(0, 4);
-            const month = time.substring(5, 7);
-            const day = time.substring(8, 10);
-            return `${month}-${day}-${year}`;
-        }, 
+        // activateEditMode(selectedPothole) {
+        //     this.activeId = selectedPothole;
+        //     this.inactiveId = selectedPothole;
+        // },
+        // deactivateEditMode() {
+        //     this.activeId = 0;
+        //     this.inactiveId = 0;
+        //     this.retrievePotholes();
+        //     this.clearValidationMsg();
+        // },
+        // setupLeafletMap: function () {
+        //   const mapDiv = L.map("mapContainer").setView(this.map_center, 13);
+        //   L.tileLayer(
+        //     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+        //     {
+        //       attribution: 'Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
+        //       maxZoom: 18,
+        //       id: "mapbox/streets-v11",
+        //       accessToken: "pk.eyJ1IjoiYnJhaW4tc3RlZmZlcyIsImEiOiJjbDZxb2I4ZGEwZm1iM3FweTR2eTI0a2pmIn0.Ypd_EaTjrLDBEifw3QL1YQ"
+        //     }
+        //   ).addTo(mapDiv)
+        // },
+        // formatTime(time) {
+        //     const year = time.substring(0, 4);
+        //     const month = time.substring(5, 7);
+        //     const day = time.substring(8, 10);
+        //     return `${month}-${day}-${year}`;
+        // }, 
         retrievePotholes() {
             potholeService
                 .getAllPotholes()
@@ -153,9 +183,9 @@ export default {
                 });
         }
     },
-    mounted() {
-      this.setupLeafletMap();
-    },
+    // mounted() {
+    //   this.setupLeafletMap();
+    // },
     created() {
         this.retrievePotholes();
         this.checkCredentials();
@@ -163,39 +193,39 @@ export default {
     computed: {
         filteredList() {
             let filteredPotholes = this.$store.state.potholes;
-            if (this.filter.potholeName != "") {
-                filteredPotholes = filteredPotholes.filter((pothole) =>
-                pothole.potholeName
-                    .toLowerCase()
-                    .includes(this.filter.potholeName.toLowerCase())
-                );
-            }
-            if (this.filter.potholeLat != "") {
-                filteredPotholes = filteredPotholes.filter((pothole) =>
-                pothole.potholeLat.toString()
-                    .includes(this.filter.potholeLat)
-                );
-            }
-            if (this.filter.potholeLong != "") {
-                filteredPotholes = filteredPotholes.filter((pothole) =>
-                pothole.potholeLong.toString()
-                    .includes(this.filter.potholeLong)
-                );
-            }
-            if (this.filter.category != "") {
-                filteredPotholes = filteredPotholes.filter((pothole) =>
-                pothole.category
-                    .toLowerCase()
-                    .includes(this.filter.category.toLowerCase())
-                );
-            }
-            if (this.filter.status != "") {
-                filteredPotholes = filteredPotholes.filter((pothole) =>
-                pothole.status
-                    .toLowerCase()
-                    .includes(this.filter.status.toLowerCase())
-                );
-            }
+            // if (this.filter.potholeName != "") {
+            //     filteredPotholes = filteredPotholes.filter((pothole) =>
+            //     pothole.potholeName
+            //         .toLowerCase()
+            //         .includes(this.filter.potholeName.toLowerCase())
+            //     );
+            // }
+            // if (this.filter.potholeLat != "") {
+            //     filteredPotholes = filteredPotholes.filter((pothole) =>
+            //     pothole.potholeLat.toString()
+            //         .includes(this.filter.potholeLat)
+            //     );
+            // }
+            // if (this.filter.potholeLong != "") {
+            //     filteredPotholes = filteredPotholes.filter((pothole) =>
+            //     pothole.potholeLong.toString()
+            //         .includes(this.filter.potholeLong)
+            //     );
+            // }
+            // if (this.filter.category != "") {
+            //     filteredPotholes = filteredPotholes.filter((pothole) =>
+            //     pothole.category
+            //         .toLowerCase()
+            //         .includes(this.filter.category.toLowerCase())
+            //     );
+            // }
+            // if (this.filter.status != "") {
+            //     filteredPotholes = filteredPotholes.filter((pothole) =>
+            //     pothole.status
+            //         .toLowerCase()
+            //         .includes(this.filter.status.toLowerCase())
+            //     );
+            // }
             return filteredPotholes;
         }
     }
@@ -322,6 +352,12 @@ hr {
     margin-top: 20px;
     width: 40vw;
     height: 40vh;
+}
+
+@media only screen and (max-width: 680px) {
+  #mapContainer {
+    width: 90vw;
+  }
 }
 
 </style>

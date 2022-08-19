@@ -2,13 +2,13 @@
   <div id="pothole-list">
     <div id="container">
       <div id="mapContainer">
-        <l-map :zoom="13" :center=this.map_center @click="addMarker()">
+        <l-map :zoom="13" :center=this.map_center>
           <l-tile-layer :url="this.tile_layer_url"
                         :attribution="this.tile_layer_attribution"
                         :options="{tileSize:this.tile_layer_tileSize, zoomOffset:this.tile_layer_zoomOffset}">
           </l-tile-layer>
-          <div  v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
-            <l-circle-marker @click="scrollTo(pothole.potholeId)" :lat-lng="[pothole.potholeLat, pothole.potholeLong]">
+          <div v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
+            <l-circle-marker :lat-lng="[pothole.potholeLat, pothole.potholeLong]">
               <l-popup><app-header></app-header></l-popup>
             </l-circle-marker>
           </div>
@@ -164,17 +164,17 @@ export default {
         };
     },
     methods: {
-      addMarker(e) {
-        const newMarker = new L.Marker(e.latLng)
-        // newMarker.addTo(map);
-        console.log(newMarker)
-      },
-      scrollTo(refName) {
-        const element = this.$refs[refName];
-        const top = element.offsetTop;
+    //   addMarker(e) {
+    //     const newMarker = new L.Marker(e.latLng)
+    //     // newMarker.addTo(map);
+    //     console.log(newMarker)
+    //   },
+    //   scrollTo(refName) {
+    //     const element = this.$refs[refName];
+    //     const top = element.offsetTop;
 
-        window.scrollTo(0, top);
-      },
+    //     window.scrollTo(0, top);
+    //   },
       getImgUrl(selectedPotholeId) {
           if (selectedPotholeId < 23) {
               return this.$store.state.images[selectedPotholeId];
@@ -182,10 +182,12 @@ export default {
           return this.$store.state.images[1];
       },
       checkCredentials() {
-          for (let authority of this.$store.state.user.authorities) {
-              if (authority.name === "ROLE_ADMIN" || authority.name === "ROLE_EMPLOYEE") {
-                  this.hasValidCredentials = true;
-              }
+          if (this.$store.state.user !== {}) {
+            for (let authority of this.$store.state.user.authorities) {
+                if (authority.name === "ROLE_ADMIN" || authority.name === "ROLE_EMPLOYEE") {
+                    this.hasValidCredentials = true;
+                }
+            }
           }
       },
       checkForActiveAndCredentials(isSelectedPotholeActive) {

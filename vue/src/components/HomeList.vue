@@ -127,9 +127,11 @@ export default {
             return this.$store.state.images[1];
         },
         checkCredentials() {
-            for (let authority of this.$store.state.user.authorities) {
-                if (authority.name === "ROLE_ADMIN" || authority.name === "ROLE_EMPLOYEE") {
-                    this.hasValidCredentials = true;
+            if (this.$store.state.user !== {}) {
+                for (let authority of this.$store.state.user.authorities) {
+                    if (authority.name === "ROLE_ADMIN" || authority.name === "ROLE_EMPLOYEE") {
+                        this.hasValidCredentials = true;
+                    }
                 }
             }
         },
@@ -183,7 +185,7 @@ export default {
                 .getAllPotholes()
                 .then(response => {
                     const sortedData = response.data.sort((a, b) => a.uploadTime < b.uploadTime ? 1 : -1);
-                    if (sortedData.length > 5) {
+                    if (sortedData.length >= 5) {
                         response.data = response.data.slice(0, 4);
                     }
                     this.$store.commit("SET_POTHOLES", response.data);
